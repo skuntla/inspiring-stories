@@ -1,5 +1,12 @@
-"""Render the per-series ChatGPT brief from the schema vocabulary, the series bible and the
-series' example episode, so the brief can never drift from what the validator accepts."""
+"""Render the per-series ChatGPT documents from the schema vocabulary, the series bible and the
+series' example episode, so they can never drift from what the validator accepts.
+
+Two renderings:
+- compact Project instructions (`render_project_instructions`), sized to fit ChatGPT's
+  Project-instructions field (hard limit PROJECT_INSTRUCTIONS_MAX characters);
+- the full reference contract (`render_brief`) with tables and a complete example episode,
+  kept in the repo and optionally uploaded as a Project file.
+"""
 from __future__ import annotations
 
 from importlib import resources
@@ -10,7 +17,12 @@ from .lint_episode import MAX_FREE_TEXT_WORDS, MAX_LINE_WORDS, SHOT_COUNT_SOFT
 from .schema import load_vocabulary
 
 EXAMPLE_FILE = "example-episode.yaml"
+PROJECT_INSTRUCTIONS_FILE = "chatgpt-project-instructions.md"
+REFERENCE_FILE = "chatgpt-reference.md"
 SHOT_MAX = 30
+# ChatGPT's Project-instructions field accepts at most 8,000 characters.
+PROJECT_INSTRUCTIONS_MAX = 8000
+PROJECT_INSTRUCTIONS_TARGET = 7500
 
 _FIELD_FOR_VOCAB = {
     "timeOfDay": "shots[].time_of_day",
@@ -28,7 +40,30 @@ def _cell(text: str) -> str:
     return " ".join(str(text).split()).replace("|", "\\|")
 
 
+def _template(name: str) -> Template:
+    return Template(resources.files("story").joinpath(f"templates/{name}").read_text(encoding="utf-8"))
+
+
+def _common(bible: dict) -> dict:
+    audience = bible.get("audience")
+    defaults = bible.get("defaults") if isinstance(bible.get("defaults"), dict) else {}
+    default_mfk = defaults.get("made_for_kids")
+    return {
+        "series_id": bible["id"],
+        "series_title": bible["title"],
+        "shot_soft_min": SHOT_COUNT_SOFT[0],
+        "shot_soft_max": SHOT_COUNT_SOFT[1],
+        "shot_max": SHOT_MAX,
+        "max_line_words": MAX_LINE_WORDS,
+        "max_free_words": MAX_FREE_TEXT_WORDS,
+        "audience_sentence": f" Audience: {' '.join(audience.split())}" if isinstance(audience, str) else "",
+        "default_mfk": str(default_mfk).lower() if isinstance(default_mfk, bool) else None,
+    }
+
+
 def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
+    """The full reference contract."""
+    ctx = _common(bible)
     vocab = load_vocabulary(root)
     vocab_rows = "\n".join(
         f"| `{field}` | {', '.join(f'`{v}`' for v in vocab[name])} |"
@@ -39,12 +74,8 @@ def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
         f"| {_cell(c.get('description', 'Voice only.'))} |"
         for c in bible["characters"]
     )
-    example = (series_dir / EXAMPLE_FILE).read_text(encoding="utf-8").rstrip("\n")
-    audience = bible.get("audience")
-    defaults = bible.get("defaults") if isinstance(bible.get("defaults"), dict) else {}
-    default_mfk = defaults.get("made_for_kids")
-    if isinstance(default_mfk, bool):
-        value = str(default_mfk).lower()
+    value = ctx.pop("default_mfk")
+    if value is not None:
         mfk_blocking = ""
         mfk_note = (f"\n   `made_for_kids` is **not** blocking in this series: use the series default "
                     f"`{value}` unless the producer explicitly says otherwise.")
@@ -54,21 +85,44 @@ def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
                         "     it) has not been stated in this conversation.\n")
         mfk_note = ""
         mfk_comment = "exactly as the producer stated it"
-
-    template = Template(resources.files("story").joinpath("templates/brief.md.tmpl").read_text(encoding="utf-8"))
-    return template.substitute(
-        series_id=bible["id"],
-        series_title=bible["title"],
-        shot_soft_min=SHOT_COUNT_SOFT[0],
-        shot_soft_max=SHOT_COUNT_SOFT[1],
-        shot_max=SHOT_MAX,
-        max_line_words=MAX_LINE_WORDS,
-        max_free_words=MAX_FREE_TEXT_WORDS,
+    return _template("brief.md.tmpl").substitute(
+        ctx,
         vocabulary_rows=vocab_rows,
         cast_rows=cast_rows,
-        example=example,
-        audience_sentence=f" Audience: {' '.join(audience.split())}" if isinstance(audience, str) else "",
+        example=(series_dir / EXAMPLE_FILE).read_text(encoding="utf-8").rstrip("\n"),
         made_for_kids_blocking=mfk_blocking,
         made_for_kids_default_note=mfk_note,
         made_for_kids_comment=mfk_comment,
+    )
+
+
+def render_project_instructions(bible: dict, root: Path) -> str:
+    """The compact rendering installed as ChatGPT Project instructions."""
+    ctx = _common(bible)
+    vocab = load_vocabulary(root)
+    vocab_lines = "\n".join(
+        f"- {field.removeprefix('shots[].')}: {', '.join(vocab[name])}"
+        for name, field in _FIELD_FOR_VOCAB.items()
+    )
+    cast_lines = "\n".join(
+        f"- {c['id']}: {' '.join(c['name'].split())}"
+        + (" (narrator, never drawn)" if c["kind"] == "narrator" else f". {' '.join(c.get('description', '').split())}")
+        for c in bible["characters"]
+    )
+    value = ctx.pop("default_mfk")
+    if value is not None:
+        mfk_blocking = ""
+        mfk_note = f" made_for_kids is not blocking: use the series default {value} unless the producer says otherwise."
+        mfk_value = value
+    else:
+        mfk_blocking = "   - made_for_kids (video primarily aimed at children, per YouTube) not stated\n"
+        mfk_note = ""
+        mfk_value = "false            # exactly as the producer stated"
+    return _template("project-instructions.md.tmpl").substitute(
+        ctx,
+        vocabulary_lines=vocab_lines,
+        cast_lines=cast_lines,
+        made_for_kids_blocking=mfk_blocking,
+        made_for_kids_default_note=mfk_note,
+        made_for_kids_value=mfk_value,
     )

@@ -1,7 +1,10 @@
-# ChatGPT Project instructions — series "Tales from Willow Meadow" (willow-meadow)
+# ChatGPT story contract, full reference — series "Tales from Willow Meadow" (willow-meadow)
 
-Install this whole document once as the instructions of a ChatGPT Project for this series.
-Regenerate it with `story brief willow-meadow` whenever the series changes.
+This is the complete reference: tables, rules and a full example episode. It is too long for
+ChatGPT's Project-instructions field (8,000 characters). Install the compact
+`chatgpt-project-instructions.md` (`story brief willow-meadow`) as the Project instructions, and
+optionally upload this file to the Project's files. Regenerate it with
+`story brief willow-meadow --full` whenever the series changes.
 
 ## Your role
 

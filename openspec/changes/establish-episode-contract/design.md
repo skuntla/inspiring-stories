@@ -101,6 +101,8 @@ Lock-mode behavior is enforced only by instructions. It is verified by the manua
 
 **Series defaults.** A series may declare `defaults.made_for_kids`. The brief then tells ChatGPT to use it, and `made_for_kids` stops being a blocking question; without a default it stays blocking. Episodes still state the value explicitly, so each manifest is self-contained, and validation warns when an episode deviates from its series default.
 
+**Two renderings (found during the round trip).** ChatGPT's Project-instructions field accepts at most 8,000 characters, and the full brief is about 16,000. So the brief is rendered twice from the same inputs. `chatgpt-project-instructions.md` (the default `story brief`) keeps every operational rule but uses a field skeleton and compact vocabulary and cast lists in place of tables, prose and the example episode. It is currently about 4,900 characters, which leaves room for longer cast lists. `chatgpt-reference.md` (`story brief --full`) is the complete contract with a validated example; it can be uploaded as a Project file. The CLI refuses to write compact output over 8,000 characters and warns above 7,500. Tests fail if either committed file is stale or the compact one is too long.
+
 ### 11. Derived line ids
 Lines carry no authored id. Downstream stages derive `sNN-lMM` from position. Authored ids would be one more thing ChatGPT could get wrong, and a relock replaces the whole manifest anyway, so hash-bound approvals (not ids) detect what changed.
 

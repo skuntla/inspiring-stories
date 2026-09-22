@@ -132,19 +132,31 @@ Lines SHALL NOT carry authored identifiers. Downstream stages SHALL identify a l
 - **THEN** validation reports an unknown-field error explaining that line ids are derived from position
 
 ### Requirement: ChatGPT handoff document
-The project SHALL provide, per series, a ChatGPT instruction document intended to be installed once as ChatGPT Project instructions. It SHALL list the allowed vocabulary and the series cast exactly as currently defined by the schema and the series bible, and contain a complete example manifest that MUST pass validation. It SHALL define two modes:
+The project SHALL provide, per series, two renderings generated from the schema and the series bible, so both always list the allowed vocabulary and the cast exactly as currently defined:
+- **Compact Project instructions**, installed once as ChatGPT Project instructions. They MUST NOT exceed 8,000 characters (ChatGPT's limit); 7,500 is the safety target, enforced by a warning. They SHALL preserve: creative and lock modes; the exact "Lock this story" trigger; the blocking-decision rules; complete replacement after revisions; the series id, audience and made-for-kids default; the approved cast ids; the required manifest field structure; the closed vocabulary; the essential validation rules; and the prohibition on image prompts, line ids, timings, paths and voices. A full example episode is not required.
+- **The full reference contract**, kept in the repository and optionally uploaded as a Project file. It contains the same rules in full plus a complete example manifest that MUST pass validation.
+
+Both SHALL define two modes:
 - **Creative mode** (the default): ChatGPT discusses the idea conversationally, develops a prose story, and presents a readable plain-text storyboard (one block per shot with visual, emotion, camera, narration and dialogue). It SHALL NOT output YAML in this mode.
 - **Lock**: when the producer says "Lock this story", ChatGPT outputs only a complete `story-episode/v1` manifest for the agreed story and storyboard.
 
-The document SHALL state that ChatGPT does not write image-generation prompts, line ids, durations or voice choices, because the pipeline derives them from the series bible and the locked manifest.
+Both SHALL state that ChatGPT does not write image-generation prompts, line ids, durations or voice choices, because the pipeline derives them from the series bible and the locked manifest.
+
+#### Scenario: Project instructions fit ChatGPT's limit
+- **WHEN** the compact Project instructions are rendered for any series in the repository
+- **THEN** they are at most 8,000 characters long
+
+#### Scenario: Committed renderings are current
+- **WHEN** a series bible changes and its committed Project instructions or reference are not regenerated
+- **THEN** the automated tests fail and name the command that regenerates them
 
 #### Scenario: Example stays valid
-- **WHEN** the example manifest from the instruction document is validated against the example series
+- **WHEN** the example manifest from the full reference is validated against its series
 - **THEN** validation reports no errors
 
 #### Scenario: Brief reflects the current bible
-- **WHEN** a character is added to a series bible and the instruction document is regenerated
-- **THEN** the document lists the new character's id, name and description
+- **WHEN** a character is added to a series bible and the renderings are regenerated
+- **THEN** both list the new character's id, name and description
 
 #### Scenario: Creative mode produces no YAML
 - **WHEN** the producer describes an idea and asks for a draft or storyboard without saying "Lock this story"

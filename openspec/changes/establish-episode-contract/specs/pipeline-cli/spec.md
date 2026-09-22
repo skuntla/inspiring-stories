@@ -46,16 +46,28 @@ The validation report SHALL list every error and warning found (not only the fir
 - **WHEN** `story validate <dir> --json` is run
 - **THEN** stdout is a single JSON document listing findings with severity, file, path and message
 
-### Requirement: Generate the ChatGPT brief
-`story brief <series-id>` SHALL write the series' ChatGPT instruction document to stdout, or to a file given with `--out`. It SHALL refuse to run if the series bible has validation errors.
+### Requirement: Generate the ChatGPT documents
+`story brief <series-id>` SHALL write the series' compact ChatGPT Project instructions, and `story brief <series-id> --full` the full reference contract, to stdout or to a file given with `--out`. It SHALL refuse to run if the series bible or its example episode has validation errors. For the compact instructions it SHALL refuse to write output longer than 8,000 characters and SHALL warn when the output exceeds 7,500 characters.
 
-#### Scenario: Brief for a valid series
-- **WHEN** `story brief kind-hearts --out brief.md` is run on a valid bible
-- **THEN** `brief.md` contains the instructions, vocabulary, cast and example manifest, and the exit code is 0
+#### Scenario: Project instructions for a valid series
+- **WHEN** `story brief kind-hearts --out chatgpt-project-instructions.md` is run on a valid bible
+- **THEN** the file contains the compact instructions, is at most 8,000 characters, and the exit code is 0
+
+#### Scenario: Full reference
+- **WHEN** `story brief kind-hearts --full --out chatgpt-reference.md` is run on a valid bible
+- **THEN** the file contains the full instructions, vocabulary, cast and example manifest, and the exit code is 0
 
 #### Scenario: Brief for an invalid series
 - **WHEN** the series bible has an error
 - **THEN** no document is written, the errors are reported, and the exit code is 1
+
+#### Scenario: Project instructions too long
+- **WHEN** the compact rendering would exceed 8,000 characters (for example because character descriptions are very long)
+- **THEN** nothing is written, the error states the length and the limit, and the exit code is 1
+
+#### Scenario: Project instructions near the limit
+- **WHEN** the compact rendering is between 7,501 and 8,000 characters
+- **THEN** the output is written and a warning states the length and the 7,500-character target
 
 ### Requirement: Exit codes
 Commands SHALL exit with 0 on success (warnings allowed), 1 when validation errors are found, and 2 on usage errors such as a missing path or unknown command.

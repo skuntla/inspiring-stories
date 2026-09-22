@@ -11,7 +11,8 @@ import unicodedata
 from datetime import date
 from pathlib import Path
 
-from .brief import EXAMPLE_FILE, render_brief
+from .brief import (EXAMPLE_FILE, PROJECT_INSTRUCTIONS_MAX, PROJECT_INSTRUCTIONS_TARGET,
+                    render_brief, render_project_instructions)
 from .lint_episode import EPISODE_FILE, check_episode
 from .lint_series import SERIES_FILE, check_series
 from .load import find_root
@@ -140,10 +141,22 @@ def cmd_brief(args) -> int:
         print("error: the brief was not written because the series or its example has errors:", file=sys.stderr)
         _emit(result, False, sys.stderr)
         return EXIT_ERRORS
-    text = render_brief(series.bible, series_dir, root)
+    if args.full:
+        text = render_brief(series.bible, series_dir, root)
+    else:
+        text = render_project_instructions(series.bible, root)
+        if len(text) > PROJECT_INSTRUCTIONS_MAX:
+            print(f"error: the Project instructions are {len(text)} characters; ChatGPT accepts at most "
+                  f"{PROJECT_INSTRUCTIONS_MAX}. Shorten the series (e.g. character descriptions); nothing was written",
+                  file=sys.stderr)
+            return EXIT_ERRORS
+        if len(text) > PROJECT_INSTRUCTIONS_TARGET:
+            print(f"warning: the Project instructions are {len(text)} characters, above the "
+                  f"{PROJECT_INSTRUCTIONS_TARGET}-character safety target (hard limit {PROJECT_INSTRUCTIONS_MAX})",
+                  file=sys.stderr)
     if args.out:
         Path(args.out).write_text(text, encoding="utf-8")
-        print(f"wrote {args.out}", file=sys.stderr)
+        print(f"wrote {args.out} ({len(text)} characters)", file=sys.stderr)
     else:
         sys.stdout.write(text)
     if result.warnings:
@@ -167,8 +180,10 @@ def build_parser() -> argparse.ArgumentParser:
     n.add_argument("--date", help="episode date YYYY-MM-DD (default: today)")
     n.set_defaults(func=cmd_new)
 
-    b = sub.add_parser("brief", help="generate the ChatGPT brief for a series")
+    b = sub.add_parser("brief", help="generate the ChatGPT Project instructions for a series")
     b.add_argument("series")
+    b.add_argument("--full", action="store_true",
+                   help="render the full reference contract instead of the compact Project instructions")
     b.add_argument("--out", help="write to this file instead of stdout")
     b.set_defaults(func=cmd_brief)
     return p
