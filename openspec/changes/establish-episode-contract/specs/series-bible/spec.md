@@ -39,6 +39,17 @@ The series bible SHALL define a visual style consisting of a non-empty style des
 - **WHEN** a style reference path resolves outside `series/<series-id>/style/`
 - **THEN** validation reports an error
 
+### Requirement: Audience and series defaults
+The series bible MAY declare an `audience` description and a `defaults` section. `defaults.made_for_kids`, when present, SHALL be a boolean giving the value episodes in the series normally declare. Neither field changes the requirement that every episode states `made_for_kids` explicitly.
+
+#### Scenario: Series with a made-for-kids default
+- **WHEN** a series declares `defaults: {made_for_kids: false}`
+- **THEN** validation reports no errors
+
+#### Scenario: Non-boolean default
+- **WHEN** a series declares `defaults: {made_for_kids: "no"}`
+- **THEN** validation reports a type error
+
 ### Requirement: Character roster
 The series bible SHALL list its characters, each with a unique kebab-case `id`, a display name, a visual description, a canonical outfit, a list of distinguishing features, and reference image slots `front`, `three_quarter` and `side` whose paths lie under `series/<series-id>/characters/<id>/`. Exactly one entry SHALL have `kind: narrator`; the narrator has a voice but no visual fields or reference slots.
 

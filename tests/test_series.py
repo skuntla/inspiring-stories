@@ -124,3 +124,19 @@ def test_present_reference_image_is_not_warned(project):
     warned = {f.path for f in _check(project).findings if f.rule == "series.reference-missing"}
     assert "characters[1].references.front" not in warned
     assert "characters[1].references.side" in warned
+
+
+def test_audience_and_made_for_kids_default_are_valid(project):
+    doc = project.series()
+    doc["audience"] = "General audience of all ages."
+    doc["defaults"] = {"made_for_kids": False}
+    project.write_series(doc)
+    assert rules(_check(project).findings, "error") == set()
+
+
+def test_non_boolean_default_is_a_type_error(project):
+    doc = project.series()
+    doc["defaults"] = {"made_for_kids": "no"}
+    project.write_series(doc)
+    errors = {(f.rule, f.path) for f in _check(project).findings if f.severity == "error"}
+    assert ("schema.type", "defaults.made_for_kids") in errors

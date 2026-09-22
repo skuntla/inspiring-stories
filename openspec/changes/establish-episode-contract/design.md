@@ -99,6 +99,8 @@ The producer brainstorms naturally and should never have to think in YAML until 
 
 Lock-mode behavior is enforced only by instructions. It is verified by the manual round trip in task 7.1 and, above all, by `story validate` on whatever ChatGPT returns.
 
+**Series defaults.** A series may declare `defaults.made_for_kids`. The brief then tells ChatGPT to use it, and `made_for_kids` stops being a blocking question; without a default it stays blocking. Episodes still state the value explicitly, so each manifest is self-contained, and validation warns when an episode deviates from its series default.
+
 ### 11. Derived line ids
 Lines carry no authored id. Downstream stages derive `sNN-lMM` from position. Authored ids would be one more thing ChatGPT could get wrong, and a relock replaces the whole manifest anyway, so hash-bound approvals (not ids) detect what changed.
 

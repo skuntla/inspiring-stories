@@ -175,3 +175,22 @@ def test_brief_defines_creative_and_lock_modes(project, capsys):
     assert "complete replacement" in out and "never a partial patch" in out
     # derived artifacts are not ChatGPT's job
     assert "image-generation prompts" in out and "line ids" in out
+
+
+def test_brief_with_series_default_does_not_block_on_made_for_kids(project, capsys):
+    doc = project.series()
+    doc["audience"] = "General audience of all ages."
+    doc["defaults"] = {"made_for_kids": False}
+    project.write_series(doc)
+    code, out, _ = project.run("brief", SERIES_ID, capsys=capsys)
+    assert code == 0
+    assert "Audience: General audience of all ages." in out
+    assert "has not been stated in this conversation" not in out
+    assert "use the series default `false`" in out
+    assert "# series default is false" in out
+
+
+def test_brief_without_default_blocks_on_made_for_kids(project, capsys):
+    code, out, _ = project.run("brief", SERIES_ID, capsys=capsys)
+    assert "has not been stated in this conversation" in out
+    assert "use the series default" not in out

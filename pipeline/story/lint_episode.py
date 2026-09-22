@@ -133,6 +133,13 @@ def _lint(doc: dict, series: SeriesCheck | None, file: str, expected_id: str | N
     _lint_pronunciations(doc, err, warn)
 
     pub = doc.get("publishing")
+    defaults = series.bible.get("defaults") if series and series.bible else None
+    default_mfk = defaults.get("made_for_kids") if isinstance(defaults, dict) else None
+    if (isinstance(pub, dict) and isinstance(pub.get("made_for_kids"), bool)
+            and isinstance(default_mfk, bool) and pub["made_for_kids"] != default_mfk):
+        warn("publishing.made_for_kids", "episode.made-for-kids-default",
+             f"made_for_kids is {str(pub['made_for_kids']).lower()} but series '{doc.get('series')}' defaults to "
+             f"{str(default_mfk).lower()}; confirm this episode really differs before uploading")
     if isinstance(pub, dict) and isinstance(pub.get("tags"), list):
         tags = [t for t in pub["tags"] if isinstance(t, str)]
         # YouTube counts separating commas, and quotes around tags that contain spaces.

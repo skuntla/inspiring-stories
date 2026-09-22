@@ -1,0 +1,75 @@
+# Production series bible for "Tales from Willow Meadow".
+# Character looks and voices here are frozen: changing them changes every future episode.
+schema: "story-series/v1"
+id: "willow-meadow"
+title: "Tales from Willow Meadow"
+content_rating: "all-ages"
+audience: "General audience of all ages; not primarily directed at children."
+defaults:
+  made_for_kids: false
+style:
+  description: >-
+    Soft storybook watercolor illustration with visible paper texture, warm natural light,
+    gentle ink outlines, rounded friendly shapes, muted greens and golden ochres,
+    expressive but simple faces, 16:9 widescreen composition with clear foreground and background.
+  avoid:
+    - "text, letters, captions or signatures in the image"
+    - "photorealism or 3D render look"
+    - "harsh shadows or frightening imagery"
+  references:
+    - "style/ref-01.png"
+characters:
+  - id: "narrator"
+    kind: "narrator"
+    name: "The Storyteller"
+    voice:
+      kokoro: "af_heart"
+      speed: 0.95
+  - id: "pip"
+    kind: "character"
+    name: "Pip"
+    description: "A small young hedgehog with a round body, short soft brown spines and a pale cream face and belly."
+    outfit: "A little moss-green knitted scarf, always wrapped once around the neck."
+    features:
+      - "large shiny black eyes"
+      - "a tiny pink nose"
+      - "one spine at the top of the head that always sticks up"
+    references:
+      front: "characters/pip/ref-front.png"
+      three_quarter: "characters/pip/ref-3q.png"
+      side: "characters/pip/ref-side.png"
+    voice:
+      kokoro: "af_bella"
+      speed: 1.05
+  - id: "ben"
+    kind: "character"
+    name: "Old Ben"
+    description: "An elderly, broad-shouldered badger with a silver-streaked black and white striped face and grey fur."
+    outfit: "A faded brown waistcoat with two wooden buttons, and small round spectacles."
+    features:
+      - "white stripe running from nose to forehead"
+      - "round spectacles perched low on the snout"
+      - "slightly hunched, slow posture"
+    references:
+      front: "characters/ben/ref-front.png"
+      three_quarter: "characters/ben/ref-3q.png"
+      side: "characters/ben/ref-side.png"
+    voice:
+      kokoro: "bm_george"
+      speed: 0.9
+  - id: "wren"
+    kind: "character"
+    name: "Wren"
+    description: "A tiny, quick brown wren with a speckled chest and an upturned tail."
+    outfit: "No clothing; a single bright red berry tucked behind one wing like a badge."
+    features:
+      - "upturned tail"
+      - "pale eyebrow stripe"
+      - "red berry badge"
+    references:
+      front: "characters/wren/ref-front.png"
+      three_quarter: "characters/wren/ref-3q.png"
+      side: "characters/wren/ref-side.png"
+    voice:
+      kokoro: "af_sky"
+      speed: 1.1

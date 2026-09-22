@@ -40,6 +40,21 @@ def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
         for c in bible["characters"]
     )
     example = (series_dir / EXAMPLE_FILE).read_text(encoding="utf-8").rstrip("\n")
+    audience = bible.get("audience")
+    defaults = bible.get("defaults") if isinstance(bible.get("defaults"), dict) else {}
+    default_mfk = defaults.get("made_for_kids")
+    if isinstance(default_mfk, bool):
+        value = str(default_mfk).lower()
+        mfk_blocking = ""
+        mfk_note = (f"\n   `made_for_kids` is **not** blocking in this series: use the series default "
+                    f"`{value}` unless the producer explicitly says otherwise.")
+        mfk_comment = f"series default is {value}; change only if the producer says so"
+    else:
+        mfk_blocking = ("   - Whether the video is **made for kids** (primarily aimed at children, as YouTube defines\n"
+                        "     it) has not been stated in this conversation.\n")
+        mfk_note = ""
+        mfk_comment = "exactly as the producer stated it"
+
     template = Template(resources.files("story").joinpath("templates/brief.md.tmpl").read_text(encoding="utf-8"))
     return template.substitute(
         series_id=bible["id"],
@@ -52,4 +67,8 @@ def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
         vocabulary_rows=vocab_rows,
         cast_rows=cast_rows,
         example=example,
+        audience_sentence=f" Audience: {' '.join(audience.split())}" if isinstance(audience, str) else "",
+        made_for_kids_blocking=mfk_blocking,
+        made_for_kids_default_note=mfk_note,
+        made_for_kids_comment=mfk_comment,
     )

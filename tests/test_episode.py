@@ -159,3 +159,17 @@ def test_line_id_message_explains_derivation(project):
     project.write_episode(doc)
     msg = next(f.message for f in _check(project).findings if f.path == "shots[0].lines[0].id")
     assert "derived from position" in msg and "s03-l02" in msg
+
+
+def test_made_for_kids_deviating_from_series_default_warns(project):
+    series = project.series()
+    series["defaults"] = {"made_for_kids": False}
+    project.write_series(series)
+    assert "episode.made-for-kids-default" not in rules(_check(project).findings)
+    doc = project.episode()
+    doc["publishing"]["made_for_kids"] = True
+    project.write_episode(doc)
+    findings = _episode_findings(_check(project))
+    assert [f for f in findings if f.severity == "error"] == []
+    assert ("episode.made-for-kids-default", "publishing.made_for_kids") in {
+        (f.rule, f.path) for f in findings if f.severity == "warning"}

@@ -113,6 +113,10 @@ The manifest SHALL declare a YouTube title of at most 100 characters, a descript
 - **WHEN** `made_for_kids` is absent
 - **THEN** validation reports an error
 
+#### Scenario: Differs from the series default
+- **WHEN** the series declares `defaults.made_for_kids: false` and an episode declares `made_for_kids: true`
+- **THEN** validation succeeds with a warning asking the producer to confirm the deviation
+
 ### Requirement: Runtime estimate
 Validation SHALL report an estimated spoken runtime per shot and for the whole episode, computed from word counts at a fixed reference speaking rate plus declared pauses. A shot whose estimate exceeds 30 seconds SHALL produce a warning. The estimate is informational and SHALL NOT be written into the manifest.
 
@@ -151,8 +155,12 @@ The document SHALL state that ChatGPT does not write image-generation prompts, l
 - **THEN** ChatGPT outputs exactly one fenced YAML block containing a complete manifest and nothing else
 
 #### Scenario: Lock with an unresolved blocking decision
-- **WHEN** the producer says "Lock this story" while a required story or schema decision is unresolved (for example the story needs a character not in the cast, the storyboard or ending has not been agreed, or `made_for_kids` has not been stated)
+- **WHEN** the producer says "Lock this story" while a required story or schema decision is unresolved (for example the story needs a character not in the cast, the storyboard or ending has not been agreed, or `made_for_kids` has not been stated and the series declares no default)
 - **THEN** ChatGPT asks only the minimum question needed to resolve it, outputs no YAML, and does not invent the missing information
+
+#### Scenario: Series default for made-for-kids
+- **WHEN** the series declares `defaults.made_for_kids` and the producer has not mentioned it
+- **THEN** ChatGPT uses the series default at lock without asking, unless the producer explicitly states otherwise
 
 #### Scenario: Revising a locked story
 - **WHEN** the producer asks for changes after a story has been locked
