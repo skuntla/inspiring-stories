@@ -9,7 +9,8 @@ Every later stage — Gemini prompt packs, Kokoro narration, timing, captions, t
 - Introduce a **series bible** (`series/<series-id>/series.yaml`) holding the reusable visual style, the character roster (appearance, canonical outfit, reference-image slots, Kokoro voice), and series defaults. It is authored once and reused by every episode.
 - Introduce the **canonical episode manifest** (`episodes/<id>/episode.yaml`, schema `story-episode/v1`) describing an original story as an ordered list of shots, each with location, characters, action, emotion, camera intent, atmosphere, ambience and spoken lines, plus publishing copy. It carries no durations, pixel positions, file paths or voice IDs.
 - Publish both contracts as versioned **JSON Schemas** checked into the repo, plus a closed **enum vocabulary** (camera moves, atmosphere effects, ambience keys, deliveries, positions) and an allowlist of English Kokoro voices.
-- Add a **ChatGPT instruction document**, generated per series from the schema and bible so it cannot drift, that tells ChatGPT exactly how to produce a schema-valid `episode.yaml`, including a worked example.
+- Add a **ChatGPT instruction document**, generated per series from the schema and bible so it cannot drift, to be installed once as ChatGPT Project instructions. It has a conversational **creative mode** (prose and a readable storyboard, no YAML) and a **"Lock this story"** mode that outputs a complete, schema-valid `episode.yaml`, asking only the minimum blocking question when something is unresolved.
+- Line ids are derived from position (`s03-l02`), never authored; the Gemini prompt pack and the remaining production artifacts are derived by the pipeline, not written by ChatGPT.
 - Add the first slice of the local `story` CLI (Python 3.11):
   - `story new <series> "<title>"` scaffolds an episode folder with a stub manifest.
   - `story brief <series>` generates the ChatGPT instruction document for that series.

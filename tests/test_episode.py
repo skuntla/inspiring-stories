@@ -53,6 +53,7 @@ def _long_title(d): d["publishing"]["title"] = "x" * 120
 def _no_made_for_kids(d): del d["publishing"]["made_for_kids"]
 def _boolean_text(d): d["shots"][0]["emotion"] = True
 def _stub(d): d["shots"] = []
+def _line_id(d): d["shots"][0]["lines"][0]["id"] = "greeting"
 
 
 @pytest.mark.parametrize("mutate, rule, path", [
@@ -84,6 +85,7 @@ def _stub(d): d["shots"] = []
     (_no_made_for_kids, "schema.required", "publishing.made_for_kids"),
     (_boolean_text, "schema.type", "shots[0].emotion"),
     (_stub, "episode.stub", "shots"),
+    (_line_id, "schema.unknown-field", "shots[0].lines[0].id"),
 ])
 def test_each_error_rule(project, mutate, rule, path):
     doc = project.episode()
@@ -149,3 +151,11 @@ def test_id_rule_skipped_when_no_folder_expected(project):
     _wrong_id(doc)
     project.write_episode(doc)
     assert "episode.id-matches-folder" not in rules(_check(project, expected=None).findings)
+
+
+def test_line_id_message_explains_derivation(project):
+    doc = project.episode()
+    _line_id(doc)
+    project.write_episode(doc)
+    msg = next(f.message for f in _check(project).findings if f.path == "shots[0].lines[0].id")
+    assert "derived from position" in msg and "s03-l02" in msg

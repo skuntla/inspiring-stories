@@ -96,7 +96,9 @@ def _messages(error) -> list[tuple[list, str, str]]:
             if key in schema.get("properties", {}):
                 continue
             msg = f"unknown field '{key}'"
-            if key in _TIMING_FIELDS:
+            if key == "id" and len(path) >= 2 and path[-2] == "lines":
+                msg += "; line ids are derived from position as <shot id>-l<NN> (for example s03-l02), never authored"
+            elif key in _TIMING_FIELDS:
                 msg += "; durations and timing are derived from the recorded audio, never authored"
             elif key in _LAYOUT_FIELDS:
                 msg += "; layout, file paths and voices are decided by the pipeline and the series bible"

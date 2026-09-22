@@ -120,8 +120,19 @@ Validation SHALL report an estimated spoken runtime per shot and for the whole e
 - **WHEN** a valid episode is validated
 - **THEN** the report includes an estimated runtime for each shot and a total
 
+### Requirement: Derived line identifiers
+Lines SHALL NOT carry authored identifiers. Downstream stages SHALL identify a line by its position as `<shot id>-l<NN>`, where `NN` is the 1-based two-digit line index within the shot (for example `s03-l02`).
+
+#### Scenario: Authored line id
+- **WHEN** a line contains `id: "greeting"`
+- **THEN** validation reports an unknown-field error explaining that line ids are derived from position
+
 ### Requirement: ChatGPT handoff document
-The project SHALL provide, per series, a ChatGPT instruction document that specifies how to produce a `story-episode/v1` manifest, lists the allowed vocabulary and the series cast exactly as currently defined by the schema and the series bible, and contains a complete example manifest. The embedded example MUST pass validation.
+The project SHALL provide, per series, a ChatGPT instruction document intended to be installed once as ChatGPT Project instructions. It SHALL list the allowed vocabulary and the series cast exactly as currently defined by the schema and the series bible, and contain a complete example manifest that MUST pass validation. It SHALL define two modes:
+- **Creative mode** (the default): ChatGPT discusses the idea conversationally, develops a prose story, and presents a readable plain-text storyboard (one block per shot with visual, emotion, camera, narration and dialogue). It SHALL NOT output YAML in this mode.
+- **Lock**: when the producer says "Lock this story", ChatGPT outputs only a complete `story-episode/v1` manifest for the agreed story and storyboard.
+
+The document SHALL state that ChatGPT does not write image-generation prompts, line ids, durations or voice choices, because the pipeline derives them from the series bible and the locked manifest.
 
 #### Scenario: Example stays valid
 - **WHEN** the example manifest from the instruction document is validated against the example series
@@ -130,3 +141,19 @@ The project SHALL provide, per series, a ChatGPT instruction document that speci
 #### Scenario: Brief reflects the current bible
 - **WHEN** a character is added to a series bible and the instruction document is regenerated
 - **THEN** the document lists the new character's id, name and description
+
+#### Scenario: Creative mode produces no YAML
+- **WHEN** the producer describes an idea and asks for a draft or storyboard without saying "Lock this story"
+- **THEN** ChatGPT answers in prose and a plain-text storyboard, with no YAML
+
+#### Scenario: Lock produces only the manifest
+- **WHEN** the producer says "Lock this story" and every required decision is resolved
+- **THEN** ChatGPT outputs exactly one fenced YAML block containing a complete manifest and nothing else
+
+#### Scenario: Lock with an unresolved blocking decision
+- **WHEN** the producer says "Lock this story" while a required story or schema decision is unresolved (for example the story needs a character not in the cast, the storyboard or ending has not been agreed, or `made_for_kids` has not been stated)
+- **THEN** ChatGPT asks only the minimum question needed to resolve it, outputs no YAML, and does not invent the missing information
+
+#### Scenario: Revising a locked story
+- **WHEN** the producer asks for changes after a story has been locked
+- **THEN** ChatGPT returns to creative mode, and a later "Lock this story" produces a complete replacement manifest (never a partial patch) that can be revalidated and used to rebuild downstream assets

@@ -25,8 +25,13 @@ context: |
   - episode.yaml is the single source of truth for intent; build/ is a deletable cache that
     is rebuilt identically each time. Every derived artifact records hashes of its inputs.
   - Models propose, code decides. Audio is the master clock: nobody authors durations.
-  - Human checkpoints (story, visuals, audio, final preview) are hash-bound approvals in
-    approvals.yaml; an upstream change makes an approval stale.
+  - Three human checkpoints: (1) story + storyboard (approved by "Lock this story" in the
+    ChatGPT Project), (2) image contact sheet, (3) final preview video incl. audio review.
+    Pipeline checkpoints are hash-bound approvals in approvals.yaml; an upstream change
+    makes an approval stale.
+  - ChatGPT works conversationally (creative mode) and emits episode.yaml only on lock.
+    Line ids (sNN-lMM) and the Gemini prompt pack are derived by the pipeline, never
+    written by ChatGPT.
   - Validators reject unknown fields/enums and never guess.
   - Constants: 1920x1080, 30 fps, H.264/AAC, master ~-14 LUFS integrated, -1 dBTP.
   - Platform: macOS arm64 (Apple M4), Node 24, Python 3.11 venv.

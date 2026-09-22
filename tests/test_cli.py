@@ -124,7 +124,7 @@ def test_brief_contains_vocabulary_cast_and_example(project, capsys):
 def test_brief_writes_file(project, capsys, tmp_path):
     target = tmp_path / "brief.md"
     code, out, _ = project.run("brief", SERIES_ID, "--out", str(target), capsys=capsys)
-    assert code == 0 and out == "" and target.read_text().startswith("# Story episode brief")
+    assert code == 0 and out == "" and target.read_text().startswith("# ChatGPT Project instructions")
 
 
 def test_brief_refuses_invalid_bible(project, capsys, tmp_path):
@@ -156,3 +156,22 @@ def test_brief_example_is_valid_against_its_series(project):
     """Golden check: the example embedded in the brief must always pass validation."""
     result = check_episode(project.series_dir / "example-episode.yaml", project.root, expected_id=None)
     assert [f for f in result.findings if f.severity == "error"] == []
+
+
+def test_brief_defines_creative_and_lock_modes(project, capsys):
+    code, out, _ = project.run("brief", SERIES_ID, capsys=capsys)
+    assert code == 0
+    # creative mode is the default and never emits YAML
+    assert "Creative mode is the default" in out
+    assert "Never output YAML in creative mode" in out
+    assert "storyboard" in out
+    # lock trigger, pre-flight with the blocking-decision list, single YAML block
+    assert '"Lock this story"' in out
+    assert "ask **only** the\n   minimum question" in out
+    for blocking in ("not in the cast", "storyboard or the ending has not been agreed", "made for kids"):
+        assert blocking in out
+    assert "exactly **one** fenced" in out
+    # relock produces a complete replacement
+    assert "complete replacement" in out and "never a partial patch" in out
+    # derived artifacts are not ChatGPT's job
+    assert "image-generation prompts" in out and "line ids" in out

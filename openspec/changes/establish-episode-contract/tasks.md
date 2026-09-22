@@ -29,6 +29,8 @@
 - [x] 5.1 Implement `story validate <path>` (series or episode; an episode validates its bible first); verify tests for a valid episode (exit 0), an episode with a broken bible (exit 1, bible error reported) and a bad path (exit 2)
 - [x] 5.2 Implement `story new <series> "<title>" [--date]` (ASCII kebab slug, refuses overwrite, unknown series errors); verify tests for creation, overwrite refusal and an unknown series, and that the generated stub is reported as a stub by `story validate`
 - [x] 5.3 Implement `story brief <series> [--out]` from `templates/brief.md.tmpl` (instructions, vocabulary table from the schema, cast from the bible, example episode); verify tests that it refuses on an invalid bible and that adding a character to a fixture bible makes it appear in the output
+- [x] 5.4 Rewrite `templates/brief.md.tmpl` as two-mode ChatGPT Project instructions (creative mode by default with prose and a plain-text storyboard format, "Lock this story" with a blocking-decision pre-flight, complete replacement on relock, and no image prompts, line ids, durations or voices from ChatGPT); verify tests assert that each mode's rules and the blocking-decision list appear in the generated brief
+- [x] 5.5 Explain derived line ids when a line carries an `id` field (unknown-field message names the `sNN-lMM` convention); verify a test for `shots[0].lines[0].id`
 
 ## 6. Example series and golden fixtures
 
@@ -37,5 +39,5 @@
 
 ## 7. Verification
 
-- [ ] 7.1 End-to-end check: run `story brief example-meadow --out /tmp/brief.md`, paste the brief into ChatGPT, save the returned YAML as a new episode via `story new`, and run `story validate`; verify either a clean pass, or a report whose messages alone let ChatGPT produce a clean manifest in one round (record the result in the change notes)
+- [ ] 7.1 End-to-end ChatGPT round trip: install the output of `story brief example-meadow` as ChatGPT Project instructions, then (a) brainstorm and confirm you get prose and a storyboard with no YAML; (b) say "Lock this story" before stating `made_for_kids` and confirm ChatGPT asks only that question; (c) answer it and confirm one YAML block comes back; paste it into a `story new` episode and run `story validate`; (d) request a revision and relock, and confirm a complete replacement manifest that validates. Record the results in the change folder as `notes.md`
 - [x] 7.2 Run the full test suite and `openspec validate establish-episode-contract --strict`; verify both pass
