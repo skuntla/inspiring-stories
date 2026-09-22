@@ -1,0 +1,33 @@
+{
+  "description": "English Kokoro-82M preset voices. Prefix: a=American (lang_code 'a'), b=British (lang_code 'b'); f=female, m=male. Verified against the local hexgrad/Kokoro-82M voices directory on 2026-09-22.",
+  "voices": [
+    {"id": "af_alloy", "accent": "american", "gender": "female"},
+    {"id": "af_aoede", "accent": "american", "gender": "female"},
+    {"id": "af_bella", "accent": "american", "gender": "female"},
+    {"id": "af_heart", "accent": "american", "gender": "female"},
+    {"id": "af_jessica", "accent": "american", "gender": "female"},
+    {"id": "af_kore", "accent": "american", "gender": "female"},
+    {"id": "af_nicole", "accent": "american", "gender": "female"},
+    {"id": "af_nova", "accent": "american", "gender": "female"},
+    {"id": "af_river", "accent": "american", "gender": "female"},
+    {"id": "af_sarah", "accent": "american", "gender": "female"},
+    {"id": "af_sky", "accent": "american", "gender": "female"},
+    {"id": "am_adam", "accent": "american", "gender": "male"},
+    {"id": "am_echo", "accent": "american", "gender": "male"},
+    {"id": "am_eric", "accent": "american", "gender": "male"},
+    {"id": "am_fenrir", "accent": "american", "gender": "male"},
+    {"id": "am_liam", "accent": "american", "gender": "male"},
+    {"id": "am_michael", "accent": "american", "gender": "male"},
+    {"id": "am_onyx", "accent": "american", "gender": "male"},
+    {"id": "am_puck", "accent": "american", "gender": "male"},
+    {"id": "am_santa", "accent": "american", "gender": "male"},
+    {"id": "bf_alice", "accent": "british", "gender": "female"},
+    {"id": "bf_emma", "accent": "british", "gender": "female"},
+    {"id": "bf_isabella", "accent": "british", "gender": "female"},
+    {"id": "bf_lily", "accent": "british", "gender": "female"},
+    {"id": "bm_daniel", "accent": "british", "gender": "male"},
+    {"id": "bm_fable", "accent": "british", "gender": "male"},
+    {"id": "bm_george", "accent": "british", "gender": "male"},
+    {"id": "bm_lewis", "accent": "british", "gender": "male"}
+  ]
+}

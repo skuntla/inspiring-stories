@@ -1,0 +1,63 @@
+schema: spec-driven
+
+context: |
+  Product: a local-first, repeatable pipeline that turns a short original story into a
+  narrated, animated-feeling 16:9 YouTube video (illustrated stills + parallax, camera
+  moves, blinks, later viseme lip sync, word-level captions, ambience, music).
+  Audience: suitable for all ages. English only for now. Stories are original, written
+  with ChatGPT. Shot count and length vary per story (no fixed target).
+
+  Tool roles:
+  - ChatGPT: story, shot breakdown, lines, publishing copy -> episode.yaml (schema-valid).
+  - Gemini: pixels only, used MANUALLY in the Gemini app from prompt packs Claude writes.
+    Never rely on Gemini for metadata, masks, alpha or layers.
+  - Claude + scripts: prompt packs, validation, TTS, alignment, layers, timeline,
+    Remotion render, packaging. No automated YouTube upload: the user uploads by hand.
+  - Kokoro TTS (preset voices, 24 kHz), run locally. Proven helpers (trim, loudness
+    normalisation, repetition checks, caption building) may be adapted from
+    /Users/skuntla/Documents/projects/voicemodels; do not modify that repo.
+  - Remotion: a lean project in this repo; borrow only needed parts from
+    /Users/skuntla/Documents/projects/ai-engineer-interview-video.
+
+  Architecture principles:
+  - Files are the interface; no servers, queues or databases. Python 3.11 CLI (`story`)
+    runs the stages; Remotion only plays back a fully resolved build/timeline.json.
+  - episode.yaml is the single source of truth for intent; build/ is a deletable cache that
+    is rebuilt identically each time. Every derived artifact records hashes of its inputs.
+  - Models propose, code decides. Audio is the master clock: nobody authors durations.
+  - Human checkpoints (story, visuals, audio, final preview) are hash-bound approvals in
+    approvals.yaml; an upstream change makes an approval stale.
+  - Validators reject unknown fields/enums and never guess.
+  - Constants: 1920x1080, 30 fps, H.264/AAC, master ~-14 LUFS integrated, -1 dBTP.
+  - Platform: macOS arm64 (Apple M4), Node 24, Python 3.11 venv.
+
+# Project context (optional)
+# This is shown to AI when creating artifacts.
+# Add your tech stack, conventions, style guides, domain knowledge, etc.
+# Example:
+#   context: |
+#     Tech stack: TypeScript, React, Node.js
+#     We use conventional commits
+#     Domain: e-commerce platform
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing

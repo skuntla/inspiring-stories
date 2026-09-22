@@ -1,0 +1,192 @@
+schema: "story-episode/v1"
+id: "2026-01-01-the-lantern-seed"
+series: "example-meadow"
+title: "The Lantern Seed"
+logline: "Pip wants to find the brightest thing in the meadow before the long night, but learns the brightest light is sharing."
+moral: "A light shared is a light doubled."
+language: "en"
+content_rating: "all-ages"
+source:
+  kind: "original"
+cast: ["narrator", "pip", "bramble", "wren"]
+locations:
+  - id: "meadow-edge"
+    description: "Tall golden grass at the edge of Thistlewick Meadow, dotted with purple thistles, a crooked wooden fence in the background."
+  - id: "bramble-burrow"
+    description: "A cozy round burrow entrance under old oak roots, a tiny wooden door left ajar, warm lamplight glowing inside."
+props:
+  - id: "lantern-seed"
+    description: "A walnut-sized seed with a thin papery shell that glows soft amber from within."
+pronunciations:
+  "Thistlewick": "THISS-ul-wick"
+shots:
+  - id: "s01"
+    location: "meadow-edge"
+    time_of_day: "dusk"
+    characters:
+      - id: "pip"
+        position: "center"
+        pose: "standing on tiptoe, peering over the grass"
+        expression: "curious and hopeful"
+        facing: "right"
+    action: "Pip searches the darkening meadow for something bright."
+    emotion: "quiet anticipation"
+    camera:
+      move: "push_in"
+      intensity: "low"
+    atmosphere: ["fireflies", "dust_motes"]
+    ambience: "meadow"
+    composition_notes: "Wide shot; Pip small in the center, lots of sky turning orange above the grass."
+    lines:
+      - speaker: "narrator"
+        text: "At the edge of Thistlewick Meadow, the nights were growing long, and little Pip wanted a light of his very own."
+        delivery: "warm"
+        pause_after: 0.6
+  - id: "s02"
+    location: "meadow-edge"
+    time_of_day: "dusk"
+    characters:
+      - id: "pip"
+        position: "center_left"
+        pose: "holding a glowing seed up with both paws"
+        expression: "delighted, wide eyes"
+        facing: "camera"
+    props: ["lantern-seed"]
+    action: "Pip finds a glowing lantern seed in the grass."
+    emotion: "wonder"
+    camera:
+      move: "push_in"
+      intensity: "medium"
+    atmosphere: ["sparkles"]
+    ambience: "meadow"
+    composition_notes: "Medium close-up; the seed's glow lights Pip's face from below."
+    lines:
+      - speaker: "pip"
+        text: "Oh! It's glowing! This will be the brightest thing in the whole meadow!"
+        delivery: "excited"
+        on_screen: true
+  - id: "s03"
+    location: "meadow-edge"
+    time_of_day: "dusk"
+    characters:
+      - id: "pip"
+        position: "center"
+        pose: "hugging the seed close to his chest"
+        expression: "startled, looking upward"
+        facing: "left"
+    props: ["lantern-seed"]
+    action: "A small voice calls from somewhere above Pip."
+    emotion: "surprise"
+    camera:
+      move: "tilt_up"
+      intensity: "low"
+    atmosphere: ["fireflies"]
+    ambience: "meadow"
+    composition_notes: "Pip in the lower half; the upper half is empty fence and sky, hinting at the unseen bird."
+    lines:
+      - speaker: "wren"
+        text: "Pip! Old Bramble's lamp has gone out, and he can't find his way home!"
+        delivery: "worried"
+        on_screen: false
+        pause_after: 0.5
+  - id: "s04"
+    location: "meadow-edge"
+    time_of_day: "night"
+    characters:
+      - id: "pip"
+        position: "center"
+        pose: "looking down at the seed in his paws"
+        expression: "torn, thoughtful"
+        facing: "camera"
+    props: ["lantern-seed"]
+    action: "Pip hesitates, holding the only light he has."
+    emotion: "inner conflict"
+    camera:
+      move: "static"
+      intensity: "low"
+    atmosphere: []
+    ambience: "night_crickets"
+    composition_notes: "Close-up; everything dark except the amber glow on Pip's face."
+    lines:
+      - speaker: "narrator"
+        text: "Pip looked at his glowing seed. If he gave it away, he would have no light at all."
+        delivery: "gentle"
+        pause_after: 1.2
+  - id: "s05"
+    location: "bramble-burrow"
+    time_of_day: "night"
+    characters:
+      - id: "pip"
+        position: "left"
+        pose: "holding the glowing seed out"
+        expression: "determined"
+        facing: "right"
+      - id: "bramble"
+        position: "right"
+        pose: "leaning on a walking stick"
+        expression: "relieved and grateful"
+        facing: "left"
+    props: ["lantern-seed"]
+    action: "Pip lights the path for Old Bramble to his burrow door."
+    emotion: "kindness"
+    camera:
+      move: "pan_right"
+      intensity: "low"
+    atmosphere: ["fireflies", "mist"]
+    ambience: "forest_night"
+    composition_notes: "Two-shot; the seed's glow bridges the space between Pip and Bramble."
+    lines:
+      - speaker: "bramble"
+        text: "Thank you, little one. I thought I'd be lost until morning."
+        delivery: "warm"
+        on_screen: true
+        pause_after: 0.4
+      - speaker: "pip"
+        text: "You can keep the light, Bramble."
+        delivery: "gentle"
+        on_screen: true
+  - id: "s06"
+    location: "bramble-burrow"
+    time_of_day: "night"
+    characters:
+      - id: "pip"
+        position: "center_left"
+        pose: "sitting by the warm burrow doorway"
+        expression: "content, soft smile"
+        facing: "right"
+      - id: "bramble"
+        position: "center_right"
+        pose: "sitting beside Pip, lamp relit"
+        expression: "kind smile"
+        facing: "left"
+      - id: "wren"
+        position: "background"
+        pose: "perched on a root above the door"
+        expression: "cheerful"
+        facing: "camera"
+    props: ["lantern-seed"]
+    action: "Bramble relights his lamp with the seed, and the three friends share its glow."
+    emotion: "warmth and belonging"
+    camera:
+      move: "pull_out"
+      intensity: "low"
+    atmosphere: ["firelight_flicker", "fireflies"]
+    ambience: "forest_night"
+    composition_notes: "Wide, warm final frame; the burrow glows and the dark meadow stretches behind."
+    lines:
+      - speaker: "narrator"
+        text: "Bramble's lamp glowed brighter than ever, and there was more than enough light for all three friends."
+        delivery: "warm"
+        pause_after: 0.6
+      - speaker: "narrator"
+        text: "Because a light that is shared never grows smaller."
+        delivery: "gentle"
+        pause_after: 1.5
+publishing:
+  title: "The Lantern Seed | A Gentle Story About Sharing"
+  description: "Little Pip the hedgehog finds a glowing lantern seed and must decide whether to keep it or help a friend find his way home. A calm, illustrated bedtime-style story for all ages about kindness and sharing."
+  tags: ["story for all ages", "kindness story", "sharing", "animated storybook", "hedgehog"]
+  made_for_kids: false
+  thumbnail:
+    hook: "KEEP IT OR SHARE IT?"
+    concept: "Pip holding the glowing seed, Old Bramble lost in the dark behind him."

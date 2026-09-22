@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://inspiring-stories.local/schemas/story-series.v1.schema.json",
+  "title": "story-series/v1 - series bible",
+  "description": "Structure only. Rules that depend on kind (narrator vs character), the voice allowlist, file locations and uniqueness are enforced by the series lint.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "title", "content_rating", "style", "characters"],
+  "properties": {
+    "schema": {"const": "story-series/v1"},
+    "id": {"$ref": "#/$defs/kebabId"},
+    "title": {"$ref": "#/$defs/text"},
+    "content_rating": {"const": "all-ages"},
+    "style": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "avoid", "references"],
+      "properties": {
+        "description": {"$ref": "#/$defs/text"},
+        "avoid": {"type": "array", "items": {"$ref": "#/$defs/text"}},
+        "references": {"type": "array", "minItems": 1, "maxItems": 3, "uniqueItems": true, "items": {"$ref": "#/$defs/relPath"}}
+      }
+    },
+    "characters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/character"}
+    }
+  },
+  "$defs": {
+    "kebabId": {"type": "string", "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"},
+    "text": {"type": "string", "pattern": "\\S"},
+    "relPath": {"type": "string", "pattern": "^[A-Za-z0-9._/-]+$"},
+    "voice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kokoro", "speed"],
+      "properties": {
+        "kokoro": {"type": "string"},
+        "speed": {"type": "number", "minimum": 0.5, "maximum": 2.0}
+      }
+    },
+    "character": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "name", "voice"],
+      "properties": {
+        "id": {"$ref": "#/$defs/kebabId"},
+        "kind": {"enum": ["narrator", "character"]},
+        "name": {"$ref": "#/$defs/text"},
+        "description": {"$ref": "#/$defs/text"},
+        "outfit": {"$ref": "#/$defs/text"},
+        "features": {"type": "array", "items": {"$ref": "#/$defs/text"}},
+        "references": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["front", "three_quarter", "side"],
+          "properties": {
+            "front": {"$ref": "#/$defs/relPath"},
+            "three_quarter": {"$ref": "#/$defs/relPath"},
+            "side": {"$ref": "#/$defs/relPath"}
+          }
+        },
+        "voice": {"$ref": "#/$defs/voice"}
+      }
+    }
+  }
+}

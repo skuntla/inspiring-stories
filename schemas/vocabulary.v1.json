@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://inspiring-stories.local/schemas/vocabulary.v1.json",
+  "title": "Closed vocabulary shared by story-series/v1 and story-episode/v1",
+  "description": "Single source for every enum. Schemas $ref these definitions; the ChatGPT brief and validator messages read allowed values from here. Growing a list is an additive change made through an OpenSpec change.",
+  "$defs": {
+    "cameraMove": {
+      "description": "How the virtual camera moves over the still image.",
+      "enum": ["static", "push_in", "pull_out", "pan_left", "pan_right", "tilt_up", "tilt_down"]
+    },
+    "cameraIntensity": {
+      "description": "How strong the camera move is.",
+      "enum": ["low", "medium", "high"]
+    },
+    "atmosphere": {
+      "description": "Overlay effect drawn on top of the shot.",
+      "enum": ["rain", "snow", "fog", "mist", "dust_motes", "fireflies", "embers", "firelight_flicker", "falling_leaves", "sun_rays", "sparkles", "wind"]
+    },
+    "ambience": {
+      "description": "Background sound bed for the shot.",
+      "enum": ["none", "forest_day", "forest_night", "meadow", "village", "river", "rain", "ocean_shore", "fireplace_indoor", "night_crickets", "cave", "wind"]
+    },
+    "delivery": {
+      "description": "Intended emotional delivery of a spoken line.",
+      "enum": ["neutral", "warm", "gentle", "cheerful", "excited", "curious", "surprised", "sad", "worried", "scared", "angry", "whisper", "proud", "thoughtful"]
+    },
+    "position": {
+      "description": "Where a character stands in the frame.",
+      "enum": ["left", "center_left", "center", "center_right", "right", "background"]
+    },
+    "facing": {
+      "description": "Which way a character faces.",
+      "enum": ["left", "right", "camera", "away"]
+    },
+    "timeOfDay": {
+      "description": "Lighting time of day for the shot.",
+      "enum": ["dawn", "morning", "midday", "afternoon", "dusk", "night"]
+    }
+  }
+}
