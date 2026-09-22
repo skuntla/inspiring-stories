@@ -42,7 +42,7 @@
 
 ## 7. Verification
 
-- [ ] 7.1 End-to-end ChatGPT round trip: install `series/willow-meadow/chatgpt-project-instructions.md` as ChatGPT Project instructions (optionally upload `chatgpt-reference.md` as a Project file), then (a) brainstorm and confirm you get prose and a storyboard with no YAML; (b) say "Lock this story" while the story still needs a character who is not in the cast and confirm ChatGPT asks only that question; also confirm it uses the series default `made_for_kids: false` without asking; (c) answer it and confirm one YAML block comes back; paste it into a `story new willow-meadow ...` episode and run `story validate`; (d) request a revision and relock, and confirm a complete replacement manifest that validates. Record the results in the change folder as `notes.md`
+- [x] 7.1 End-to-end ChatGPT round trip: install `series/willow-meadow/chatgpt-project-instructions.md` as ChatGPT Project instructions (optionally upload `chatgpt-reference.md` as a Project file), then (a) brainstorm and confirm you get prose and a storyboard with no YAML; (b) say "Lock this story" while the story still needs a character who is not in the cast and confirm ChatGPT asks only that question; also confirm it uses the series default `made_for_kids: false` without asking; (c) answer it and confirm one YAML block comes back; paste it into a `story new willow-meadow ...` episode and run `story validate`; (d) request a revision and relock, and confirm a complete replacement manifest that validates. Record the results in the change folder as `notes.md`
 - [x] 7.2 Run the full test suite and `openspec validate establish-episode-contract --strict`; verify both pass
 
 ## Notes
