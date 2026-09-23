@@ -32,3 +32,9 @@ export const wrap = (text: string, maxChars: number): string[] => {
 	}
 	return lines;
 };
+
+/** When the first word matching `re` starts (seconds), or undefined. */
+export const wordAt = (words: SpokenWord[] = [], re: RegExp) => words.find((w) => re.test(w.text))?.from;
+
+/** When every word matching `re` starts (seconds). */
+export const wordsAt = (words: SpokenWord[] = [], re: RegExp) => words.filter((w) => re.test(w.text)).map((w) => w.from);

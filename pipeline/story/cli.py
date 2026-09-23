@@ -12,7 +12,7 @@ from datetime import date
 from pathlib import Path
 
 from .brief import (EXAMPLE_FILE, PROJECT_INSTRUCTIONS_MAX, PROJECT_INSTRUCTIONS_TARGET,
-                    render_brief, render_project_instructions)
+                    render_brief, render_project_instructions, render_story_prompt)
 from .lint_episode import EPISODE_FILE, check_episode
 from .lint_series import SERIES_FILE, check_series
 from . import approvals, render, timeline, voice
@@ -158,6 +158,26 @@ def cmd_render(args) -> int:
     return EXIT_OK
 
 
+def cmd_thumbnail(args) -> int:
+    ctx = _prepared(args)
+    if ctx is None:
+        return EXIT_ERRORS
+    plan, root = ctx["plan"], ctx["root"]
+    if plan.thumbnail is None:
+        where = f"render/src/episodes/{ctx['timeline']['episode']}/{render.THUMBNAIL_FILE}"
+        print(f"error: no thumbnail spec; write {where} (see render/DIRECTING.md, Thumbnails)", file=sys.stderr)
+        return EXIT_ERRORS
+    if render.thumbnail_variants(plan.thumbnail) == 0:
+        print(f"error: {rel(plan.thumbnail, root)} declares no `headlines: [...]` on one line", file=sys.stderr)
+        return EXIT_ERRORS
+    print(f"rendering {render.thumbnail_variants(plan.thumbnail)} thumbnail variant(s) …", file=sys.stderr)
+    for out in render.run_thumbnails(root, ctx["target"], plan):
+        size = out.stat().st_size
+        note = "" if size <= render.THUMBNAIL_MAX_BYTES else "  (over YouTube's 2 MB limit)"
+        print(f"wrote {rel(out, root)} ({size // 1024} KB){note}")
+    return EXIT_OK
+
+
 def cmd_approve(args) -> int:
     if args.checkpoint not in approvals.CHECKPOINTS:
         raise UsageError(f"unknown checkpoint '{args.checkpoint}'; supported: {', '.join(approvals.CHECKPOINTS)}")
@@ -275,7 +295,9 @@ def cmd_brief(args) -> int:
         print("error: the brief was not written because the series or its example has errors:", file=sys.stderr)
         _emit(result, False, sys.stderr)
         return EXIT_ERRORS
-    if args.full:
+    if args.story:
+        text = render_story_prompt(series.bible)
+    elif args.full:
         text = render_brief(series.bible, series_dir, root)
     else:
         text = render_project_instructions(series.bible, root)
@@ -316,10 +338,16 @@ def build_parser() -> argparse.ArgumentParser:
 
     b = sub.add_parser("brief", help="generate the ChatGPT Project instructions for a series")
     b.add_argument("series")
-    b.add_argument("--full", action="store_true",
-                   help="render the full reference contract instead of the compact Project instructions")
+    kind = b.add_mutually_exclusive_group()
+    kind.add_argument("--story", action="store_true",
+                      help="render the story-only prompt (ChatGPT writes plain prose; Claude directs it)")
+    kind.add_argument("--full", action="store_true",
+                      help="render the full reference contract instead of the compact Project instructions")
     b.add_argument("--out", help="write to this file instead of stdout")
     b.set_defaults(func=cmd_brief)
+    th = sub.add_parser("thumbnail", help="render the episode's YouTube thumbnail variants (1280x720 JPEG)")
+    th.add_argument("path")
+    th.set_defaults(func=cmd_thumbnail)
     vo = sub.add_parser("voice", help="synthesize every line of an episode with Kokoro")
     vo.add_argument("path")
     vo.add_argument("--force", action="store_true", help="regenerate every line, ignoring the cache")

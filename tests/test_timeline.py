@@ -222,3 +222,13 @@ def test_walk_energy_follows_mood():
     brisk = walk_travel(960, "right", "walk", 90, 1.0, "happy")
     calm = walk_travel(960, "right", "walk", 90, 1.0, "calm")
     assert brisk["speed"] > WALK_SPEED > calm["speed"]
+
+
+def test_limiter_holds_true_peak_between_samples():
+    """A tone near Nyquist overshoots between samples; the limiter must catch that, not only sample peaks."""
+    import numpy as np
+    from story.timeline import SAMPLE_RATE, _limit, _true_peaks
+    t = np.arange(SAMPLE_RATE) / SAMPLE_RATE
+    x = (0.9 * np.sin(2 * np.pi * (SAMPLE_RATE / 4 - 10) * t + 0.7)).astype(np.float32)
+    y = _limit(x * 2.0, -3.0)
+    assert 20 * np.log10(_true_peaks(y).max()) <= -2.5

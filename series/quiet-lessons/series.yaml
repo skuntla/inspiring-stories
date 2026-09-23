@@ -47,6 +47,54 @@ characters:
     voice:
       kokoro: "bm_george"
       speed: 0.85
+  - id: "kai"
+    kind: "character"
+    name: "Kai"
+    description: "A sincere young monk in his early 20s with light brown skin and a clean-shaven head."
+    outfit: "A saffron robe with a maroon sash over one shoulder and simple sandals."
+    features:
+      - "a clean-shaven head"
+      - "a saffron robe with a maroon sash"
+      - "an earnest, slightly impatient face"
+    voice:
+      kokoro: "am_liam"
+      speed: 0.95
+  - id: "master-ren"
+    kind: "character"
+    name: "Master Ren"
+    description: "An old monk with deep brown skin, a shaven head, a short white beard and white eyebrows; calm and unhurried."
+    outfit: "A deep maroon robe with a saffron sash over one shoulder and simple sandals."
+    features:
+      - "a short white beard"
+      - "a deep maroon robe"
+      - "a gentle, knowing smile"
+    voice:
+      kokoro: "bm_lewis"
+      speed: 0.9
+  - id: "master-kai"
+    kind: "character"
+    name: "Master Kai"
+    description: "Kai years later, now a teacher: light brown skin, a clean-shaven head, a calm face with faint lines."
+    outfit: "A deep maroon teacher's robe with a saffron sash over one shoulder and simple sandals."
+    features:
+      - "a clean-shaven head"
+      - "a deep maroon teacher's robe"
+      - "a calm, knowing smile"
+    voice:
+      kokoro: "am_liam"
+      speed: 0.9
+  - id: "novice"
+    kind: "character"
+    name: "The Novice"
+    description: "A young novice monk of about fifteen with warm tan skin, a clean-shaven head and eager, earnest eyes."
+    outfit: "A bright yellow-orange robe with a red sash over one shoulder and simple sandals."
+    features:
+      - "a clean-shaven head"
+      - "a bright yellow-orange robe"
+      - "eager, earnest eyes"
+    voice:
+      kokoro: "am_puck"
+      speed: 1.0
 # Recurring places. Descriptions carry no time of day or weather: shots add those.
 locations:
   - id: "arjun-room"
@@ -55,3 +103,5 @@ locations:
     description: "A quiet neighbourhood park with a wooden bench, tall trees, a lamp post and a bed of young plants beside the path."
   - id: "morning-lane"
     description: "A narrow residential lane with low painted houses, a neem tree, a garden wall and wires overhead."
+  - id: "monastery-courtyard"
+    description: "A stone courtyard of an old mountain monastery overlooking a valley: a monastery hall with a tiered roof, strings of prayer flags, a pine tree, a cloth flag on a pole and a small red archery target far across the open space."

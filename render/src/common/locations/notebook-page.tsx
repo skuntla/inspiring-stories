@@ -36,7 +36,7 @@ const progress = (t: number, from: number, to: number) => Math.max(0, Math.min(1
 
 const Background: React.FC<DrawContext> = ({t, words}) => {
 	const LINES = React.useMemo(() => rowsFor(words), [words]);
-	const gap = LINES.length > 5 ? 90 : 130;
+	const gap = LINES.length > 4 ? Math.min(130, 500 / (LINES.length - 1)) : 130; // keep every row on the page
 	const active = LINES.findIndex((l) => t >= l.from && t < l.to + 0.2);
 	const pen = active >= 0 ? [X0 + WIDTH * progress(t, LINES[active].from, LINES[active].to) * 0.9, 430 + active * gap] : [1560, 760];
 	return (

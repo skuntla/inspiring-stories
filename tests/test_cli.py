@@ -129,6 +129,19 @@ def test_brief_writes_file(project, capsys, tmp_path):
     assert code == 0 and target.read_text().startswith("# ChatGPT story contract, full reference")
 
 
+def test_story_prompt_asks_for_plain_prose_and_lists_the_cast(project, capsys):
+    code, out, _ = project.run("brief", SERIES_ID, "--story", capsys=capsys)
+    assert code == 0
+    assert "plain\nprose" in out and "No YAML" in out
+    assert "- Old Bramble:" in out and "narrator" not in out.lower().split("## characters")[-1]
+    assert "schema:" not in out  # no manifest, no example
+
+
+def test_story_and_full_are_exclusive(project, capsys):
+    code, _, _ = project.run("brief", SERIES_ID, "--story", "--full", capsys=capsys)
+    assert code == 2
+
+
 def test_brief_refuses_invalid_bible(project, capsys, tmp_path):
     doc = project.series()
     doc["characters"] = [c for c in doc["characters"] if c["kind"] != "narrator"]

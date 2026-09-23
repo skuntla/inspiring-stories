@@ -3,7 +3,9 @@
 The `hopeful` style is a soft pad, a low bass and a gentle piano arpeggio over I–V–vi–IV in D major.
 It follows the story: each shot's energy comes from its characters' moods (sparse and quiet when
 they are sad or worried, fuller when they are happy), the final shot resolves on the home chord,
-and the whole bed ducks while anyone speaks. Deterministic: the same episode gives the same audio.
+and the whole bed ducks while anyone speaks. When an episode opens with a hook (a few seconds before
+a `title-card` shot), the music waits and starts on the title card. Deterministic: the same episode
+gives the same audio.
 """
 from __future__ import annotations
 
@@ -22,6 +24,8 @@ ENERGY = {"sad": 0.0, "tired": 0.0, "worried": 0.0, "scared": 0.0, "angry": 0.0,
 LEVEL_DB = -15.0      # the bed, between lines, relative to the voices' loudness
 DUCK_DB = -7.0        # extra dip while someone speaks
 FADE_IN, FADE_OUT = 1.5, 3.0
+TITLE_CARD = "title-card"  # the shared location a hook cuts to; the music starts there
+HOOK_SHOTS = 3             # a title card among the first shots marks the end of a hook
 
 
 def _hz(midi: float) -> float:
@@ -38,6 +42,14 @@ def shot_energy(timeline: dict) -> list[float]:
     if out:
         out[-1] = 2.0  # the last shot lifts
     return out
+
+
+def music_start(timeline: dict) -> float:
+    """Seconds into the episode where the music begins: the title card after a hook, else 0."""
+    for shot in timeline["shots"][:HOOK_SHOTS]:
+        if shot.get("location") == TITLE_CARD:
+            return shot["from"] / timeline["fps"]
+    return 0.0
 
 
 def chord_at(t: float, final_from: float) -> tuple[int, tuple[int, ...]]:
@@ -104,20 +116,21 @@ def compose(timeline: dict, voice, sr: int, style: str = "hopeful"):
     seed = zlib.crc32(timeline["episode"].encode())
     rnd = random.Random(seed)
     seconds = n / sr
-    final_from = timeline["shots"][-1]["from"] / timeline["fps"]
+    start = music_start(timeline)  # bars count from here, so the first chord lands on the title card
+    final_from = timeline["shots"][-1]["from"] / timeline["fps"] - start
     energy = _energy_curve(timeline, n, sr, np)
     t = np.arange(n) / sr
 
     # pad: chord tones, two slightly detuned voices each, cross-faded between chord changes
     pad = np.zeros(n, dtype=np.float32)
-    starts = sorted({*np.arange(0, seconds, CHORD_BARS * BAR).tolist(), final_from})
+    starts = sorted({*np.arange(start, seconds, CHORD_BARS * BAR).tolist(), final_from + start})
     starts = [s for s in starts if s < seconds]
     for i, s in enumerate(starts):
         e = starts[i + 1] if i + 1 < len(starts) else seconds
         a, b = max(0, int((s - 1.2) * sr)), min(n, int((e + 1.2) * sr))
         seg = t[a:b]
         env = np.clip(np.minimum(seg - (s - 1.2), (e + 1.2) - seg) / 2.4, 0, 1)
-        root, shape = chord_at(s + 0.01, final_from)
+        root, shape = chord_at(s - start + 0.01, final_from)
         for iv in (*shape, 12):
             f = _hz(TONIC + root % 12 + iv)
             for d in (-0.0012, 0.0012):
@@ -130,11 +143,11 @@ def compose(timeline: dict, voice, sr: int, style: str = "hopeful"):
     # arpeggio shapes: (chord degree, octave above the pad) for each beat of a bar
     patterns = [((0, 1), (1, 1), (2, 1), (1, 1)), ((0, 1), (2, 1), (1, 1), (0, 2)), ((2, 0), (0, 1), (1, 1), (2, 1))]
     beat, pattern = 0, patterns[0]
-    while beat * BEAT < seconds - 0.5:
-        at = beat * BEAT
+    while start + beat * BEAT < seconds - 0.5:
+        at = start + beat * BEAT
         i = int(at * sr)
         e = float(energy[min(i, n - 1)])
-        root, shape = chord_at(at + 0.01, final_from)
+        root, shape = chord_at(at - start + 0.01, final_from)
         pos = beat % 4
         if pos == 0:
             pattern = rnd.choice(patterns)
@@ -154,7 +167,7 @@ def compose(timeline: dict, voice, sr: int, style: str = "hopeful"):
 
     music = pad * (0.9 - 0.15 * energy / 2) + bass * 0.5 + piano * 0.6
     music = _reverb(music, sr, np, seed)
-    fade = np.minimum(1.0, np.minimum(t / FADE_IN, (seconds - t) / FADE_OUT)).clip(0, 1)
+    fade = np.minimum(1.0, np.minimum((t - start) / (0.6 if start else FADE_IN), (seconds - t) / FADE_OUT)).clip(0, 1)
     music *= fade
 
     # level against the voices, then duck under them

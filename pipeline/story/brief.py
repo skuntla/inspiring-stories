@@ -18,8 +18,9 @@ from .schema import load_vocabulary
 
 EXAMPLE_FILE = "example-episode.yaml"
 PROJECT_INSTRUCTIONS_FILE = "chatgpt-project-instructions.md"
+STORY_PROMPT_FILE = "chatgpt-story-prompt.md"
 REFERENCE_FILE = "chatgpt-reference.md"
-SHOT_MAX = 30
+SHOT_MAX = 60
 # ChatGPT's Project-instructions field accepts at most 8,000 characters.
 PROJECT_INSTRUCTIONS_MAX = 8000
 PROJECT_INSTRUCTIONS_TARGET = 7500
@@ -123,6 +124,17 @@ def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
         made_for_kids_default_note=mfk_note,
         made_for_kids_comment=mfk_comment,
     )
+
+
+def render_story_prompt(bible: dict) -> str:
+    """The story-only ChatGPT prompt: the producer's stories come back as plain prose, never YAML."""
+    ctx = _common(bible)
+    ctx.pop("default_mfk")
+    cast_lines = "\n".join(
+        f"- {' '.join(c['name'].split())}: {' '.join(c.get('description', '').split())}"
+        for c in bible["characters"] if c["kind"] != "narrator"
+    ) or "- (none yet)"
+    return _template("story-prompt.md.tmpl").substitute(ctx, cast_lines=cast_lines)
 
 
 def render_project_instructions(bible: dict, root: Path) -> str:

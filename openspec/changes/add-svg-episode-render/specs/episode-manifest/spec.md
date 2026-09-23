@@ -3,7 +3,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Shots
-The manifest SHALL contain an ordered list of between 1 and 30 shots whose ids are `s01`, `s02`, … in sequence with no gaps. Each shot SHALL declare a location, time of day, the characters visible (each with position, facing, `stance` and `mood` from the closed vocabulary, free-text pose and expression as extra direction, and each a member of the cast), an action description, an emotion, a camera intent (move and intensity), zero or more atmosphere effects, an ambience key, composition notes, and at least one line. Shot counts outside 4–16 SHALL produce a warning, not an error, because story length varies.
+The manifest SHALL contain an ordered list of between 1 and 60 shots whose ids are `s01`, `s02`, … in sequence with no gaps. Each shot SHALL declare a location, time of day, the characters visible (each with position, facing, `stance` and `mood` from the closed vocabulary, free-text pose and expression as extra direction, and each a member of the cast), an action description, an emotion, a camera intent (move and intensity), zero or more atmosphere effects, an ambience key, composition notes, and at least one line. Shot counts outside 4–40 SHALL produce a warning, not an error, because a story takes the length it needs.
 
 #### Scenario: Gap in shot ids
 - **WHEN** shots are `s01`, `s02`, `s04`
@@ -14,7 +14,7 @@ The manifest SHALL contain an ordered list of between 1 and 30 shots whose ids a
 - **THEN** validation reports an error at that shot's path
 
 #### Scenario: Very long story
-- **WHEN** an episode has 20 shots
+- **WHEN** an episode has 45 shots
 - **THEN** validation succeeds with a shot-count warning
 
 #### Scenario: Missing rig state

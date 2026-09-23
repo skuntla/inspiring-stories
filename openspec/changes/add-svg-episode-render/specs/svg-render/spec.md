@@ -33,6 +33,17 @@ Generic locations and props (close-ups, inserts, text cards) SHALL live in `rend
 - **WHEN** `story brief` renders either series
 - **THEN** the output lists every shared location id with its description
 
+### Requirement: Thumbnails
+An episode MAY describe its YouTube thumbnail in `render/src/episodes/<episode>/thumbnail.tsx` using the series' own components, with one or more headline variants. `story thumbnail <episode>` SHALL render one 1280×720 JPEG per variant to `build/thumbnail-<n>.jpg` and report each file's size against YouTube's 2 MB limit. The thumbnail SHALL NOT be an approval input.
+
+#### Scenario: Thumbnail variants
+- **WHEN** an episode's thumbnail spec declares three headlines and `story thumbnail` is run
+- **THEN** `build/thumbnail-1.jpg`, `-2.jpg` and `-3.jpg` are written at 1280×720
+
+#### Scenario: No thumbnail spec
+- **WHEN** the episode has no `thumbnail.tsx`
+- **THEN** nothing is rendered, the error names the file to write, and the exit code is 1
+
 ### Requirement: Missing-component check
 Before rendering, `story render` SHALL verify that every character, location and prop the episode uses has a component. It SHALL also verify that every stance and mood used is supported by that character's rig. When anything is missing, it SHALL render nothing, list each missing item with the file path where it belongs, and exit with code 1.
 

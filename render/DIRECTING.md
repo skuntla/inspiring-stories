@@ -6,9 +6,11 @@ series. When a lesson is learned on an episode, it goes here, not only into that
 
 ## Workflow
 
-1. **Story** — the producer locks a manifest with ChatGPT (`series/<series>/chatgpt-project-instructions.md`).
-2. **Direct** — `story validate episodes/<id>`, then improve the manifest for the screen: shot sizes,
-   inserts, acting, pacing (below). Keep the story and its words; change how it is shown.
+1. **Story** — the producer pastes a plain-text story (written with ChatGPT using
+   `series/<series>/chatgpt-story-prompt.md`). No YAML comes with it.
+2. **Direct** — Claude writes `episodes/<id>/episode.yaml` from the story: the hook, shots, framing,
+   acting, inserts and pacing (below). Keep the story's meaning and its best words; change how it is
+   shown. Then `story validate episodes/<id>`.
 3. **Components** — `story render episodes/<id> --check` names every missing rig, location and prop with
    the path to write. Reuse before drawing (see *Where components live*).
 4. **Voice and timeline** — `story voice`, then `story timeline` (prints the length; it also mixes music).
@@ -25,12 +27,27 @@ series. When a lesson is learned on an episode, it goes here, not only into that
 
 ## Pacing
 
-- Aim for **70–90 s** for a short motivational story; every shot must earn its time.
-- A shot lasts its lines plus pauses, never less than 2.5 s. Long narration makes long static shots:
-  split a paragraph across shots or cut words rather than holding one picture.
+- **Length follows the story.** There is no target duration: keep every beat that makes the story work
+  (the turning point, the confession, the callback ending) and cut only what repeats or explains what
+  the pictures already show. A 90-second parable and a 6-minute one are both fine.
+- What must not be long is a **shot**: every shot earns its time. A shot lasts its lines plus pauses,
+  never less than 2.5 s. Long narration makes long static shots: split a paragraph across shots
+  (a wide, then a close, then an insert) rather than holding one picture.
 - `pause_after` is the breath after a line: 0.3–0.6 s normally, about 1 s after a turning point
   (a whisper, a realization), up to 1.2 s at the very end.
 - The opening line should land in the first 2 s; don't open on scenery alone.
+
+## The hook
+
+Every episode opens with a hook of about 5–9 seconds, then a `title-card` shot where the narrator
+says the title (the music starts on it).
+
+- **The viewer's question**: turn the hero's opening feeling into a "you" question
+  ("Have you ever wanted something so deeply… and watched life push it the other way?").
+- **The central image, unresolved**: show the story's key object or moment without its answer, using a
+  ready-made insert (the arrow blown off the target, the compass needle spinning).
+- **Pay it off**: the ending shows the same image resolved (the arrow lands close, the needle settles).
+  If the story has its own opening question, fold it into the hook rather than narrating it after.
 
 ## Shot grammar
 
@@ -45,6 +62,11 @@ series. When a lesson is learned on an episode, it goes here, not only into that
   `showsText: true`, so captions are hidden there and the words are never shown twice.
 - Mirror the opening at the end when the story is about change: same place, same action, a different
   mood (a brisk happy walk at the start, a slower calm walk at the end).
+- **Reaction shots**: while one character says something hard, hold on the listener's face and let the
+  speaker be off-screen (`on_screen: false`). A confession plays best as one slow push-in on the
+  speaker's face with the questions coming from off-screen.
+- **Callbacks**: when a story ends by repeating its beginning with roles swapped (the student becomes
+  the teacher), reuse the same staging and the same words ("Bring your bow.").
 - One idea per shot. If a shot's action needs "and then", it is two shots.
 
 ## Acting
@@ -60,6 +82,8 @@ component author and are **not** drawn by themselves. Choose moods that move:
 | surprised | lean back, eyes wide |
 | happy, proud | chest up, open face |
 | calm | settled, slow visible breathing, soft eyes |
+| angry or worried + `aim` | bow drawn, hands trembling |
+| calm + `aim` | bow drawn, still |
 
 - Change the mood across shots to show the arc (worried → sad → calm → happy).
 - Hands never cover the face or mouth; check any new gesture on the acting sheet (`src/dev/ActingSheet.tsx`).
@@ -85,6 +109,22 @@ episode still lines up.
 Blinks, breathing and mouths are automatic. Locations should add one or two slow motions driven by `t`:
 a ticking clock, lamp flicker, steam, papers stirring, light spreading at morning, notification
 bubbles popping when a scene is about overload. Randomness only through `rand(i, salt)`.
+
+## Thumbnails and titles
+
+Write `render/src/episodes/<episode>/thumbnail.tsx` (a `ThumbnailSpec`, see `src/thumbnail/Thumbnail.tsx`)
+and run `story thumbnail episodes/<id>`: one 1280×720 JPEG per headline in `build/thumbnail-<n>.jpg`,
+for YouTube's Test & Compare.
+
+- **The problem, not the plot**: the headline names the viewer's problem in about five words
+  ("WHY YOU KEEP *MISSING* YOUR TARGET"); `*word*` turns yellow. Give two or three variants.
+- **Two faces and the central image**: the hero's face at the height of the problem (frustrated,
+  worried) and the helper's (smiling, pointing with `reach`), large and cropped at the chest, with the
+  story's central image between them in its unresolved state (the arrow bent away by the wind).
+- **The same characters as the video**, never a regenerated look-alike: viewers click on faces and
+  expect to meet them.
+- **The video title** follows the headline, then the story's name:
+  *Why You Keep Missing Your Target | The Arrow and the Wind*.
 
 ## Captions and music
 

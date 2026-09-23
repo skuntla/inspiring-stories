@@ -120,7 +120,8 @@
         "hold",
         "hug",
         "fly",
-        "perch"
+        "perch",
+        "aim"
       ]
     },
     "mood": {

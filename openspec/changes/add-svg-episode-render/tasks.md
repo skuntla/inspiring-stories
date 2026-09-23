@@ -65,3 +65,16 @@
 - [x] 10.2 Components receive the shot's spoken words (`kit/spoken.ts`: sentences, lastWordAt, wrap); move the Quiet Compass close-ups and cards to the shared tier and time them from the voice instead of fixed seconds
 - [x] 10.3 Write `render/DIRECTING.md` (workflow, pacing, shot grammar, acting, walking, timing, review checklist), update `render/STYLE.md`, and add a root `CLAUDE.md` pointing to both
 
+## 11. Plain-story workflow, hooks, and The Arrow and the Wind
+
+- [x] 11.1 Story-only ChatGPT prompt (`story brief <series> --story`, `series/<series>/chatgpt-story-prompt.md`); retire the committed YAML-mode Project instructions and references; directing guide: Claude writes the manifest from a plain story
+- [x] 11.2 Hooks: a `title-card` shared location, music starts on it; directing guide sections for the hook, reaction shots, callbacks and story-led length; shot limit raised to 60 (warning outside 4–40)
+- [x] 11.3 Human kit: robe, shaven head, `aim` stance with a drawn bow (trembling when tense); rigs Kai, Master Ren, Master Kai, the Novice; `monastery-courtyard`; shared archery inserts (`target-closeup`, `arrow-blown-off`, `arrow-lands-close`) timed to the voice
+- [x] 11.4 True-peak limiting: detect peaks on a 4× oversampled signal and interpolate the gain; verify with tests
+- [x] 11.5 "The Arrow and the Wind": direct the full story (36 shots, about 5:50), voice, timeline, preview; send it to the producer
+
+## 12. Thumbnails
+
+- [x] 12.1 `src/thumbnail/Thumbnail.tsx` (background, large characters, central image, two-colour headline) and a `Thumbnail` composition; the generated registry exports the episode's `thumbnail.tsx` spec; `story thumbnail` renders every headline variant as a 1280×720 JPEG; directing guide section; verify with tests
+- [x] 12.2 "The Arrow and the Wind": thumbnail with three headline variants; approve the preview and render the final
+

@@ -18,14 +18,14 @@ Resolves a locked episode plus its measured speech into one frame-exact descript
 - **THEN** the shot lasts 2.5 s
 
 ### Requirement: Mixed narration
-The timeline SHALL write `build/narration.wav`, the lines placed at their frames with the episode's background music (if any) beneath them, normalized to −14 LUFS integrated (±1 LU) with true peak at or below −1 dBTP.
+The timeline SHALL write `build/narration.wav`, the lines placed at their frames with the episode's background music (if any) beneath them, normalized to −14 LUFS integrated (±1 LU) with true peak at or below −1 dBTP, peaks between samples included.
 
 #### Scenario: Loudness
 - **WHEN** `build/narration.wav` is measured
 - **THEN** its integrated loudness is between −15 and −13 LUFS
 
 ### Requirement: Background music
-An episode MAY declare `music` (`none` or `hopeful`; default `none`). For `hopeful`, the timeline SHALL compose a light music bed in code, deterministically for the episode: sparser and quieter in shots whose characters are low (sad, tired, worried, scared, angry), fuller in happy or proud shots, with inserts keeping the previous shot's energy, and resolving on the home chord in the final shot. The bed SHALL sit well under the voices and dip further while anyone speaks.
+An episode MAY declare `music` (`none` or `hopeful`; default `none`). For `hopeful`, the timeline SHALL compose a light music bed in code, deterministically for the episode: sparser and quieter in shots whose characters are low (sad, tired, worried, scared, angry), fuller in happy or proud shots, with inserts keeping the previous shot's energy, and resolving on the home chord in the final shot. The bed SHALL sit well under the voices and dip further while anyone speaks. When one of the first three shots is a `title-card` (the episode opens with a hook), the music SHALL begin on that shot, with its first chord there.
 
 #### Scenario: No music by default
 - **WHEN** an episode declares no `music`
@@ -34,6 +34,10 @@ An episode MAY declare `music` (`none` or `hopeful`; default `none`). For `hopef
 #### Scenario: Ducking under speech
 - **WHEN** a line is spoken over the `hopeful` bed
 - **THEN** the music is quieter during the line than between lines
+
+#### Scenario: Music after the hook
+- **WHEN** an episode's second shot is a `title-card`
+- **THEN** the soundtrack before that shot contains only the voices, and the music begins on it
 
 #### Scenario: Same episode, same music
 - **WHEN** the timeline is built twice for the same episode

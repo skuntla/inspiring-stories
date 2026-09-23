@@ -244,15 +244,25 @@ def measure(path: Path) -> tuple[float, float]:
     return float(data["input_i"]), float(data["input_tp"])
 
 
+def _true_peaks(x, factor: int = 4):
+    """Per-sample peak including the overshoot between samples: the signal upsampled `factor` times."""
+    import numpy as np
+    n = len(x)
+    spectrum = np.fft.rfft(x)
+    up = np.fft.irfft(spectrum, n * factor) * factor
+    return np.abs(up).reshape(n, factor).max(axis=1)
+
+
 def _limit(x, ceiling_db: float):
-    """Look-ahead peak limiter: 2 ms blocks, 4 ms look-ahead, ~60 ms release."""
+    """Look-ahead true-peak limiter: 2 ms blocks, 4 ms look-ahead, ~60 ms release, gain interpolated
+    per sample (a stepped gain would itself create peaks between samples)."""
     import numpy as np
     ceiling = 10 ** (ceiling_db / 20)
     block = 48
     n = int(math.ceil(len(x) / block))
     padded = np.zeros(n * block, dtype=np.float32)
     padded[:len(x)] = x
-    peaks = np.abs(padded).reshape(n, block).max(axis=1)
+    peaks = _true_peaks(padded).reshape(n, block).max(axis=1)
     target = np.minimum(1.0, ceiling / np.maximum(peaks, 1e-9))
     ahead = np.minimum.reduce([np.roll(target, s) for s in (-2, -1, 0, 1, 2)])
     gain = np.empty(n, dtype=np.float32)
@@ -260,7 +270,9 @@ def _limit(x, ceiling_db: float):
     for i in range(n):
         g = min(ahead[i], g + release)
         gain[i] = g
-    return (padded * np.repeat(gain, block))[:len(x)]
+    centers = np.arange(n) * block + block / 2
+    smooth = np.interp(np.arange(n * block), centers, gain)
+    return (padded * smooth)[:len(x)].astype(np.float32)
 
 
 def mix(episode_dir: Path, timeline: dict, speech: dict) -> tuple[float, float]:

@@ -15,7 +15,7 @@ EPISODE_FILE = "episode.yaml"
 
 MAX_LINE_WORDS = 60
 MAX_FREE_TEXT_WORDS = 12
-SHOT_COUNT_SOFT = (4, 16)
+SHOT_COUNT_SOFT = (4, 40)  # a story takes the shots it needs; outside this, a note
 MAX_TAGS_CHARS = 500
 # Estimate constants: a calm all-ages pace. Informational only, never written anywhere.
 REFERENCE_WPM = 140

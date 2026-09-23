@@ -65,3 +65,15 @@ def test_sad_shots_are_sparser_than_happy_ones():
 def test_final_shot_resolves_home(t):
     assert music.chord_at(30.0, final_from=25.0) == music.PROGRESSION[0]
     assert music.chord_at(t, final_from=100.0) in music.PROGRESSION
+
+
+def test_music_waits_for_the_title_card_after_a_hook():
+    tl = _timeline([[], [], ["calm"]])
+    tl["shots"][1]["location"] = "title-card"
+    assert music.music_start(tl) == 6.0
+    m = music.compose(tl, _voice(18, []) + 1e-3, SR)
+    assert not m[: int(5.9 * SR)].any() and _rms(m[int(7 * SR):int(12 * SR)]) > 0
+
+
+def test_no_hook_means_music_from_the_start():
+    assert music.music_start(_timeline([["calm"], ["happy"]])) == 0.0

@@ -102,7 +102,7 @@ def test_each_error_rule(project, mutate, rule, path):
 def _unused_location(d): d["locations"].append({"id": "river-bank", "description": "A slow river."})
 def _unused_pronunciation(d): d["pronunciations"]["Zephyrine"] = "ZEF-ih-reen"
 def _many_shots(d):
-    for i in range(6, 20):
+    for i in range(6, 45):
         shot = copy.deepcopy(d["shots"][0])
         shot["id"] = f"s{i + 1:02d}"
         d["shots"].append(shot)

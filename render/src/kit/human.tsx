@@ -6,7 +6,7 @@ import {type WalkFrame, knee, walkCycle} from './walk';
 
 // A reusable "bean person": big round head, dot eyes, rounded torso, limb strokes and mitten hands,
 // drawn three-quarter facing right with the origin between the feet. Characters differ only by a
-// HumanSpec (colours, hair, beard, hat, apron, posture). Standing height is about 470 px.
+// HumanSpec (colours, hair, beard, hat, apron, robe, posture). Standing height is about 470 px.
 
 export type HumanSpec = {
 	skin: string;
@@ -23,6 +23,8 @@ export type HumanSpec = {
 	shoes: string;
 	apron?: string;
 	hat?: {brim: string; crown: string; band: string};
+	shaved?: string; // tone of a shaven scalp (no hair)
+	robe?: {sash: string}; // a long robe in the shirt colour (set pants to match) with a sash over one shoulder
 	stoop?: number; // degrees of forward lean when standing
 };
 
@@ -47,11 +49,11 @@ const FOREARM = 70;
 
 /** An arm: upper arm in the shirt colour, forearm in skin when sleeves are rolled.
  * The elbow comes from two-bone IK and always bends backward, like a real elbow. */
-const arm = (spec: HumanSpec, shoulder: P, hand: P) => {
+const arm = (spec: HumanSpec, shoulder: P, hand: P, fixedElbow?: P) => {
 	// A hand raised above the shoulder in front of the body (the chin gesture) keeps its elbow forward
 	// and low, so the forearm rises to the chin instead of crossing the mouth.
 	const raisedInFront = hand[1] < shoulder[1] && hand[0] > shoulder[0] + 20;
-	const elbow = knee(shoulder, hand, UPPER_ARM, FOREARM, raisedInFront ? 1 : -1);
+	const elbow = fixedElbow ?? knee(shoulder, hand, UPPER_ARM, FOREARM, raisedInFront ? 1 : -1);
 	return (
 		<g>
 			{limb(shoulder, elbow, 0, 28, spec.shirt)}
@@ -61,7 +63,7 @@ const arm = (spec: HumanSpec, shoulder: P, hand: P) => {
 	);
 };
 
-type Pose = {sit: boolean; lean: number; bow: number; hands: [P, P]};
+type Pose = {sit: boolean; lean: number; bow: number; hands: [P, P]; aim?: boolean};
 
 // Shoulders in the three-quarter view: the far one tucked behind the torso, the near one on the
 // side of the body (not its front edge), so a hanging arm falls down the middle of the side.
@@ -91,9 +93,17 @@ const CHIN_SIT: P = [50, -282];
 const TEMPLE_STAND: P = [-24, -446];
 const CHIN_STAND: P = [50, -340];
 
+// Archery: the far arm holds the bow out toward the target, the near hand draws the string back under
+// the chin with the elbow high behind. Tense archers tremble; calm ones hold still.
+const BOW_HAND: P = [118, -328];
+const DRAW_HAND: P = [30, -346];
+const DRAW_ELBOW: P = [-52, -334];
+
 const pose = (stance: string, mood: string, walk: WalkFrame | null): Pose => {
 	const low = mood === 'sad' || mood === 'tired';
 	switch (stance) {
+		case 'aim':
+			return {sit: false, lean: mood === 'angry' || mood === 'worried' ? 4 : -2, bow: -2, hands: [BOW_HAND, DRAW_HAND], aim: true};
 		case 'sit':
 			if (low) return {sit: true, lean: 16, bow: 14, hands: [[62, -150], [86, -142]]};
 			if (mood === 'worried') return {sit: true, lean: 10, bow: 8, hands: [[84, -152], TEMPLE_SIT]};
@@ -152,6 +162,46 @@ const Legs: React.FC<{spec: HumanSpec; sit: boolean; walk: WalkFrame | null}> = 
 	);
 };
 
+/** The lower robe: a long skirt over the legs that sways with the stride, or a lap drape when sitting. */
+const RobeSkirt: React.FC<{spec: HumanSpec; sit: boolean; walk: WalkFrame | null}> = ({spec, sit, walk}) => {
+	if (sit) {
+		return (
+			<g>
+				<path d="M-54,-150 C-58,-118 -50,-104 -36,-100 L118,-104 C130,-106 132,-124 120,-138 L60,-152 Z" fill={spec.shirt} {...ink(3)} />
+				<path d="M92,-110 L128,-106 C130,-80 128,-60 126,-44 L90,-48 Z" fill={spec.shirt} {...ink(3)} />
+			</g>
+		);
+	}
+	const s = walk ? (walk.feet[0][0] - walk.feet[1][0]) * 0.18 : 0;
+	const lift = walk ? walk.bob : 0;
+	return (
+		<g transform={`translate(0 ${lift})`}>
+			<path d={`M-54,-200 C-60,-140 -68,-92 ${-70 + s},-48 Q${7 + s},-36 ${84 + s},-48 C78,-92 70,-140 62,-200 Z`} fill={spec.shirt} {...ink(3)} />
+			<path d={`M4,-180 C2,-130 ${2 + s * 0.6},-90 ${4 + s},-50`} fill="none" stroke={spec.shirtShade} strokeWidth={4} strokeLinecap="round" />
+			<path d={`M36,-178 C40,-130 ${44 + s * 0.6},-92 ${50 + s},-52`} fill="none" stroke={spec.shirtShade} strokeWidth={3} strokeLinecap="round" opacity={0.7} />
+		</g>
+	);
+};
+
+/** A drawn bow with its string pulled to the draw hand and an arrow nocked. */
+const Bow: React.FC<{bowHand: P; drawHand: P}> = ({bowHand: [hx, hy], drawHand: [dx, dy]}) => {
+	const top: P = [hx - 34, hy - 150];
+	const bottom: P = [hx - 34, hy + 150];
+	const limbs = `M${top[0]},${top[1]} C${hx - 8},${hy - 124} ${hx + 8},${hy - 44} ${hx},${hy} C${hx + 8},${hy + 44} ${hx - 8},${hy + 124} ${bottom[0]},${bottom[1]}`;
+	return (
+		<g>
+			<path d={`M${top[0]},${top[1]} L${dx},${dy} L${bottom[0]},${bottom[1]}`} fill="none" stroke="#efe6d0" strokeWidth={2.5} />
+			<path d={limbs} fill="none" stroke={INK} strokeWidth={13} strokeLinecap="round" />
+			<path d={limbs} fill="none" stroke="#8a5a2b" strokeWidth={8} strokeLinecap="round" />
+			{/* the arrow, from the string to just past the bow */}
+			<path d={`M${dx - 6},${dy} L${hx + 64},${hy - 2}`} stroke={INK} strokeWidth={6} strokeLinecap="round" />
+			<path d={`M${dx - 6},${dy} L${hx + 64},${hy - 2}`} stroke="#d9c49a" strokeWidth={3} strokeLinecap="round" />
+			<path d={`M${hx + 62},${hy - 10} L${hx + 84},${hy - 2} L${hx + 62},${hy + 6} Z`} fill="#6b6f76" {...ink(2)} />
+			<path d={`M${dx - 4},${dy} l-18,-10 M${dx - 4},${dy} l-18,10`} stroke="#c8323a" strokeWidth={6} strokeLinecap="round" />
+		</g>
+	);
+};
+
 const Head: React.FC<{spec: HumanSpec; mood: string; mouth: RigProps['mouth']; eye: number; tilt: number}> = ({
 	spec, mood, mouth, eye, tilt,
 }) => {
@@ -176,6 +226,10 @@ const Head: React.FC<{spec: HumanSpec; mood: string; mouth: RigProps['mouth']; e
 			{/* ear and head */}
 			<ellipse cx={-44} cy={-410} rx={12} ry={16} fill={spec.skin} {...O} />
 			<circle cx={8} cy={-418} r={64} fill={spec.skin} {...O} />
+			{spec.shaved && (
+				<path d="M-54,-424 C-58,-466 -22,-484 12,-482 C46,-480 68,-462 70,-436 C50,-446 30,-452 8,-450 C-14,-448 -34,-440 -54,-424 Z"
+					fill={spec.shaved} opacity={0.35} />
+			)}
 			{spec.hair && (
 				<g>
 					<path d="M-54,-420 C-60,-470 -20,-492 14,-490 C48,-488 70,-470 70,-440 C54,-452 34,-458 10,-456 C-12,-454 -30,-446 -38,-424 C-44,-414 -50,-410 -54,-420 Z"
@@ -221,22 +275,33 @@ export const makeHuman = (spec: HumanSpec): React.FC<RigProps> => {
 		const lean = p.lean + (spec.stoop ?? 0);
 		const drop = p.sit ? SIT_DROP : 0;
 		const shoulders = SHOULDERS;
+		// a tense archer's hands shake; a calm one's are still
+		const shake = p.aim && (mood === 'angry' || mood === 'worried') ? 1 : 0;
+		const bowHand: P = [p.hands[0][0] + Math.sin(t * 29) * 2.5 * shake, p.hands[0][1] + Math.sin(t * 23 + 1) * 3 * shake];
+		const drawHand: P = [p.hands[1][0] + Math.sin(t * 31 + 2) * 2 * shake, p.hands[1][1] + Math.sin(t * 27) * 2.5 * shake];
 		return (
 			<g filter="url(#softEdge)">
 				<ellipse cx={20} cy={4} rx={110} ry={14} fill="#3d3a2c" opacity={0.22} />
 				<Legs spec={spec} sit={p.sit} walk={walk} />
+				{spec.robe && <RobeSkirt spec={spec} sit={p.sit} walk={walk} />}
 				<g transform={`translate(0 ${drop + bob}) rotate(${lean} 0 ${HIP_Y})`}>
-					{arm(spec, shoulders[0], [p.hands[0][0], p.hands[0][1] - drop])}
+					{arm(spec, shoulders[0], p.aim ? bowHand : [p.hands[0][0], p.hands[0][1] - drop])}
 					<g transform={`translate(0 ${breathe * 0.4})`}>
 						<path d="M-50,-338 C-62,-300 -64,-230 -54,-176 C-20,-166 30,-166 60,-176 C68,-230 66,-300 52,-338 C20,-352 -18,-352 -50,-338 Z"
 							fill={spec.shirt} {...ink(3.5)} />
 						<path d="M-10,-346 L6,-318 L22,-346" fill="none" stroke={spec.shirtShade} strokeWidth={4} strokeLinejoin="round" />
+						{spec.robe && (
+							<path d="M-34,-340 C-10,-300 20,-250 50,-182 L66,-190 C40,-252 12,-306 -14,-346 Z" fill={spec.robe.sash} {...ink(3)} />
+						)}
 						{spec.apron && (
 							<path d="M-30,-300 C-34,-240 -40,-150 -38,-96 L66,-96 C68,-150 62,-240 58,-300 Z" fill={spec.apron} {...ink(3)} />
 						)}
 					</g>
 					<Head spec={spec} mood={mood} mouth={mouth} eye={eye} tilt={tilt} />
-					{arm(spec, shoulders[1], [p.hands[1][0], p.hands[1][1] - drop])}
+					{p.aim && <Bow bowHand={bowHand} drawHand={drawHand} />}
+					{p.aim
+						? arm(spec, shoulders[1], drawHand, [DRAW_ELBOW[0] + drawHand[0] - DRAW_HAND[0], DRAW_ELBOW[1] + drawHand[1] - DRAW_HAND[1]])
+						: arm(spec, shoulders[1], [p.hands[1][0], p.hands[1][1] - drop])}
 				</g>
 			</g>
 		);

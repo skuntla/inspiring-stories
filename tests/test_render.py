@@ -121,6 +121,24 @@ def test_shared_library_lists_ids_and_descriptions(tmp_path):
     assert render.common_library(tmp_path) == {"locations": {"notebook-page": "A notebook.", "plain": ""}, "props": {}}
 
 
+def test_thumbnail_spec_is_exported_when_present(ready):
+    src = ready.root / "render" / "src"
+    p = plan(ready.root, _timeline(ready), set())
+    assert p.thumbnail is None
+    assert "export const thumbnail: ThumbnailSpec | undefined = undefined;" in write_registry(ready.root, p).read_text()
+    spec = src / "episodes" / EPISODE_ID / "thumbnail.tsx"
+    spec.write_text("export const thumbnail = {\n\theadlines: ['WHY *THIS*', \"IT'S *YOURS*\\nNOW\"],\n};\n")
+    p = plan(ready.root, _timeline(ready), set())
+    assert p.thumbnail == spec and render.thumbnail_variants(spec) == 2
+    assert f"export {{thumbnail}} from '../episodes/{EPISODE_ID}/thumbnail';" in write_registry(ready.root, p).read_text()
+    assert spec not in p.files()  # the thumbnail is not an approval input
+
+
+def test_thumbnail_command_names_the_missing_spec(ready, capsys):
+    code, _, err = ready.run("thumbnail", str(ready.episode_dir), capsys=capsys)
+    assert code == 1 and f"render/src/episodes/{EPISODE_ID}/thumbnail.tsx" in err
+
+
 def test_registry_is_deterministic(ready):
     p = plan(ready.root, _timeline(ready), set())
     first = write_registry(ready.root, p).read_text()
