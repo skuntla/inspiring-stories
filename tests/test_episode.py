@@ -179,8 +179,7 @@ def test_made_for_kids_deviating_from_series_default_warns(project):
 
 def _add_series_location(project, lid="meadow-edge"):
     series = project.series()
-    series["locations"] = [{"id": lid, "description": "Tall golden grass at the meadow's edge.",
-                            "references": [f"locations/{lid}/ref-01.png"]}]
+    series["locations"] = [{"id": lid, "description": "Tall golden grass at the meadow's edge."}]
     project.write_series(series)
 
 

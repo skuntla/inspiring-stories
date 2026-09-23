@@ -4,12 +4,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .findings import ERROR, WARNING, Finding
+from .findings import ERROR, Finding
 from .load import StrictYAMLError, load_yaml, rel
 from .schema import SERIES_SCHEMA, check_version, load_voices, validate_structure
 
 SERIES_FILE = "series.yaml"
-_VISUAL_FIELDS = ("description", "outfit", "features", "references")
+_VISUAL_FIELDS = ("description", "outfit", "features")
 
 
 @dataclass
@@ -30,14 +30,6 @@ class SeriesCheck:
             return {}
         return {loc["id"]: loc for loc in self.bible["locations"]
                 if isinstance(loc, dict) and isinstance(loc.get("id"), str)}
-
-
-def _inside(path: Path, folder: Path) -> bool:
-    try:
-        path.resolve().relative_to(folder.resolve())
-        return True
-    except ValueError:
-        return False
 
 
 def check_series(series_dir: Path, root: Path) -> SeriesCheck:
@@ -65,27 +57,10 @@ def _lint(doc: dict, series_dir: Path, root: Path, file: str) -> list[Finding]:
     def err(path, rule, msg):
         f.append(Finding(ERROR, file, path, rule, msg))
 
-    def warn(path, rule, msg):
-        f.append(Finding(WARNING, file, path, rule, msg))
-
     declared = doc.get("id")
     if isinstance(declared, str) and declared != series_dir.name:
         err("id", "series.id-matches-folder",
             f"id '{declared}' does not match its folder name '{series_dir.name}'")
-
-    style = doc.get("style")
-    if isinstance(style, dict) and isinstance(style.get("references"), list):
-        style_dir = series_dir / "style"
-        for i, ref in enumerate(style["references"]):
-            if not isinstance(ref, str):
-                continue
-            target = series_dir / ref
-            if not _inside(target, style_dir):
-                err(f"style.references[{i}]", "series.reference-location",
-                    f"'{ref}' must be inside the series folder's style/ directory")
-            elif not target.is_file():
-                warn(f"style.references[{i}]", "series.reference-missing",
-                     f"reference image '{rel(target, root)}' does not exist yet")
 
     chars = doc.get("characters")
     if not isinstance(chars, list):
@@ -119,26 +94,12 @@ def _lint(doc: dict, series_dir: Path, root: Path, file: str) -> list[Finding]:
             if isinstance(c.get("features"), list) and not c["features"]:
                 err(f"{base}.features", "series.character-visual",
                     "list at least one distinguishing feature")
-            refs = c.get("references")
-            if isinstance(refs, dict) and isinstance(cid, str):
-                char_dir = series_dir / "characters" / cid
-                for slot in ("front", "three_quarter", "side", "expressions"):
-                    ref = refs.get(slot)
-                    if not isinstance(ref, str):
-                        continue
-                    target = series_dir / ref
-                    if not _inside(target, char_dir):
-                        err(f"{base}.references.{slot}", "series.reference-location",
-                            f"'{ref}' must be inside characters/{cid}/")
-                    elif not target.is_file():
-                        warn(f"{base}.references.{slot}", "series.reference-missing",
-                             f"reference image '{rel(target, root)}' does not exist yet")
         voice = c.get("voice")
         if isinstance(voice, dict) and isinstance(voice.get("kokoro"), str) and voice["kokoro"] not in allowed_voices:
             err(f"{base}.voice.kokoro", "series.voice-allowlist",
                 f"'{voice['kokoro']}' is not an allowed English Kokoro voice; allowed: {', '.join(allowed_voices)}")
 
-    _lint_locations(doc, series_dir, root, set(seen), err, warn)
+    _lint_locations(doc, set(seen), err)
 
     if not narrators:
         err("characters", "series.one-narrator", "exactly one character must have kind: narrator; none found")
@@ -149,7 +110,7 @@ def _lint(doc: dict, series_dir: Path, root: Path, file: str) -> list[Finding]:
     return f
 
 
-def _lint_locations(doc: dict, series_dir: Path, root: Path, character_ids: set[str], err, warn) -> None:
+def _lint_locations(doc: dict, character_ids: set[str], err) -> None:
     locations = doc.get("locations")
     if not isinstance(locations, list):
         return
@@ -167,16 +128,3 @@ def _lint_locations(doc: dict, series_dir: Path, root: Path, character_ids: set[
         if lid in character_ids:
             err(f"{base}.id", "series.location-id-collision",
                 f"location id '{lid}' is also a character id; ids must be unique across characters and locations")
-        if not isinstance(loc.get("references"), list):
-            continue
-        loc_dir = series_dir / "locations" / lid
-        for j, ref in enumerate(loc["references"]):
-            if not isinstance(ref, str):
-                continue
-            target = series_dir / ref
-            if not _inside(target, loc_dir):
-                err(f"{base}.references[{j}]", "series.reference-location",
-                    f"'{ref}' must be inside locations/{lid}/")
-            elif not target.is_file():
-                warn(f"{base}.references[{j}]", "series.reference-missing",
-                     f"reference image '{rel(target, root)}' does not exist yet")

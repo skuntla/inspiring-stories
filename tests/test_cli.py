@@ -16,7 +16,7 @@ def test_validate_valid_episode_exits_zero(project, capsys):
 def test_validate_series_folder(project, capsys):
     code, out, _ = project.run("validate", str(project.series_dir), capsys=capsys)
     assert code == 0
-    assert "series.reference-missing" in out
+    assert "0 errors, 0 warnings" in out
 
 
 def test_validate_episode_reports_broken_bible(project, capsys):
@@ -145,7 +145,6 @@ def test_brief_follows_the_bible(project, capsys):
         "id": "owl", "kind": "character", "name": "Hazel the Owl",
         "description": "A wise tawny owl with ear tufts.", "outfit": "A tiny blue shawl.",
         "features": ["ear tufts"],
-        "references": {"front": "characters/owl/f.png", "three_quarter": "characters/owl/q.png", "side": "characters/owl/s.png"},
         "voice": {"kokoro": "bf_alice", "speed": 1.0},
     })
     project.write_series(doc)
@@ -266,8 +265,7 @@ def test_project_instructions_over_target_warn(project, capsys):
 
 def _series_with_location(project):
     doc = project.series()
-    doc["locations"] = [{"id": "old-oak", "description": "A huge old oak with twisted roots.",
-                         "references": ["locations/old-oak/ref-01.png"]}]
+    doc["locations"] = [{"id": "old-oak", "description": "A huge old oak with twisted roots."}]
     project.write_series(doc)
 
 

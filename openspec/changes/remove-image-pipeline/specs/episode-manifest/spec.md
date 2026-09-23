@@ -58,13 +58,6 @@ The manifest SHALL declare a YouTube title of at most 100 characters, a descript
 
 ## ADDED Requirements
 
-### Requirement: Thumbnail characters in the ChatGPT documents
-Both ChatGPT renderings SHALL include `publishing.thumbnail.characters` in the manifest structure and instruct ChatGPT to list the cast ids visible in the thumbnail (excluding the narrator), or `[]` when none are.
-
-#### Scenario: Field in the Project instructions
-- **WHEN** the compact Project instructions are regenerated
-- **THEN** the manifest structure shows `characters` under `thumbnail`, with the rule for filling it
-
 ### Requirement: Series locations in the ChatGPT documents
 Both ChatGPT renderings SHALL list the series' recurring locations (id and description) and instruct ChatGPT to use a recurring location's id, without redeclaring it, whenever a shot takes place there. The compact Project instructions SHALL still not exceed 8,000 characters.
 
@@ -75,3 +68,10 @@ Both ChatGPT renderings SHALL list the series' recurring locations (id and descr
 #### Scenario: Series without recurring locations
 - **WHEN** the series declares no locations
 - **THEN** the renderings omit the recurring-locations section
+
+### Requirement: Thumbnail characters in the ChatGPT documents
+Both ChatGPT renderings SHALL include `publishing.thumbnail.characters` in the manifest structure and instruct ChatGPT to list the cast ids visible in the thumbnail (excluding the narrator), or `[]` when none are.
+
+#### Scenario: Field in the Project instructions
+- **WHEN** the compact Project instructions are regenerated
+- **THEN** the manifest structure shows `characters` under `thumbnail`, with the rule for filling it

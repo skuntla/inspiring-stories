@@ -2,17 +2,18 @@ schema: spec-driven
 
 context: |
   Product: a local-first, repeatable pipeline that turns a short original story into a
-  narrated, animated-feeling 16:9 YouTube video (illustrated stills + parallax, camera
-  moves, blinks, later viseme lip sync, word-level captions, ambience, music).
+  narrated, animated 16:9 YouTube video. Everything on screen is SVG drawn from code:
+  character rigs (blinks, poses, viseme lip sync from Kokoro phonemes), set pieces per
+  location, parallax, camera moves, atmosphere, word-level captions, ambience, music.
+  Reference: poc/svg-rig/ (proof of concept) and sandcastle-film.html (shot-list idea).
   Audience: suitable for all ages. English only for now. Stories are original, written
   with ChatGPT. Shot count and length vary per story (no fixed target).
 
   Tool roles:
   - ChatGPT: story, shot breakdown, lines, publishing copy -> episode.yaml (schema-valid).
-  - Gemini: pixels only, used MANUALLY in the Gemini app from prompt packs Claude writes.
-    Never rely on Gemini for metadata, masks, alpha or layers.
-  - Claude + scripts: prompt packs, validation, TTS, alignment, layers, timeline,
-    Remotion render, packaging. No automated YouTube upload: the user uploads by hand.
+  - No image generation and no bitmaps: visuals are SVG rigs and set pieces drawn in code.
+  - Claude + scripts: validation, TTS, word/viseme timing, timeline, SVG rigs and set
+    pieces, Remotion render, packaging. No automated YouTube upload: the user uploads by hand.
   - Kokoro TTS (preset voices, 24 kHz), run locally. Proven helpers (trim, loudness
     normalisation, repetition checks, caption building) may be adapted from
     /Users/skuntla/Documents/projects/voicemodels; do not modify that repo.
@@ -25,13 +26,11 @@ context: |
   - episode.yaml is the single source of truth for intent; build/ is a deletable cache that
     is rebuilt identically each time. Every derived artifact records hashes of its inputs.
   - Models propose, code decides. Audio is the master clock: nobody authors durations.
-  - Three human checkpoints: (1) story + storyboard (approved by "Lock this story" in the
-    ChatGPT Project), (2) image contact sheet, (3) final preview video incl. audio review.
-    Pipeline checkpoints are hash-bound approvals in approvals.yaml; an upstream change
-    makes an approval stale.
+  - Two human checkpoints: (1) story + storyboard (approved by "Lock this story" in the
+    ChatGPT Project), (2) final preview video incl. audio review, recorded as a hash-bound
+    approval (reintroduced with the render change); an upstream change makes it stale.
   - ChatGPT works conversationally (creative mode) and emits episode.yaml only on lock.
-    Line ids (sNN-lMM) and the Gemini prompt pack are derived by the pipeline, never
-    written by ChatGPT.
+    Line ids (sNN-lMM) and all drawing are derived by the pipeline, never written by ChatGPT.
   - Validators reject unknown fields/enums and never guess.
   - Constants: 1920x1080, 30 fps, H.264/AAC, master ~-14 LUFS integrated, -1 dBTP.
   - Platform: macOS arm64 (Apple M4), Node 24, Python 3.11 venv.

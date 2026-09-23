@@ -13,8 +13,6 @@ style:
     - "text, letters, captions or signatures in the image"
     - "photorealism or 3D render look"
     - "harsh shadows or frightening imagery"
-  references:
-    - "style/ref-01.png"
 characters:
   - id: "narrator"
     kind: "narrator"
@@ -31,10 +29,6 @@ characters:
       - "large shiny black eyes"
       - "a tiny pink nose"
       - "one spine at the top of the head that always sticks up"
-    references:
-      front: "characters/pip/ref-front.png"
-      three_quarter: "characters/pip/ref-3q.png"
-      side: "characters/pip/ref-side.png"
     voice:
       kokoro: "af_bella"
       speed: 1.05
@@ -47,10 +41,6 @@ characters:
       - "white stripe running from nose to forehead"
       - "round spectacles perched low on the snout"
       - "slightly hunched, slow posture"
-    references:
-      front: "characters/bramble/ref-front.png"
-      three_quarter: "characters/bramble/ref-3q.png"
-      side: "characters/bramble/ref-side.png"
     voice:
       kokoro: "bm_george"
       speed: 0.9
@@ -63,10 +53,6 @@ characters:
       - "upturned tail"
       - "pale eyebrow stripe"
       - "red berry badge"
-    references:
-      front: "characters/wren/ref-front.png"
-      three_quarter: "characters/wren/ref-3q.png"
-      side: "characters/wren/ref-side.png"
     voice:
       kokoro: "af_sky"
       speed: 1.1
