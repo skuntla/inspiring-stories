@@ -1,0 +1,19 @@
+{
+  "name": "story-render",
+  "private": true,
+  "description": "SVG renderer for story episodes: draws build/timeline.json with the series and episode component library.",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.517",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.517"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "typescript": "7.0.2"
+  }
+}

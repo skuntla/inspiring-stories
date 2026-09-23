@@ -256,8 +256,11 @@ def test_project_instructions_over_hard_limit_are_refused(project, capsys, tmp_p
 
 
 def test_project_instructions_over_target_warn(project, capsys):
-    # three characters x 140 words x 7 chars lands between 7,500 and 8,000
-    _pad_descriptions(project, 140)
+    # measure the unpadded size, then pad the three character descriptions to land at ~7,750 characters
+    _pad_descriptions(project, 1)
+    _, base, _ = project.run("brief", SERIES_ID, capsys=capsys)
+    words = 1 + (7750 - len(base)) // (3 * len(" detail"))
+    _pad_descriptions(project, words)
     code, out, err = project.run("brief", SERIES_ID, capsys=capsys)
     assert 7500 < len(out) <= 8000, len(out)
     assert code == 0 and "safety target" in err

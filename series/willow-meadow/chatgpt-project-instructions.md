@@ -51,6 +51,8 @@ shots:
     characters:           # visible characters; may be []
       - id: "..."
         position: "..."
+        stance: "..."     # body stance from Vocabulary
+        mood: "..."       # face mood from Vocabulary
         pose: "..."
         expression: "..."
         facing: "..."
@@ -90,6 +92,8 @@ Rules:
 ## Vocabulary
 - time_of_day: dawn, morning, midday, afternoon, dusk, night
 - characters[].position: left, center_left, center, center_right, right, background
+- characters[].stance: stand, walk, sit, kneel, lie, reach, hold, hug, fly, perch
+- characters[].mood: neutral, happy, sad, surprised, worried, scared, angry, thoughtful, proud, tired
 - characters[].facing: left, right, camera, away
 - camera.move: static, push_in, pull_out, pan_left, pan_right, tilt_up, tilt_down
 - camera.intensity: low, medium, high

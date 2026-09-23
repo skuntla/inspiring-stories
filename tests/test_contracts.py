@@ -28,4 +28,6 @@ def test_vocabulary_matches_design():
     vocab = json.loads((REPO / "schemas" / "vocabulary.v1.json").read_text())["$defs"]
     assert vocab["cameraMove"]["enum"] == ["static", "push_in", "pull_out", "pan_left", "pan_right", "tilt_up", "tilt_down"]
     assert vocab["facing"]["enum"] == ["left", "right", "camera", "away"]
-    assert set(vocab) == {"cameraMove", "cameraIntensity", "atmosphere", "ambience", "delivery", "position", "facing", "timeOfDay"}
+    assert set(vocab) == {"cameraMove", "cameraIntensity", "atmosphere", "ambience", "delivery", "position", "facing",
+                          "timeOfDay", "stance", "mood"}
+    assert "perch" in vocab["stance"]["enum"] and "thoughtful" in vocab["mood"]["enum"]

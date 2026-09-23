@@ -54,6 +54,8 @@ def _no_made_for_kids(d): del d["publishing"]["made_for_kids"]
 def _boolean_text(d): d["shots"][0]["emotion"] = True
 def _stub(d): d["shots"] = []
 def _line_id(d): d["shots"][0]["lines"][0]["id"] = "greeting"
+def _no_stance(d): del d["shots"][0]["characters"][0]["stance"]
+def _bad_mood(d): d["shots"][0]["characters"][0]["mood"] = "ecstatic"
 
 
 @pytest.mark.parametrize("mutate, rule, path", [
@@ -86,6 +88,8 @@ def _line_id(d): d["shots"][0]["lines"][0]["id"] = "greeting"
     (_boolean_text, "schema.type", "shots[0].emotion"),
     (_stub, "episode.stub", "shots"),
     (_line_id, "schema.unknown-field", "shots[0].lines[0].id"),
+    (_no_stance, "schema.required", "shots[0].characters[0].stance"),
+    (_bad_mood, "schema.enum", "shots[0].characters[0].mood"),
 ])
 def test_each_error_rule(project, mutate, rule, path):
     doc = project.episode()
@@ -243,3 +247,11 @@ def test_scenery_only_thumbnail_is_valid(project):
     _thumb(doc, [])
     project.write_episode(doc)
     assert _episode_findings(_check(project)) == []
+
+
+def test_unknown_mood_lists_allowed_moods(project):
+    doc = project.episode()
+    _bad_mood(doc)
+    project.write_episode(doc)
+    msg = next(f.message for f in _check(project).findings if f.path == "shots[0].characters[0].mood")
+    assert "neutral, happy, sad" in msg

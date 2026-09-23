@@ -6,35 +6,137 @@
   "$defs": {
     "cameraMove": {
       "description": "How the virtual camera moves over the still image.",
-      "enum": ["static", "push_in", "pull_out", "pan_left", "pan_right", "tilt_up", "tilt_down"]
+      "enum": [
+        "static",
+        "push_in",
+        "pull_out",
+        "pan_left",
+        "pan_right",
+        "tilt_up",
+        "tilt_down"
+      ]
     },
     "cameraIntensity": {
       "description": "How strong the camera move is.",
-      "enum": ["low", "medium", "high"]
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
     },
     "atmosphere": {
       "description": "Overlay effect drawn on top of the shot.",
-      "enum": ["rain", "snow", "fog", "mist", "dust_motes", "fireflies", "embers", "firelight_flicker", "falling_leaves", "sun_rays", "sparkles", "wind"]
+      "enum": [
+        "rain",
+        "snow",
+        "fog",
+        "mist",
+        "dust_motes",
+        "fireflies",
+        "embers",
+        "firelight_flicker",
+        "falling_leaves",
+        "sun_rays",
+        "sparkles",
+        "wind"
+      ]
     },
     "ambience": {
       "description": "Background sound bed for the shot.",
-      "enum": ["none", "forest_day", "forest_night", "meadow", "village", "river", "rain", "ocean_shore", "fireplace_indoor", "night_crickets", "cave", "wind"]
+      "enum": [
+        "none",
+        "forest_day",
+        "forest_night",
+        "meadow",
+        "village",
+        "river",
+        "rain",
+        "ocean_shore",
+        "fireplace_indoor",
+        "night_crickets",
+        "cave",
+        "wind"
+      ]
     },
     "delivery": {
       "description": "Intended emotional delivery of a spoken line.",
-      "enum": ["neutral", "warm", "gentle", "cheerful", "excited", "curious", "surprised", "sad", "worried", "scared", "angry", "whisper", "proud", "thoughtful"]
+      "enum": [
+        "neutral",
+        "warm",
+        "gentle",
+        "cheerful",
+        "excited",
+        "curious",
+        "surprised",
+        "sad",
+        "worried",
+        "scared",
+        "angry",
+        "whisper",
+        "proud",
+        "thoughtful"
+      ]
     },
     "position": {
       "description": "Where a character stands in the frame.",
-      "enum": ["left", "center_left", "center", "center_right", "right", "background"]
+      "enum": [
+        "left",
+        "center_left",
+        "center",
+        "center_right",
+        "right",
+        "background"
+      ]
     },
     "facing": {
       "description": "Which way a character faces.",
-      "enum": ["left", "right", "camera", "away"]
+      "enum": [
+        "left",
+        "right",
+        "camera",
+        "away"
+      ]
     },
     "timeOfDay": {
       "description": "Lighting time of day for the shot.",
-      "enum": ["dawn", "morning", "midday", "afternoon", "dusk", "night"]
+      "enum": [
+        "dawn",
+        "morning",
+        "midday",
+        "afternoon",
+        "dusk",
+        "night"
+      ]
+    },
+    "stance": {
+      "description": "Rig stance of a visible character (the rig must support it).",
+      "enum": [
+        "stand",
+        "walk",
+        "sit",
+        "kneel",
+        "lie",
+        "reach",
+        "hold",
+        "hug",
+        "fly",
+        "perch"
+      ]
+    },
+    "mood": {
+      "description": "Rig facial mood of a visible character.",
+      "enum": [
+        "neutral",
+        "happy",
+        "sad",
+        "surprised",
+        "worried",
+        "scared",
+        "angry",
+        "thoughtful",
+        "proud",
+        "tired"
+      ]
     }
   }
 }

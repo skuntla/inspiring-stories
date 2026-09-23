@@ -27,6 +27,8 @@ PROJECT_INSTRUCTIONS_TARGET = 7500
 _FIELD_FOR_VOCAB = {
     "timeOfDay": "shots[].time_of_day",
     "position": "shots[].characters[].position",
+    "stance": "shots[].characters[].stance",
+    "mood": "shots[].characters[].mood",
     "facing": "shots[].characters[].facing",
     "cameraMove": "shots[].camera.move",
     "cameraIntensity": "shots[].camera.intensity",

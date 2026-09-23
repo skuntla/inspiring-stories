@@ -15,7 +15,8 @@ from .brief import (EXAMPLE_FILE, PROJECT_INSTRUCTIONS_MAX, PROJECT_INSTRUCTIONS
                     render_brief, render_project_instructions)
 from .lint_episode import EPISODE_FILE, check_episode
 from .lint_series import SERIES_FILE, check_series
-from .load import find_root
+from . import approvals, render, timeline, voice
+from .load import find_root, load_yaml, rel
 from .report import EXIT_ERRORS, EXIT_OK, EXIT_USAGE, Result, render_json, render_text
 
 
@@ -64,6 +65,130 @@ def _checked(kind: str, target: Path, root: Path) -> Result:
         check = check_episode(target / EPISODE_FILE, root, expected_id=target.resolve().name)
         return Result(findings=check.findings, estimate=check.estimate)
     return Result(findings=check_series(target, root).findings)
+
+
+def _episode(args) -> tuple[Result, Path, Path, dict | None, dict | None]:
+    """Resolve and validate an episode; returns (result, folder, root, manifest, bible), manifest None on errors."""
+    kind, target, root = _target(args)
+    if kind != "episode":
+        raise UsageError(f"{args.path} is a series folder; this command needs an episode folder")
+    check = check_episode(target / EPISODE_FILE, root, expected_id=target.resolve().name)
+    result = Result(findings=check.findings, estimate=check.estimate)
+    if result.errors:
+        print("error: the episode has validation errors; nothing was produced:", file=sys.stderr)
+        _emit(result, False, sys.stderr)
+        return result, target, root, None, None
+    return result, target, root, load_yaml(target / EPISODE_FILE), check.series.bible
+
+
+def cmd_voice(args) -> int:
+    result, target, root, doc, bible = _episode(args)
+    if doc is None:
+        return EXIT_ERRORS
+    try:
+        voice.generate(target, doc, bible, force=args.force)
+    except voice.VoiceUnavailable as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return EXIT_ERRORS
+    return EXIT_OK
+
+
+def cmd_timeline(args) -> int:
+    result, target, root, doc, bible = _episode(args)
+    if doc is None:
+        return EXIT_ERRORS
+    try:
+        timeline.generate(target, doc, bible)
+    except timeline.StaleSpeech as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return EXIT_ERRORS
+    return EXIT_OK
+
+
+def _prepared(args):
+    """Validate, check the timeline is current and every component exists; returns a context dict or None."""
+    result, target, root, doc, bible = _episode(args)
+    if doc is None:
+        return None
+    try:
+        tl = render.load_timeline(target)
+        current = timeline.build(doc, bible, timeline.load_speech(target, doc, bible))
+    except (FileNotFoundError, timeline.StaleSpeech) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return None
+    if current != tl:
+        print("error: build/timeline.json is out of date with the manifest; run `story timeline` first", file=sys.stderr)
+        return None
+    plan = render.plan(root, tl, {loc["id"] for loc in bible.get("locations") or []})
+    if plan.problems:
+        print(f"error: {len(plan.problems)} component problem(s); nothing was rendered:", file=sys.stderr)
+        for problem in plan.problems:
+            print(f"  {problem}", file=sys.stderr)
+        return None
+    render.write_registry(root, plan)
+    return {"target": target, "root": root, "timeline": tl, "plan": plan,
+            "series_dir": root / "series" / doc["series"]}
+
+
+def _approval_state(ctx) -> dict:
+    inputs = approvals.collect_inputs(ctx["root"], ctx["target"], ctx["series_dir"], ctx["plan"])
+    return approvals.status(approvals.load_entries(ctx["target"]), inputs)
+
+
+def cmd_render(args) -> int:
+    ctx = _prepared(args)
+    if ctx is None:
+        return EXIT_ERRORS
+    tl, plan = ctx["timeline"], ctx["plan"]
+    if args.check:
+        print(f"all {sum(len(v) for v in plan.components.values())} components present "
+              f"({', '.join(f'{len(v)} {k}' for k, v in plan.components.items())})")
+    else:
+        final = getattr(args, "final", False)
+        state = _approval_state(ctx)
+        if final and state["status"] != "approved":
+            print(f"warning: rendering the final while the preview is {state['status']}", file=sys.stderr)
+        out = render.run_remotion(ctx["root"], ctx["target"], tl, preview=not final)
+        problem = render.check_duration(out, tl)
+        if problem:
+            print(f"error: {problem}", file=sys.stderr)
+            return EXIT_ERRORS
+        print(f"wrote {rel(out, ctx['root'])} ({tl['durationInFrames'] / timeline.FPS:.1f} s)")
+    print(approvals.describe(_approval_state(ctx)))
+    return EXIT_OK
+
+
+def cmd_approve(args) -> int:
+    if args.checkpoint not in approvals.CHECKPOINTS:
+        raise UsageError(f"unknown checkpoint '{args.checkpoint}'; supported: {', '.join(approvals.CHECKPOINTS)}")
+    ctx = _prepared(args)
+    if ctx is None:
+        return EXIT_ERRORS
+    preview = ctx["target"] / render.PREVIEW_FILE
+    tl_file = ctx["target"] / timeline.TIMELINE_FILE
+    if not preview.is_file() or preview.stat().st_mtime < tl_file.stat().st_mtime:
+        print("error: not approved; build/preview.mp4 is missing or older than the timeline. "
+              "Run `story render` (preview) first.", file=sys.stderr)
+        return EXIT_ERRORS
+    inputs = approvals.collect_inputs(ctx["root"], ctx["target"], ctx["series_dir"], ctx["plan"])
+    entry = approvals.append(ctx["target"], args.checkpoint, inputs)
+    print(f"approved {args.checkpoint} at {entry['approved_at']} ({len(inputs)} inputs); "
+          f"recorded in {rel(ctx['target'] / approvals.FILE, ctx['root'])}")
+    return EXIT_OK
+
+
+def cmd_produce(args) -> int:
+    """voice -> timeline -> preview render, stopping at the first failure."""
+    for name, step in (("voice", cmd_voice), ("timeline", cmd_timeline), ("render", cmd_render)):
+        print(f"== {name}")
+        step_args = argparse.Namespace(**{**vars(args), "force": False, "check": False, "final": False, "preview": True})
+        code = step(step_args)
+        if code != EXIT_OK:
+            print(f"error: stopped at `story {name}`", file=sys.stderr)
+            return code
+    folder = Path(args.path)
+    print(f"\nReview {folder / render.PREVIEW_FILE}, then approve it with:\n  story approve {folder} preview")
+    return EXIT_OK
 
 
 def cmd_validate(args) -> int:
@@ -195,6 +320,31 @@ def build_parser() -> argparse.ArgumentParser:
                    help="render the full reference contract instead of the compact Project instructions")
     b.add_argument("--out", help="write to this file instead of stdout")
     b.set_defaults(func=cmd_brief)
+    vo = sub.add_parser("voice", help="synthesize every line of an episode with Kokoro")
+    vo.add_argument("path")
+    vo.add_argument("--force", action="store_true", help="regenerate every line, ignoring the cache")
+    vo.set_defaults(func=cmd_voice)
+
+    tl = sub.add_parser("timeline", help="build the frame-exact timeline and mixed narration of an episode")
+    tl.add_argument("path")
+    tl.set_defaults(func=cmd_timeline)
+
+    rd = sub.add_parser("render", help="render the episode's preview (default) or final MP4 from its timeline")
+    rd.add_argument("path")
+    mode = rd.add_mutually_exclusive_group()
+    mode.add_argument("--preview", action="store_true", help="960x540 preview (the default)")
+    mode.add_argument("--final", action="store_true", help="1920x1080 final")
+    rd.add_argument("--check", action="store_true", help="only check that every component exists")
+    rd.set_defaults(func=cmd_render)
+
+    ap = sub.add_parser("approve", help="record approval of the episode's rendered preview")
+    ap.add_argument("path")
+    ap.add_argument("checkpoint", help="preview")
+    ap.set_defaults(func=cmd_approve)
+
+    pr = sub.add_parser("produce", help="voice, timeline and preview render in one go")
+    pr.add_argument("path")
+    pr.set_defaults(func=cmd_produce)
     return p
 
 

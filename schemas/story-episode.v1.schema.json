@@ -5,116 +5,326 @@
   "description": "Structure only. Cross-references to the series bible, id sequencing, speaker rules, word counts and length limits that span fields are enforced by the episode lint. Deliberately has no timing, layout, path or voice fields: durations come from measured audio.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "id", "series", "title", "logline", "language", "content_rating", "source", "cast", "locations", "shots", "publishing"],
+  "required": [
+    "schema",
+    "id",
+    "series",
+    "title",
+    "logline",
+    "language",
+    "content_rating",
+    "source",
+    "cast",
+    "locations",
+    "shots",
+    "publishing"
+  ],
   "properties": {
-    "schema": {"const": "story-episode/v1"},
-    "id": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9]+(-[a-z0-9]+)*$"},
-    "series": {"$ref": "#/$defs/kebabId"},
-    "title": {"$ref": "#/$defs/text"},
-    "logline": {"$ref": "#/$defs/text"},
-    "moral": {"$ref": "#/$defs/text"},
-    "language": {"const": "en"},
-    "content_rating": {"const": "all-ages"},
+    "schema": {
+      "const": "story-episode/v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "series": {
+      "$ref": "#/$defs/kebabId"
+    },
+    "title": {
+      "$ref": "#/$defs/text"
+    },
+    "logline": {
+      "$ref": "#/$defs/text"
+    },
+    "moral": {
+      "$ref": "#/$defs/text"
+    },
+    "language": {
+      "const": "en"
+    },
+    "content_rating": {
+      "const": "all-ages"
+    },
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind"],
+      "required": [
+        "kind"
+      ],
       "properties": {
-        "kind": {"const": "original"},
-        "notes": {"type": "string"}
+        "kind": {
+          "const": "original"
+        },
+        "notes": {
+          "type": "string"
+        }
       }
     },
-    "cast": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/kebabId"}},
-    "locations": {"type": "array", "items": {"$ref": "#/$defs/described"}},
-    "props": {"type": "array", "items": {"$ref": "#/$defs/described"}},
+    "cast": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/kebabId"
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/described"
+      }
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/described"
+      }
+    },
     "pronunciations": {
       "type": "object",
-      "additionalProperties": {"$ref": "#/$defs/text"}
+      "additionalProperties": {
+        "$ref": "#/$defs/text"
+      }
     },
-    "shots": {"type": "array", "minItems": 1, "maxItems": 30, "items": {"$ref": "#/$defs/shot"}},
+    "shots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 30,
+      "items": {
+        "$ref": "#/$defs/shot"
+      }
+    },
     "publishing": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["title", "description", "tags", "made_for_kids", "thumbnail"],
+      "required": [
+        "title",
+        "description",
+        "tags",
+        "made_for_kids",
+        "thumbnail"
+      ],
       "properties": {
-        "title": {"type": "string", "pattern": "\\S", "maxLength": 100},
-        "description": {"type": "string", "pattern": "\\S", "maxLength": 5000},
-        "tags": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
-        "made_for_kids": {"type": "boolean"},
+        "title": {
+          "type": "string",
+          "pattern": "\\S",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "pattern": "\\S",
+          "maxLength": 5000
+        },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "made_for_kids": {
+          "type": "boolean"
+        },
         "thumbnail": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["hook", "concept", "characters"],
+          "required": [
+            "hook",
+            "concept",
+            "characters"
+          ],
           "properties": {
-            "hook": {"type": "string", "pattern": "\\S", "maxLength": 40},
-            "concept": {"$ref": "#/$defs/text"},
-            "characters": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/kebabId"}}
+            "hook": {
+              "type": "string",
+              "pattern": "\\S",
+              "maxLength": 40
+            },
+            "concept": {
+              "$ref": "#/$defs/text"
+            },
+            "characters": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/kebabId"
+              }
+            }
           }
         }
       }
     }
   },
   "$defs": {
-    "kebabId": {"type": "string", "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"},
-    "text": {"type": "string", "pattern": "\\S"},
+    "kebabId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    },
+    "text": {
+      "type": "string",
+      "pattern": "\\S"
+    },
     "described": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "description"],
+      "required": [
+        "id",
+        "description"
+      ],
       "properties": {
-        "id": {"$ref": "#/$defs/kebabId"},
-        "description": {"$ref": "#/$defs/text"}
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "description": {
+          "$ref": "#/$defs/text"
+        }
       }
     },
     "visible": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "position", "pose", "expression", "facing"],
+      "required": [
+        "id",
+        "position",
+        "stance",
+        "mood",
+        "pose",
+        "expression",
+        "facing"
+      ],
       "properties": {
-        "id": {"$ref": "#/$defs/kebabId"},
-        "position": {"$ref": "vocabulary.v1.json#/$defs/position"},
-        "pose": {"$ref": "#/$defs/text"},
-        "expression": {"$ref": "#/$defs/text"},
-        "facing": {"$ref": "vocabulary.v1.json#/$defs/facing"}
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "position": {
+          "$ref": "vocabulary.v1.json#/$defs/position"
+        },
+        "stance": {
+          "$ref": "vocabulary.v1.json#/$defs/stance"
+        },
+        "mood": {
+          "$ref": "vocabulary.v1.json#/$defs/mood"
+        },
+        "pose": {
+          "$ref": "#/$defs/text"
+        },
+        "expression": {
+          "$ref": "#/$defs/text"
+        },
+        "facing": {
+          "$ref": "vocabulary.v1.json#/$defs/facing"
+        }
       }
     },
     "line": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["speaker", "text", "delivery"],
+      "required": [
+        "speaker",
+        "text",
+        "delivery"
+      ],
       "properties": {
-        "speaker": {"$ref": "#/$defs/kebabId"},
-        "text": {"$ref": "#/$defs/text"},
-        "delivery": {"$ref": "vocabulary.v1.json#/$defs/delivery"},
-        "on_screen": {"type": "boolean"},
-        "pause_after": {"type": "number", "minimum": 0, "maximum": 3}
+        "speaker": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        },
+        "delivery": {
+          "$ref": "vocabulary.v1.json#/$defs/delivery"
+        },
+        "on_screen": {
+          "type": "boolean"
+        },
+        "pause_after": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3
+        }
       }
     },
     "shot": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "location", "time_of_day", "characters", "action", "emotion", "camera", "atmosphere", "ambience", "composition_notes", "lines"],
+      "required": [
+        "id",
+        "location",
+        "time_of_day",
+        "characters",
+        "action",
+        "emotion",
+        "camera",
+        "atmosphere",
+        "ambience",
+        "composition_notes",
+        "lines"
+      ],
       "properties": {
-        "id": {"type": "string", "pattern": "^s[0-9]{2}$"},
-        "location": {"$ref": "#/$defs/kebabId"},
-        "time_of_day": {"$ref": "vocabulary.v1.json#/$defs/timeOfDay"},
-        "characters": {"type": "array", "items": {"$ref": "#/$defs/visible"}},
-        "props": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/kebabId"}},
-        "action": {"$ref": "#/$defs/text"},
-        "emotion": {"$ref": "#/$defs/text"},
+        "id": {
+          "type": "string",
+          "pattern": "^s[0-9]{2}$"
+        },
+        "location": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "time_of_day": {
+          "$ref": "vocabulary.v1.json#/$defs/timeOfDay"
+        },
+        "characters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/visible"
+          }
+        },
+        "props": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/kebabId"
+          }
+        },
+        "action": {
+          "$ref": "#/$defs/text"
+        },
+        "emotion": {
+          "$ref": "#/$defs/text"
+        },
         "camera": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["move", "intensity"],
+          "required": [
+            "move",
+            "intensity"
+          ],
           "properties": {
-            "move": {"$ref": "vocabulary.v1.json#/$defs/cameraMove"},
-            "intensity": {"$ref": "vocabulary.v1.json#/$defs/cameraIntensity"}
+            "move": {
+              "$ref": "vocabulary.v1.json#/$defs/cameraMove"
+            },
+            "intensity": {
+              "$ref": "vocabulary.v1.json#/$defs/cameraIntensity"
+            }
           }
         },
-        "atmosphere": {"type": "array", "uniqueItems": true, "items": {"$ref": "vocabulary.v1.json#/$defs/atmosphere"}},
-        "ambience": {"$ref": "vocabulary.v1.json#/$defs/ambience"},
-        "composition_notes": {"$ref": "#/$defs/text"},
-        "lines": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/line"}}
+        "atmosphere": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "vocabulary.v1.json#/$defs/atmosphere"
+          }
+        },
+        "ambience": {
+          "$ref": "vocabulary.v1.json#/$defs/ambience"
+        },
+        "composition_notes": {
+          "$ref": "#/$defs/text"
+        },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/line"
+          }
+        }
       }
     }
   }

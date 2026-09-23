@@ -108,6 +108,8 @@ shots:
     characters:                      # who is visible; may be empty
       - id: "character-id"
         position: "<position>"
+        stance: "<stance>"             # body stance, from the vocabulary
+        mood: "<mood>"                 # facial mood, from the vocabulary
         pose: "short phrase"
         expression: "short phrase"
         facing: "<facing>"
@@ -155,6 +157,8 @@ Rules the validator also checks:
 |---|---|
 | `shots[].time_of_day` | `dawn`, `morning`, `midday`, `afternoon`, `dusk`, `night` |
 | `shots[].characters[].position` | `left`, `center_left`, `center`, `center_right`, `right`, `background` |
+| `shots[].characters[].stance` | `stand`, `walk`, `sit`, `kneel`, `lie`, `reach`, `hold`, `hug`, `fly`, `perch` |
+| `shots[].characters[].mood` | `neutral`, `happy`, `sad`, `surprised`, `worried`, `scared`, `angry`, `thoughtful`, `proud`, `tired` |
 | `shots[].characters[].facing` | `left`, `right`, `camera`, `away` |
 | `shots[].camera.move` | `static`, `push_in`, `pull_out`, `pan_left`, `pan_right`, `tilt_up`, `tilt_down` |
 | `shots[].camera.intensity` | `low`, `medium`, `high` |
@@ -215,6 +219,8 @@ shots:
     characters:
       - id: "pip"
         position: "center"
+        stance: "stand"
+        mood: "happy"
         pose: "standing on tiptoe, peering over the grass"
         expression: "curious and hopeful"
         facing: "right"
@@ -237,6 +243,8 @@ shots:
     characters:
       - id: "pip"
         position: "center_left"
+        stance: "hold"
+        mood: "happy"
         pose: "holding a glowing seed up with both paws"
         expression: "delighted, wide eyes"
         facing: "camera"
@@ -260,6 +268,8 @@ shots:
     characters:
       - id: "pip"
         position: "center"
+        stance: "hug"
+        mood: "surprised"
         pose: "hugging the seed close to his chest"
         expression: "startled, looking upward"
         facing: "left"
@@ -284,6 +294,8 @@ shots:
     characters:
       - id: "pip"
         position: "center"
+        stance: "hold"
+        mood: "thoughtful"
         pose: "looking down at the seed in his paws"
         expression: "torn, thoughtful"
         facing: "camera"
@@ -307,11 +319,15 @@ shots:
     characters:
       - id: "pip"
         position: "left"
+        stance: "hold"
+        mood: "proud"
         pose: "holding the glowing seed out"
         expression: "determined"
         facing: "right"
       - id: "ben"
         position: "right"
+        stance: "stand"
+        mood: "happy"
         pose: "leaning on a walking stick"
         expression: "relieved and grateful"
         facing: "left"
@@ -340,16 +356,22 @@ shots:
     characters:
       - id: "pip"
         position: "center_left"
+        stance: "sit"
+        mood: "happy"
         pose: "sitting by the warm burrow doorway"
         expression: "content, soft smile"
         facing: "right"
       - id: "ben"
         position: "center_right"
+        stance: "sit"
+        mood: "happy"
         pose: "sitting beside Pip, lamp relit"
         expression: "kind smile"
         facing: "left"
       - id: "wren"
         position: "background"
+        stance: "perch"
+        mood: "happy"
         pose: "perched on a root above the door"
         expression: "cheerful"
         facing: "camera"
