@@ -29,15 +29,15 @@ The series bible SHALL reject any field not defined by the `story-series/v1` sch
 - **THEN** validation reports an unknown-field error at that character's path
 
 ### Requirement: Visual style definition
-The series bible SHALL define a visual style consisting of a non-empty style description used verbatim in every image prompt, a list of things to avoid, and one to three style reference image paths under `series/<series-id>/style/`. The content rating SHALL be `all-ages`.
+The series bible SHALL define a visual style consisting of a non-empty style description and a list of things to avoid. The content rating SHALL be `all-ages`. The style carries no reference images; the series is rendered from code.
 
 #### Scenario: Missing style description
 - **WHEN** `style.description` is empty or absent
 - **THEN** validation reports an error
 
 #### Scenario: Style reference outside the series folder
-- **WHEN** a style reference path resolves outside `series/<series-id>/style/`
-- **THEN** validation reports an error
+- **WHEN** `style` declares `references` with any path, inside the series folder or not
+- **THEN** validation reports an unknown-field error, because style reference images no longer exist
 
 ### Requirement: Audience and series defaults
 The series bible MAY declare an `audience` description and a `defaults` section. `defaults.made_for_kids`, when present, SHALL be a boolean giving the value episodes in the series normally declare. Neither field changes the requirement that every episode states `made_for_kids` explicitly.
@@ -51,7 +51,7 @@ The series bible MAY declare an `audience` description and a `defaults` section.
 - **THEN** validation reports a type error
 
 ### Requirement: Character roster
-The series bible SHALL list its characters, each with a unique kebab-case `id`, a display name, a visual description, a canonical outfit, a list of distinguishing features, and reference image slots `front`, `three_quarter` and `side` whose paths lie under `series/<series-id>/characters/<id>/`. Exactly one entry SHALL have `kind: narrator`; the narrator has a voice but no visual fields or reference slots.
+The series bible SHALL list its characters, each with a unique kebab-case `id`, a display name, a visual description, a canonical outfit, and a list of distinguishing features. Exactly one entry SHALL have `kind: narrator`; the narrator has a voice but no visual fields. Characters carry no reference images.
 
 #### Scenario: Duplicate character id
 - **WHEN** two characters share the id `fox`
@@ -62,8 +62,12 @@ The series bible SHALL list its characters, each with a unique kebab-case `id`, 
 - **THEN** validation reports an error
 
 #### Scenario: Narrator with visual fields
-- **WHEN** the narrator entry defines `outfit` or reference slots
+- **WHEN** the narrator entry defines `outfit`
 - **THEN** validation reports an error
+
+#### Scenario: Character reference images are no longer accepted
+- **WHEN** a character declares `references`
+- **THEN** validation reports an unknown-field error
 
 ### Requirement: Character voices
 Every character, including the narrator, SHALL declare a voice consisting of a Kokoro voice id from the project's English voice allowlist and a speed between 0.5 and 2.0 inclusive.
@@ -76,9 +80,17 @@ Every character, including the narrator, SHALL declare a voice consisting of a K
 - **WHEN** a character declares speed `2.5`
 - **THEN** validation reports an out-of-range error
 
-### Requirement: Reference image presence
-Validation SHALL check whether every declared style and character reference image exists. A missing reference image SHALL be reported as a warning, not an error, so that a bible can be authored before its images are generated.
+### Requirement: Recurring locations
+The series bible MAY declare `locations` for places that recur across episodes, each with a unique kebab-case `id` and a visual description written without time of day or weather (shots add those). Location ids SHALL NOT collide with character ids.
 
-#### Scenario: Reference image not yet generated
-- **WHEN** `characters/fox/ref-front.png` is declared but does not exist on disk
-- **THEN** validation succeeds with a warning naming the missing file
+#### Scenario: Valid recurring location
+- **WHEN** a series declares location `ben-burrow-exterior` with a description
+- **THEN** validation reports no errors for that location
+
+#### Scenario: Duplicate location id
+- **WHEN** two series locations share the id `meadow-path`
+- **THEN** validation reports a duplicate-id error
+
+#### Scenario: Location id collides with a character
+- **WHEN** a series declares location `pip` and a character `pip`
+- **THEN** validation reports an id-collision error
