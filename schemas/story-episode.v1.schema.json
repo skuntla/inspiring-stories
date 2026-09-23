@@ -25,7 +25,7 @@
       }
     },
     "cast": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/kebabId"}},
-    "locations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/described"}},
+    "locations": {"type": "array", "items": {"$ref": "#/$defs/described"}},
     "props": {"type": "array", "items": {"$ref": "#/$defs/described"}},
     "pronunciations": {
       "type": "object",
@@ -44,10 +44,11 @@
         "thumbnail": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["hook", "concept"],
+          "required": ["hook", "concept", "characters"],
           "properties": {
             "hook": {"type": "string", "pattern": "\\S", "maxLength": 40},
-            "concept": {"$ref": "#/$defs/text"}
+            "concept": {"$ref": "#/$defs/text"},
+            "characters": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/kebabId"}}
           }
         }
       }

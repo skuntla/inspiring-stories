@@ -61,6 +61,11 @@ def _common(bible: dict) -> dict:
     }
 
 
+def _locations(bible: dict) -> list[tuple[str, str]]:
+    locs = bible.get("locations") if isinstance(bible.get("locations"), list) else []
+    return [(loc["id"], " ".join(loc["description"].split())) for loc in locs]
+
+
 def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
     """The full reference contract."""
     ctx = _common(bible)
@@ -89,6 +94,13 @@ def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
         ctx,
         vocabulary_rows=vocab_rows,
         cast_rows=cast_rows,
+        locations_section=(
+            "\n## Recurring locations\n\n"
+            "These places recur across the series. When a shot takes place in one, use its id as the shot's\n"
+            "`location` and do **not** declare it under `locations`.\n\n"
+            "| id | description |\n|---|---|\n"
+            + "\n".join(f"| `{lid}` | {_cell(desc)} |" for lid, desc in _locations(bible)) + "\n"
+        ) if _locations(bible) else "",
         example=(series_dir / EXAMPLE_FILE).read_text(encoding="utf-8").rstrip("\n"),
         made_for_kids_blocking=mfk_blocking,
         made_for_kids_default_note=mfk_note,
@@ -122,6 +134,10 @@ def render_project_instructions(bible: dict, root: Path) -> str:
         ctx,
         vocabulary_lines=vocab_lines,
         cast_lines=cast_lines,
+        locations_section=(
+            "\n## Recurring locations\nUse these ids directly as a shot's location; never redeclare them.\n"
+            + "\n".join(f"- {lid}: {desc}" for lid, desc in _locations(bible)) + "\n"
+        ) if _locations(bible) else "",
         made_for_kids_blocking=mfk_blocking,
         made_for_kids_default_note=mfk_note,
         made_for_kids_value=mfk_value,

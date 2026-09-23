@@ -36,7 +36,7 @@ content_rating: "all-ages"
 source:
   kind: "original"
 cast: ["..."]             # every speaker and visible character
-locations:
+locations:                # episode-only places; never redeclare a recurring location
   - id: "kebab-id"
     description: "visual description"
 props:                    # optional
@@ -77,12 +77,14 @@ publishing:
   thumbnail:
     hook: "..."           # max 40 chars
     concept: "..."
+    characters: ["..."]   # cast ids visible in it; never the narrator; [] if none
 ```
 
 Rules:
 - Line text max $max_line_words words; split longer passages. pose/expression/emotion max $max_free_words words.
 - Narrator lines omit on_screen. Character lines need on_screen: true (visible in that shot, not facing away) or false (voice only).
 - Every speaker and visible character is in cast; every declared location and prop is used.
+- A shot's location is a recurring location id (below) or an episode location. thumbnail.characters lists exactly the cast visible in the thumbnail.
 - Describe locations and props visually so they can be drawn the same every time.
 
 ## Vocabulary
@@ -90,3 +92,4 @@ $vocabulary_lines
 
 ## Cast
 $cast_lines
+$locations_section

@@ -93,7 +93,7 @@ content_rating: "all-ages"           # exactly this
 source:
   kind: "original"                   # exactly this
 cast: ["narrator-id", "character-id"]   # every speaker and every visible character, from the Cast list
-locations:
+locations:                           # episode-only places; never redeclare a recurring location
   - id: "kebab-id"
     description: "Visual description of the place"
 props:                               # optional: objects that matter to the story
@@ -134,6 +134,7 @@ publishing:
   thumbnail:
     hook: "At most 40 characters"
     concept: "What the thumbnail image shows"
+    characters: ["character-id"]     # cast ids visible in the thumbnail; never the narrator; [] if none
 ```
 
 Rules the validator also checks:
@@ -142,6 +143,10 @@ Rules the validator also checks:
 - `on_screen: true` requires the speaker to be visible in that shot and not facing `away`.
 - Every visible character and every speaker must be in `cast`.
 - Every declared location and prop should be used by at least one shot.
+- A shot's `location` is either a recurring location id (see "Recurring locations") or a location
+  declared in this episode. Never redeclare a recurring location under `locations`.
+- `publishing.thumbnail.characters` lists exactly the cast ids visible in the thumbnail (never the
+  narrator), or `[]` for a scenery-only thumbnail.
 - Pronunciation keys must be single words that appear in a line.
 
 ## Vocabulary
@@ -165,6 +170,18 @@ Rules the validator also checks:
 | `pip` | Pip | character | A small young hedgehog with a round body, short soft brown spines and a pale cream face and belly. |
 | `ben` | Old Ben | character | An elderly, broad-shouldered badger with a silver-streaked black and white striped face and grey fur. |
 | `wren` | Wren | character | A tiny, quick brown wren with a speckled chest and an upturned tail. |
+
+## Recurring locations
+
+These places recur across the series. When a shot takes place in one, use its id as the shot's
+`location` and do **not** declare it under `locations`.
+
+| id | description |
+|---|---|
+| `pip-cottage-interior` | A cozy round cottage with a small stone fireplace, a worn wooden table and a circular window. |
+| `willow-meadow-path` | A narrow pale-earth path winding through tall muted-green grass, with rolling hills, scattered purple flowers and an old wooden fence. |
+| `ben-burrow-exterior` | A round wooden doorway beneath the roots of a great oak tree, surrounded by moss and wild mint. |
+| `ben-burrow-interior` | A warm round burrow with a stone fireplace, a low wooden table, curved bookshelves and a circular window. |
 
 ## Example of a locked manifest
 
@@ -362,4 +379,5 @@ publishing:
   thumbnail:
     hook: "KEEP IT OR SHARE IT?"
     concept: "Pip holding the glowing seed, Old Ben lost in the dark behind him."
+    characters: ["pip", "ben"]
 ```

@@ -24,6 +24,13 @@ class SeriesCheck:
         return {c["id"]: c for c in self.bible["characters"]
                 if isinstance(c, dict) and isinstance(c.get("id"), str)}
 
+    def locations(self) -> dict[str, dict]:
+        """Recurring series locations by id, skipping malformed entries."""
+        if not self.bible or not isinstance(self.bible.get("locations"), list):
+            return {}
+        return {loc["id"]: loc for loc in self.bible["locations"]
+                if isinstance(loc, dict) and isinstance(loc.get("id"), str)}
+
 
 def _inside(path: Path, folder: Path) -> bool:
     try:
@@ -115,7 +122,7 @@ def _lint(doc: dict, series_dir: Path, root: Path, file: str) -> list[Finding]:
             refs = c.get("references")
             if isinstance(refs, dict) and isinstance(cid, str):
                 char_dir = series_dir / "characters" / cid
-                for slot in ("front", "three_quarter", "side"):
+                for slot in ("front", "three_quarter", "side", "expressions"):
                     ref = refs.get(slot)
                     if not isinstance(ref, str):
                         continue
@@ -131,6 +138,8 @@ def _lint(doc: dict, series_dir: Path, root: Path, file: str) -> list[Finding]:
             err(f"{base}.voice.kokoro", "series.voice-allowlist",
                 f"'{voice['kokoro']}' is not an allowed English Kokoro voice; allowed: {', '.join(allowed_voices)}")
 
+    _lint_locations(doc, series_dir, root, set(seen), err, warn)
+
     if not narrators:
         err("characters", "series.one-narrator", "exactly one character must have kind: narrator; none found")
     elif len(narrators) > 1:
@@ -138,3 +147,36 @@ def _lint(doc: dict, series_dir: Path, root: Path, file: str) -> list[Finding]:
             f"exactly one character must have kind: narrator; found {len(narrators)} "
             f"(characters[{'], characters['.join(map(str, narrators))}])")
     return f
+
+
+def _lint_locations(doc: dict, series_dir: Path, root: Path, character_ids: set[str], err, warn) -> None:
+    locations = doc.get("locations")
+    if not isinstance(locations, list):
+        return
+    seen: dict[str, int] = {}
+    for i, loc in enumerate(locations):
+        if not isinstance(loc, dict) or not isinstance(loc.get("id"), str):
+            continue
+        base = f"locations[{i}]"
+        lid = loc["id"]
+        if lid in seen:
+            err(f"{base}.id", "series.duplicate-location",
+                f"location id '{lid}' is already used by locations[{seen[lid]}]")
+        else:
+            seen[lid] = i
+        if lid in character_ids:
+            err(f"{base}.id", "series.location-id-collision",
+                f"location id '{lid}' is also a character id; ids must be unique across characters and locations")
+        if not isinstance(loc.get("references"), list):
+            continue
+        loc_dir = series_dir / "locations" / lid
+        for j, ref in enumerate(loc["references"]):
+            if not isinstance(ref, str):
+                continue
+            target = series_dir / ref
+            if not _inside(target, loc_dir):
+                err(f"{base}.references[{j}]", "series.reference-location",
+                    f"'{ref}' must be inside locations/{lid}/")
+            elif not target.is_file():
+                warn(f"{base}.references[{j}]", "series.reference-missing",
+                     f"reference image '{rel(target, root)}' does not exist yet")

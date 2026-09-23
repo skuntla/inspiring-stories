@@ -188,3 +188,4 @@ publishing:
   thumbnail:
     hook: "KEEP IT OR SHARE IT?"
     concept: "Pip holding the glowing seed, Old Ben lost in the dark behind him."
+    characters: ["pip", "ben"]

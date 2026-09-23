@@ -257,8 +257,41 @@ def test_project_instructions_over_hard_limit_are_refused(project, capsys, tmp_p
 
 
 def test_project_instructions_over_target_warn(project, capsys):
-    # three characters x 150 words x 7 chars lands between 7,500 and 8,000
-    _pad_descriptions(project, 150)
+    # three characters x 140 words x 7 chars lands between 7,500 and 8,000
+    _pad_descriptions(project, 140)
     code, out, err = project.run("brief", SERIES_ID, capsys=capsys)
     assert 7500 < len(out) <= 8000, len(out)
     assert code == 0 and "safety target" in err
+
+
+def _series_with_location(project):
+    doc = project.series()
+    doc["locations"] = [{"id": "old-oak", "description": "A huge old oak with twisted roots.",
+                         "references": ["locations/old-oak/ref-01.png"]}]
+    project.write_series(doc)
+
+
+def test_renderings_list_recurring_locations(project, capsys):
+    _series_with_location(project)
+    code, compact, _ = project.run("brief", SERIES_ID, capsys=capsys)
+    assert code == 0 and len(compact) <= 8000
+    assert "## Recurring locations" in compact and "- old-oak: A huge old oak with twisted roots." in compact
+    assert "never redeclare them" in compact
+    code, full, _ = project.run("brief", SERIES_ID, "--full", capsys=capsys)
+    assert "## Recurring locations" in full and "| `old-oak` | A huge old oak with twisted roots. |" in full
+    assert "do **not** declare it under `locations`" in full
+
+
+def test_renderings_omit_locations_when_series_has_none(project, capsys):
+    _, compact, _ = project.run("brief", SERIES_ID, capsys=capsys)
+    _, full, _ = project.run("brief", SERIES_ID, "--full", capsys=capsys)
+    assert "## Recurring locations" not in compact and "## Recurring locations" not in full
+
+
+def test_renderings_show_thumbnail_characters(project, capsys):
+    _, compact, _ = project.run("brief", SERIES_ID, capsys=capsys)
+    _, full, _ = project.run("brief", SERIES_ID, "--full", capsys=capsys)
+    assert 'characters: ["..."]   # cast ids visible in it; never the narrator; [] if none' in compact
+    assert "thumbnail.characters lists exactly the cast visible in the thumbnail" in compact
+    assert "# cast ids visible in the thumbnail; never the narrator; [] if none" in full
+    assert "`publishing.thumbnail.characters` lists exactly the cast ids visible in the thumbnail" in full

@@ -36,7 +36,7 @@ content_rating: "all-ages"
 source:
   kind: "original"
 cast: ["..."]             # every speaker and visible character
-locations:
+locations:                # episode-only places; never redeclare a recurring location
   - id: "kebab-id"
     description: "visual description"
 props:                    # optional
@@ -77,12 +77,14 @@ publishing:
   thumbnail:
     hook: "..."           # max 40 chars
     concept: "..."
+    characters: ["..."]   # cast ids visible in it; never the narrator; [] if none
 ```
 
 Rules:
 - Line text max 60 words; split longer passages. pose/expression/emotion max 12 words.
 - Narrator lines omit on_screen. Character lines need on_screen: true (visible in that shot, not facing away) or false (voice only).
 - Every speaker and visible character is in cast; every declared location and prop is used.
+- A shot's location is a recurring location id (below) or an episode location. thumbnail.characters lists exactly the cast visible in the thumbnail.
 - Describe locations and props visually so they can be drawn the same every time.
 
 ## Vocabulary
@@ -100,3 +102,10 @@ Rules:
 - pip: Pip. A small young hedgehog with a round body, short soft brown spines and a pale cream face and belly.
 - ben: Old Ben. An elderly, broad-shouldered badger with a silver-streaked black and white striped face and grey fur.
 - wren: Wren. A tiny, quick brown wren with a speckled chest and an upturned tail.
+
+## Recurring locations
+Use these ids directly as a shot's location; never redeclare them.
+- pip-cottage-interior: A cozy round cottage with a small stone fireplace, a worn wooden table and a circular window.
+- willow-meadow-path: A narrow pale-earth path winding through tall muted-green grass, with rolling hills, scattered purple flowers and an old wooden fence.
+- ben-burrow-exterior: A round wooden doorway beneath the roots of a great oak tree, surrounded by moss and wild mint.
+- ben-burrow-interior: A warm round burrow with a stone fireplace, a low wooden table, curved bookshelves and a circular window.

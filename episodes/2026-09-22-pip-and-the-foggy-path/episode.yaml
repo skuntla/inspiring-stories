@@ -10,20 +10,12 @@ source:
   kind: "original"
 cast: ["narrator", "pip", "ben", "wren"]
 locations:
-  - id: "pip-cottage-interior"
-    description: "A cozy round cottage with a small stone fireplace, a worn wooden table and a circular window admitting pale morning light."
-  - id: "willow-meadow-path"
-    description: "A narrow pale-earth path winding through tall muted-green grass, with rolling hills, scattered purple flowers and an old wooden fence."
   - id: "foggy-meadow"
     description: "An open meadow covered in dense silver fog, with wet grass, faint tree shapes and familiar landmarks reduced to shadowy silhouettes."
   - id: "willow-stream"
     description: "A narrow clear stream bordered by rounded grey stones, bright wild mint and damp grass beneath drifting silver mist."
   - id: "old-fence-crossing"
     description: "A crooked weathered wooden fence beside wild mint, a moss-covered stone and the distant silhouette of a great oak tree."
-  - id: "ben-burrow-exterior"
-    description: "A round wooden doorway beneath the roots of a great oak tree, surrounded by moss and wild mint, with warm amber light glowing through the fog."
-  - id: "ben-burrow-interior"
-    description: "A warm round burrow with an amber fireplace, a low wooden table, curved bookshelves and a circular window overlooking the foggy meadow."
 props:
   - id: "woven-basket"
     description: "A small oval basket woven from pale willow branches, with a curved handle and a cream cloth lining."
@@ -534,3 +526,4 @@ publishing:
   thumbnail:
     hook: "ONE SMALL STEP"
     concept: "Pip stands uncertain in silver fog while Old Ben's warm lantern glows faintly in the distance."
+    characters: ["pip"]

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://inspiring-stories.local/schemas/story-series.v1.schema.json",
   "title": "story-series/v1 - series bible",
-  "description": "Structure only. Rules that depend on kind (narrator vs character), the voice allowlist, file locations and uniqueness are enforced by the series lint.",
+  "description": "Structure only. Rules that depend on kind (narrator vs character), the voice allowlist, file locations, id collisions and uniqueness are enforced by the series lint.",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema", "id", "title", "content_rating", "style", "characters"],
@@ -33,6 +33,10 @@
       "type": "array",
       "minItems": 1,
       "items": {"$ref": "#/$defs/character"}
+    },
+    "locations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/location"}
     }
   },
   "$defs": {
@@ -46,6 +50,16 @@
       "properties": {
         "kokoro": {"type": "string"},
         "speed": {"type": "number", "minimum": 0.5, "maximum": 2.0}
+      }
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "references"],
+      "properties": {
+        "id": {"$ref": "#/$defs/kebabId"},
+        "description": {"$ref": "#/$defs/text"},
+        "references": {"type": "array", "minItems": 1, "maxItems": 3, "uniqueItems": true, "items": {"$ref": "#/$defs/relPath"}}
       }
     },
     "character": {
@@ -66,7 +80,8 @@
           "properties": {
             "front": {"$ref": "#/$defs/relPath"},
             "three_quarter": {"$ref": "#/$defs/relPath"},
-            "side": {"$ref": "#/$defs/relPath"}
+            "side": {"$ref": "#/$defs/relPath"},
+            "expressions": {"$ref": "#/$defs/relPath"}
           }
         },
         "voice": {"$ref": "#/$defs/voice"}

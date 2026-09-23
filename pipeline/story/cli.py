@@ -15,7 +15,11 @@ from .brief import (EXAMPLE_FILE, PROJECT_INSTRUCTIONS_MAX, PROJECT_INSTRUCTIONS
                     render_brief, render_project_instructions)
 from .lint_episode import EPISODE_FILE, check_episode
 from .lint_series import SERIES_FILE, check_series
-from .load import find_root
+from .approvals import CHECKPOINT, FILE as APPROVALS_FILE, append, collect_inputs, load_entries, status
+from .findings import ERROR, Finding
+from .images import intake, write_contact_sheet, write_metadata
+from .load import StrictYAMLError, find_root, load_yaml, rel
+from .prompts import EpisodeContext, SeriesContext, episode_pack, series_pack, write_pack
 from .report import EXIT_ERRORS, EXIT_OK, EXIT_USAGE, Result, render_json, render_text
 
 
@@ -44,24 +48,71 @@ def _emit(result: Result, as_json: bool, stream=None) -> None:
     (stream or sys.stdout).write(render_json(result) if as_json else render_text(result))
 
 
-def cmd_validate(args) -> int:
+def _target(args) -> tuple[str, Path, Path]:
+    """Resolve args.path to ("episode" | "series", folder, project root)."""
     target = Path(args.path)
     if not target.exists():
         raise UsageError(f"path not found: {args.path}")
     if target.is_file():
         target = target.parent
     root = _root(args, target)
-    result = Result()
     if (target / EPISODE_FILE).is_file():
+        return "episode", target, root
+    if (target / SERIES_FILE).is_file():
+        return "series", target, root
+    raise UsageError(f"{args.path} contains neither {EPISODE_FILE} nor {SERIES_FILE}")
+
+
+def _checked(kind: str, target: Path, root: Path) -> tuple[Result, SeriesContext | None]:
+    """Validate the target; return its findings and, when valid, a prompt context."""
+    if kind == "episode":
         check = check_episode(target / EPISODE_FILE, root, expected_id=target.resolve().name)
-        result.findings = check.findings
-        result.estimate = check.estimate
-    elif (target / SERIES_FILE).is_file():
-        result.findings = check_series(target, root).findings
-    else:
-        raise UsageError(f"{args.path} contains neither {EPISODE_FILE} nor {SERIES_FILE}")
+        result = Result(findings=check.findings, estimate=check.estimate)
+        if result.errors:
+            return result, None
+        doc = load_yaml(target / EPISODE_FILE)
+        return result, EpisodeContext(root, root / "series" / doc["series"], check.series.bible, target, doc)
+    check = check_series(target, root)
+    result = Result(findings=check.findings)
+    return result, (None if result.errors else SeriesContext(root, target, check.bible))
+
+
+def cmd_validate(args) -> int:
+    kind, target, root = _target(args)
+    result, _ = _checked(kind, target, root)
     _emit(result, args.json)
     return result.exit_code
+
+
+def cmd_prompts(args) -> int:
+    kind, target, root = _target(args)
+    result, ctx = _checked(kind, target, root)
+    if ctx is None:
+        print("error: no prompts were written because of these errors:", file=sys.stderr)
+        _emit(result, False, sys.stderr)
+        return EXIT_ERRORS
+    shown = rel(target, root)
+    if kind == "episode":
+        files = episode_pack(ctx)
+        heading = f"Gemini prompt pack: {ctx.doc['title']}"
+        steps = [f"Run `story images {shown}`.", f"Review `{shown}/build/contact-sheet.png`.",
+                 f"Run `story approve {shown} images`.", f"Commit `{shown}/images/` and `{shown}/approvals.yaml`."]
+        built_from = ctx.digests(target / EPISODE_FILE)
+    else:
+        files = series_pack(ctx)
+        heading = f"Gemini reference pack: {ctx.bible['title']}"
+        steps = [f"Run `story images {shown}`.", f"Review `{shown}/build/contact-sheet.png`.",
+                 f"Run `story approve {shown} references`.",
+                 f"Commit the reference images and `{shown}/approvals.yaml`."]
+        built_from = ctx.digests()
+    out, missing = write_pack(target, files, heading, steps, built_from)
+    print(f"wrote {len(files)} prompt files and index.md to {rel(out, root)}")
+    if kind == "episode" and missing:
+        print(f"warning: {len(missing)} attachment(s) do not exist yet; generate the series references and "
+              f"location anchors first:", file=sys.stderr)
+        for a in missing:
+            print(f"  {a.path}", file=sys.stderr)
+    return EXIT_OK
 
 
 def _series_dir(root: Path, series_id: str) -> Path | None:
@@ -164,6 +215,50 @@ def cmd_brief(args) -> int:
     return EXIT_OK
 
 
+def _intake(kind, target, root):
+    """Validate, then check images; returns (result, ctx, records, inputs) or stops on validation errors."""
+    result, ctx = _checked(kind, target, root)
+    if ctx is None:
+        return result, None, [], {}
+    findings, records = intake(kind, ctx)
+    inputs = collect_inputs(kind, ctx, records)
+    try:
+        entries = load_entries(target)
+    except StrictYAMLError as exc:
+        findings.append(Finding(ERROR, rel(target / APPROVALS_FILE, root), "", "approvals", exc.message))
+        entries = []
+    return Result(findings=findings, approval=status(entries, CHECKPOINT[kind], inputs)), ctx, records, inputs
+
+
+def cmd_images(args) -> int:
+    kind, target, root = _target(args)
+    result, ctx, records, _ = _intake(kind, target, root)
+    if ctx is not None:
+        manifest = [target / EPISODE_FILE] if kind == "episode" else []
+        write_metadata(target, manifest + [ctx.series_dir / SERIES_FILE], records, root)
+        sheet = write_contact_sheet(target, records)
+        print(f"wrote {rel(target / 'build' / 'images.json', root)} and {rel(sheet, root)}", file=sys.stderr)
+    _emit(result, args.json)
+    return result.exit_code
+
+
+def cmd_approve(args) -> int:
+    kind, target, root = _target(args)
+    if args.checkpoint != CHECKPOINT[kind]:
+        raise UsageError(f"unknown checkpoint '{args.checkpoint}' for {'an episode' if kind == 'episode' else 'a series'};"
+                         f" supported: {CHECKPOINT[kind]} (episodes: images; series: references)")
+    result, ctx, _, inputs = _intake(kind, target, root)
+    if result.errors:
+        print(f"error: not approved; `story images {rel(target, root)}` must report no errors first:", file=sys.stderr)
+        result.approval = None
+        _emit(result, False, sys.stderr)
+        return EXIT_ERRORS
+    entry = append(target, args.checkpoint, inputs)
+    print(f"approved {args.checkpoint} at {entry['approved_at']} ({len(inputs)} inputs, {entry['digest'][:19]}…); "
+          f"recorded in {rel(target / APPROVALS_FILE, root)}")
+    return EXIT_OK
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="story", description="Local story-to-video pipeline.")
     p.add_argument("--root", help="project root (default: nearest directory containing schemas/)")
@@ -186,6 +281,19 @@ def build_parser() -> argparse.ArgumentParser:
                    help="render the full reference contract instead of the compact Project instructions")
     b.add_argument("--out", help="write to this file instead of stdout")
     b.set_defaults(func=cmd_brief)
+    pr = sub.add_parser("prompts", help="write the Gemini prompt pack for an episode or a series")
+    pr.add_argument("path")
+    pr.set_defaults(func=cmd_prompts)
+
+    im = sub.add_parser("images", help="check the images of an episode or series and build the contact sheet")
+    im.add_argument("path")
+    im.add_argument("--json", action="store_true", help="machine-readable output")
+    im.set_defaults(func=cmd_images)
+
+    ap = sub.add_parser("approve", help="record approval of an episode's images or a series' references")
+    ap.add_argument("path")
+    ap.add_argument("checkpoint", help="images (episode) or references (series)")
+    ap.set_defaults(func=cmd_approve)
     return p
 
 

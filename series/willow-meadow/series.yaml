@@ -38,6 +38,7 @@ characters:
       front: "characters/pip/ref-front.png"
       three_quarter: "characters/pip/ref-3q.png"
       side: "characters/pip/ref-side.png"
+      expressions: "characters/pip/expressions.png"
     voice:
       kokoro: "af_bella"
       speed: 1.05
@@ -54,6 +55,7 @@ characters:
       front: "characters/ben/ref-front.png"
       three_quarter: "characters/ben/ref-3q.png"
       side: "characters/ben/ref-side.png"
+      expressions: "characters/ben/expressions.png"
     voice:
       kokoro: "bm_george"
       speed: 0.9
@@ -70,6 +72,25 @@ characters:
       front: "characters/wren/ref-front.png"
       three_quarter: "characters/wren/ref-3q.png"
       side: "characters/wren/ref-side.png"
+      expressions: "characters/wren/expressions.png"
     voice:
       kokoro: "af_sky"
       speed: 1.1
+# Recurring places. Descriptions carry no time of day or weather: shots add those.
+locations:
+  - id: "pip-cottage-interior"
+    description: "A cozy round cottage with a small stone fireplace, a worn wooden table and a circular window."
+    references:
+      - "locations/pip-cottage-interior/ref-01.png"
+  - id: "willow-meadow-path"
+    description: "A narrow pale-earth path winding through tall muted-green grass, with rolling hills, scattered purple flowers and an old wooden fence."
+    references:
+      - "locations/willow-meadow-path/ref-01.png"
+  - id: "ben-burrow-exterior"
+    description: "A round wooden doorway beneath the roots of a great oak tree, surrounded by moss and wild mint."
+    references:
+      - "locations/ben-burrow-exterior/ref-01.png"
+  - id: "ben-burrow-interior"
+    description: "A warm round burrow with a stone fireplace, a low wooden table, curved bookshelves and a circular window."
+    references:
+      - "locations/ben-burrow-interior/ref-01.png"

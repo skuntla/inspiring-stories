@@ -105,6 +105,13 @@ def _lint(doc: dict, series: SeriesCheck | None, file: str, expected_id: str | N
     narrators = {cid for cid, c in (bible_chars or {}).items() if c.get("kind") == "narrator"}
 
     declared_locations = _declared(doc, "locations", err)
+    series_locations = series.locations() if series and series.bible else {}
+    for loc_id, idx in declared_locations.items():
+        if loc_id in series_locations:
+            err(f"locations[{idx}].id", "episode.redeclared-series-location",
+                f"'{loc_id}' is a recurring location of series '{doc.get('series')}'; remove this declaration "
+                f"and use the series location (its description and reference images keep it consistent)")
+    known_locations = set(declared_locations) | set(series_locations)
     declared_props = _declared(doc, "props", err)
     used_locations: set[str] = set()
     used_props: set[str] = set()
@@ -120,7 +127,7 @@ def _lint(doc: dict, series: SeriesCheck | None, file: str, expected_id: str | N
                  f"{len(shots)} shots; most stories work best with {SHOT_COUNT_SOFT[0]}–{SHOT_COUNT_SOFT[1]}")
         for i, shot in enumerate(shots):
             if isinstance(shot, dict):
-                _lint_shot(i, shot, cast, narrators, declared_locations, declared_props,
+                _lint_shot(i, shot, cast, narrators, known_locations, declared_props,
                            used_locations, used_props, err)
 
     for loc_id, idx in declared_locations.items():
@@ -133,6 +140,17 @@ def _lint(doc: dict, series: SeriesCheck | None, file: str, expected_id: str | N
     _lint_pronunciations(doc, err, warn)
 
     pub = doc.get("publishing")
+    thumb = pub.get("thumbnail") if isinstance(pub, dict) else None
+    if isinstance(thumb, dict) and isinstance(thumb.get("characters"), list):
+        for j, cid in enumerate(thumb["characters"]):
+            path = f"publishing.thumbnail.characters[{j}]"
+            if not isinstance(cid, str):
+                continue
+            if cid in narrators:
+                err(path, "episode.thumbnail-narrator", "the narrator is never drawn, so it cannot appear in the thumbnail")
+            elif cid not in cast:
+                err(path, "episode.thumbnail-character-in-cast",
+                    f"'{cid}' is not in the episode cast; list only cast members visible in the thumbnail")
     defaults = series.bible.get("defaults") if series and series.bible else None
     default_mfk = defaults.get("made_for_kids") if isinstance(defaults, dict) else None
     if (isinstance(pub, dict) and isinstance(pub.get("made_for_kids"), bool)
@@ -165,7 +183,7 @@ def _declared(doc: dict, key: str, err) -> dict[str, int]:
     return out
 
 
-def _lint_shot(i, shot, cast, narrators, declared_locations, declared_props, used_locations, used_props, err):
+def _lint_shot(i, shot, cast, narrators, known_locations, declared_props, used_locations, used_props, err):
     base = f"shots[{i}]"
     expected = f"s{i + 1:02d}"
     if isinstance(shot.get("id"), str) and shot["id"] != expected:
@@ -175,8 +193,9 @@ def _lint_shot(i, shot, cast, narrators, declared_locations, declared_props, use
     loc = shot.get("location")
     if isinstance(loc, str):
         used_locations.add(loc)
-        if loc not in declared_locations:
-            err(f"{base}.location", "episode.unknown-location", f"location '{loc}' is not declared under locations")
+        if loc not in known_locations:
+            err(f"{base}.location", "episode.unknown-location",
+                f"location '{loc}' is declared neither under the episode's locations nor as a series location")
     if isinstance(shot.get("props"), list):
         for j, prop in enumerate(shot["props"]):
             if isinstance(prop, str):

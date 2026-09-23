@@ -15,6 +15,7 @@ EXIT_USAGE = 2
 class Result:
     findings: list[Finding] = field(default_factory=list)
     estimate: dict | None = None  # {"shots": [{"id", "seconds"}], "total_seconds"}
+    approval: dict | None = None  # {"checkpoint", "status", "changes", ...}
 
     @property
     def errors(self) -> int:
@@ -46,6 +47,9 @@ def render_text(result: Result) -> str:
         lines.append(f"  total {result.estimate['total_seconds']:6.1f} s")
     lines.append("")
     lines.append(f"{_plural(result.errors, 'error')}, {_plural(result.warnings, 'warning')}")
+    if result.approval:
+        from .approvals import describe  # local import: approvals depends on images, which is heavier
+        lines.append(describe(result.approval))
     return "\n".join(lines) + "\n"
 
 
@@ -56,4 +60,6 @@ def render_json(result: Result) -> str:
         "warnings": result.warnings,
         "estimate": result.estimate,
     }
+    if result.approval is not None:
+        doc["approval"] = result.approval
     return json.dumps(doc, indent=2, ensure_ascii=False) + "\n"

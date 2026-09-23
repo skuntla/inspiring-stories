@@ -173,3 +173,74 @@ def test_made_for_kids_deviating_from_series_default_warns(project):
     assert [f for f in findings if f.severity == "error"] == []
     assert ("episode.made-for-kids-default", "publishing.made_for_kids") in {
         (f.rule, f.path) for f in findings if f.severity == "warning"}
+
+
+# series locations ------------------------------------------------------------------
+
+def _add_series_location(project, lid="meadow-edge"):
+    series = project.series()
+    series["locations"] = [{"id": lid, "description": "Tall golden grass at the meadow's edge.",
+                            "references": [f"locations/{lid}/ref-01.png"]}]
+    project.write_series(series)
+
+
+def test_series_location_used_directly(project):
+    _add_series_location(project, "old-oak")
+    doc = project.episode()
+    doc["shots"][0]["location"] = "old-oak"
+    project.write_episode(doc)
+    assert _episode_findings(_check(project)) == []
+
+
+def test_episode_may_rely_only_on_series_locations(project):
+    _add_series_location(project, "old-oak")
+    doc = project.episode()
+    for shot in doc["shots"]:
+        shot["location"] = "old-oak"
+    doc["locations"] = []
+    project.write_episode(doc)
+    assert _episode_findings(_check(project)) == []
+
+
+def test_redeclaring_a_series_location_is_an_error(project):
+    _add_series_location(project, "meadow-edge")   # the episode also declares meadow-edge
+    errors = [f for f in _episode_findings(_check(project)) if f.severity == "error"]
+    assert ("episode.redeclared-series-location", "locations[0].id") in {(f.rule, f.path) for f in errors}
+    msg = next(f.message for f in errors if f.rule == "episode.redeclared-series-location")
+    assert "remove this declaration" in msg
+
+
+def test_unknown_location_names_both_sources(project):
+    _add_series_location(project, "old-oak")
+    doc = project.episode()
+    doc["shots"][0]["location"] = "river-bank"
+    project.write_episode(doc)
+    msg = next(f.message for f in _check(project).findings if f.rule == "episode.unknown-location")
+    assert "neither under the episode's locations nor as a series location" in msg
+
+
+# thumbnail characters ------------------------------------------------------------------
+
+def _thumb(d, chars):
+    d["publishing"]["thumbnail"]["characters"] = chars
+
+
+@pytest.mark.parametrize("mutate, rule, path", [
+    (lambda d: d["publishing"]["thumbnail"].pop("characters"), "schema.required", "publishing.thumbnail.characters"),
+    (lambda d: _thumb(d, ["owl"]), "episode.thumbnail-character-in-cast", "publishing.thumbnail.characters[0]"),
+    (lambda d: _thumb(d, ["narrator"]), "episode.thumbnail-narrator", "publishing.thumbnail.characters[0]"),
+    (lambda d: _thumb(d, ["pip", "pip"]), "schema.unique", "publishing.thumbnail.characters"),
+])
+def test_thumbnail_character_rules(project, mutate, rule, path):
+    doc = project.episode()
+    mutate(doc)
+    project.write_episode(doc)
+    errors = [f for f in _episode_findings(_check(project)) if f.severity == "error"]
+    assert (rule, path) in {(f.rule, f.path) for f in errors}, errors
+
+
+def test_scenery_only_thumbnail_is_valid(project):
+    doc = project.episode()
+    _thumb(doc, [])
+    project.write_episode(doc)
+    assert _episode_findings(_check(project)) == []
