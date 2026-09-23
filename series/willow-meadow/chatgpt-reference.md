@@ -88,6 +88,7 @@ series: "willow-meadow"                 # exactly this
 title: "Story title"
 logline: "One sentence: who wants what, and what stands in the way."
 moral: "Optional: the lesson in one sentence."
+music: "hopeful"                     # optional: background music from the vocabulary; default none
 language: "en"                       # exactly this
 content_rating: "all-ages"           # exactly this
 source:
@@ -119,6 +120,8 @@ shots:
     camera:
       move: "<camera move>"
       intensity: "<camera intensity>"
+      framing: "<framing>"             # optional: wide (default), medium or close
+      subject: "character-id"          # optional: the visible character a medium/close shot frames
     atmosphere: ["<atmosphere>"]     # may be empty: []
     ambience: "<ambience>"
     composition_notes: "Framing guidance for the illustrator"
@@ -158,13 +161,15 @@ Rules the validator also checks:
 | `shots[].time_of_day` | `dawn`, `morning`, `midday`, `afternoon`, `dusk`, `night` |
 | `shots[].characters[].position` | `left`, `center_left`, `center`, `center_right`, `right`, `background` |
 | `shots[].characters[].stance` | `stand`, `walk`, `sit`, `kneel`, `lie`, `reach`, `hold`, `hug`, `fly`, `perch` |
-| `shots[].characters[].mood` | `neutral`, `happy`, `sad`, `surprised`, `worried`, `scared`, `angry`, `thoughtful`, `proud`, `tired` |
+| `shots[].characters[].mood` | `neutral`, `happy`, `sad`, `surprised`, `worried`, `scared`, `angry`, `thoughtful`, `proud`, `tired`, `calm` |
 | `shots[].characters[].facing` | `left`, `right`, `camera`, `away` |
 | `shots[].camera.move` | `static`, `push_in`, `pull_out`, `pan_left`, `pan_right`, `tilt_up`, `tilt_down` |
 | `shots[].camera.intensity` | `low`, `medium`, `high` |
+| `shots[].camera.framing` | `wide`, `medium`, `close` |
 | `shots[].atmosphere[]` | `rain`, `snow`, `fog`, `mist`, `dust_motes`, `fireflies`, `embers`, `firelight_flicker`, `falling_leaves`, `sun_rays`, `sparkles`, `wind` |
 | `shots[].ambience` | `none`, `forest_day`, `forest_night`, `meadow`, `village`, `river`, `rain`, `ocean_shore`, `fireplace_indoor`, `night_crickets`, `cave`, `wind` |
 | `shots[].lines[].delivery` | `neutral`, `warm`, `gentle`, `cheerful`, `excited`, `curious`, `surprised`, `sad`, `worried`, `scared`, `angry`, `whisper`, `proud`, `thoughtful` |
+| `music` | `none`, `hopeful` |
 
 ## Cast
 
@@ -186,6 +191,20 @@ These places recur across the series. When a shot takes place in one, use its id
 | `willow-meadow-path` | A narrow pale-earth path winding through tall muted-green grass, with rolling hills, scattered purple flowers and an old wooden fence. |
 | `ben-burrow-exterior` | A round wooden doorway beneath the roots of a great oak tree, surrounded by moss and wild mint. |
 | `ben-burrow-interior` | A warm round burrow with a stone fireplace, a low wooden table, curved bookshelves and a circular window. |
+
+## Ready-made shots
+
+These close-ups and cards are already drawn and work in any episode. To use one, declare it under
+`locations` with exactly this id (and a short description), then use it as a shot's `location`.
+They show no characters: a line spoken over one is off-screen (`on_screen: false`) or narration.
+
+| id | what it shows |
+|---|---|
+| `closing-card` | Closing card: the shot's narration shown as a quote over soft hills (captions are hidden). |
+| `compass-closeup` | Close-up of a brass compass; the needle swings and settles on north on the shot's last spoken word. |
+| `notebook-page` | Close-up of an open notebook; the character's spoken line writes itself on the page as it is read out. |
+| `seedling-closeup` | Close-up of one seedling in damp soil; its stem rises and two leaves unfurl. |
+| `watering-closeup` | Close-up of dry, cracked soil darkening as water pours onto it from a can; a sprout tip shows at the end. |
 
 ## Example of a locked manifest
 

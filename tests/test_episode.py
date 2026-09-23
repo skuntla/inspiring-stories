@@ -255,3 +255,31 @@ def test_unknown_mood_lists_allowed_moods(project):
     project.write_episode(doc)
     msg = next(f.message for f in _check(project).findings if f.path == "shots[0].characters[0].mood")
     assert "neutral, happy, sad" in msg
+
+
+# --- framing ---------------------------------------------------------------------------------
+
+def _frame(d, **cam):
+    d["shots"][4]["camera"].update(cam)   # s05 shows pip and bramble
+
+
+@pytest.mark.parametrize("mutate, rule, path", [
+    (lambda d: _frame(d, framing="close", subject="wren"), "episode.camera-subject", "shots[4].camera.subject"),
+    (lambda d: (d["shots"][3].update(characters=[]), d["shots"][3]["camera"].update(framing="close")),
+     "episode.camera-subject", "shots[3].camera.framing"),
+    (lambda d: _frame(d, framing="extreme"), "schema.enum", "shots[4].camera.framing"),
+])
+def test_framing_rules(project, mutate, rule, path):
+    doc = project.episode()
+    mutate(doc)
+    project.write_episode(doc)
+    errors = [f for f in _episode_findings(_check(project)) if f.severity == "error"]
+    assert (rule, path) in {(f.rule, f.path) for f in errors}, errors
+
+
+def test_close_up_with_visible_subject_and_calm_mood_are_valid(project):
+    doc = project.episode()
+    _frame(doc, framing="close", subject="bramble")
+    doc["shots"][4]["characters"][0]["mood"] = "calm"
+    project.write_episode(doc)
+    assert _episode_findings(_check(project)) == []

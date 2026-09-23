@@ -1,0 +1,57 @@
+# Production series bible for "Quiet Lessons": short, gentle parables about everyday people.
+# Character looks and voices here are frozen: changing them changes every future episode.
+schema: "story-series/v1"
+id: "quiet-lessons"
+title: "Quiet Lessons"
+content_rating: "all-ages"
+audience: "General audience of all ages, especially adults and families; not primarily directed at children."
+defaults:
+  made_for_kids: false
+style:
+  description: >-
+    Warm flat storybook illustration with soft ink outlines, simple rounded "bean" characters with
+    big heads and dot eyes, gentle Indian everyday settings, muted terracotta, teal, ochre and leaf-green
+    palette, soft light and paper texture, 16:9 widescreen composition.
+  avoid:
+    - "text or logos in the scenery (story text appears only where a shot calls for it)"
+    - "photorealism or 3D render look"
+    - "harsh shadows or frightening imagery"
+characters:
+  - id: "narrator"
+    kind: "narrator"
+    name: "The Storyteller"
+    voice:
+      kokoro: "af_heart"
+      speed: 0.95
+  - id: "arjun"
+    kind: "character"
+    name: "Arjun"
+    description: "A sincere, hardworking man in his early 40s with warm brown skin, short black hair greying at the temples and light stubble."
+    outfit: "A teal shirt with sleeves rolled to the elbow, charcoal trousers and brown shoes."
+    features:
+      - "grey streaks at both temples"
+      - "sleeves always rolled to the elbow"
+      - "a thoughtful slight frown when tired"
+    voice:
+      kokoro: "am_michael"
+      speed: 0.95
+  - id: "gardener"
+    kind: "character"
+    name: "The Gardener"
+    description: "A kind elderly man with deep brown skin, a white beard and bushy white eyebrows, slightly stooped."
+    outfit: "A wide straw hat, a cream kurta and a leaf-green apron."
+    features:
+      - "a wide straw hat"
+      - "a full white beard"
+      - "a leaf-green apron"
+    voice:
+      kokoro: "bm_george"
+      speed: 0.85
+# Recurring places. Descriptions carry no time of day or weather: shots add those.
+locations:
+  - id: "arjun-room"
+    description: "Arjun's small study: a wooden desk under a window, a desk lamp, a chair and a narrow bookshelf against warm terracotta walls."
+  - id: "city-park"
+    description: "A quiet neighbourhood park with a wooden bench, tall trees, a lamp post and a bed of young plants beside the path."
+  - id: "morning-lane"
+    description: "A narrow residential lane with low painted houses, a neem tree, a garden wall and wires overhead."

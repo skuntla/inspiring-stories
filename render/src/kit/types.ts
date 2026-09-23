@@ -16,6 +16,7 @@ export type CastMember = {
 	mood: string;
 	mouth: [number, Shape][]; // [frame within shot, shape]
 	blinks: number[]; // frames within shot
+	travel?: {from: number; to: number; speed: number}; // walking left/right across the shot
 };
 
 export type CaptionPage = {
@@ -34,7 +35,13 @@ export type Shot = {
 	atmosphere: string[];
 	ambience: string;
 	props: string[];
-	camera: {from: View; to: View; ease: string};
+	camera: {
+		framing: 'wide' | 'medium' | 'close';
+		subject?: {id: string; x: number; depth: number; facing: Facing};
+		from: View; // [dx, dy, zoom factor] from the shot's base view
+		to: View;
+		ease: string;
+	};
 	cast: CastMember[];
 	captions: CaptionPage[];
 };
@@ -48,7 +55,7 @@ export type Timeline = {
 	series: string;
 	episode: string;
 	title: string;
-	audio: {src: string};
+	audio: {src: string; music?: string};
 	shots: Shot[];
 };
 
@@ -67,7 +74,12 @@ export type Palette = {
 };
 
 /** Everything a component may use to draw: seconds since the shot started, and the shot's light. */
-export type DrawContext = {t: number; palette: Palette; timeOfDay: TimeOfDay};
+/** A word spoken in the current shot, in seconds from the shot's start; `speaker` is null for the narrator. */
+export type SpokenWord = {text: string; from: number; to: number; speaker: string | null};
+
+/** What every component draws from: the shot's clock, light, and the words spoken in it (so text
+ * shots and inserts can time themselves to the voice instead of hard-coded seconds). */
+export type DrawContext = {t: number; palette: Palette; timeOfDay: TimeOfDay; words?: SpokenWord[]};
 
 export type RigProps = DrawContext & {
 	stance: string;
@@ -76,6 +88,7 @@ export type RigProps = DrawContext & {
 	eye: number; // 1 open .. 0 closed
 	speaking: boolean;
 	facing: Facing;
+	walkSpeed?: number; // px/s in the rig's own units while walking (0 = on the spot)
 };
 
 /** A character rig, drawn facing right with its origin at the feet on the ground line. */
@@ -94,6 +107,7 @@ export type Location = {
 	groundY: number; // ground line for depth-1 characters, in scene px (1920x1080)
 	backgroundGroundY?: number; // ground line for background (depth 0.6) characters
 	interior?: boolean; // interiors ignore the sky
+	showsText?: boolean; // the location draws its own text (a page, a quote card): captions are hidden
 	propSlots: [number, number][]; // where free props stand, in order
 	Background: React.FC<DrawContext>;
 	Foreground?: React.FC<DrawContext>;

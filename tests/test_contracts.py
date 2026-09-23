@@ -29,5 +29,5 @@ def test_vocabulary_matches_design():
     assert vocab["cameraMove"]["enum"] == ["static", "push_in", "pull_out", "pan_left", "pan_right", "tilt_up", "tilt_down"]
     assert vocab["facing"]["enum"] == ["left", "right", "camera", "away"]
     assert set(vocab) == {"cameraMove", "cameraIntensity", "atmosphere", "ambience", "delivery", "position", "facing",
-                          "timeOfDay", "stance", "mood"}
+                          "timeOfDay", "stance", "mood", "framing", "music"}
     assert "perch" in vocab["stance"]["enum"] and "thoughtful" in vocab["mood"]["enum"]

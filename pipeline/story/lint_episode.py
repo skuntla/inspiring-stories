@@ -225,6 +225,16 @@ def _lint_shot(i, shot, cast, narrators, known_locations, declared_props, used_l
             elif cid not in cast:
                 err(f"{path}.id", "episode.visible-in-cast", f"'{cid}' is visible in this shot but is not in the episode cast")
 
+    cam = shot.get("camera")
+    if isinstance(cam, dict):
+        subject = cam.get("subject")
+        if isinstance(subject, str) and subject not in visible:
+            err(f"{base}.camera.subject", "episode.camera-subject",
+                f"camera subject '{subject}' is not visible in this shot")
+        if cam.get("framing") in ("medium", "close") and not visible:
+            err(f"{base}.camera.framing", "episode.camera-subject",
+                f"a {cam['framing']} shot needs a visible character to frame; this shot shows none")
+
     if isinstance(shot.get("lines"), list):
         for j, line in enumerate(shot["lines"]):
             if isinstance(line, dict):

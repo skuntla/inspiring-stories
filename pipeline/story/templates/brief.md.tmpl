@@ -87,6 +87,7 @@ series: "$series_id"                 # exactly this
 title: "Story title"
 logline: "One sentence: who wants what, and what stands in the way."
 moral: "Optional: the lesson in one sentence."
+music: "hopeful"                     # optional: background music from the vocabulary; default none
 language: "en"                       # exactly this
 content_rating: "all-ages"           # exactly this
 source:
@@ -118,6 +119,8 @@ shots:
     camera:
       move: "<camera move>"
       intensity: "<camera intensity>"
+      framing: "<framing>"             # optional: wide (default), medium or close
+      subject: "character-id"          # optional: the visible character a medium/close shot frames
     atmosphere: ["<atmosphere>"]     # may be empty: []
     ambience: "<ambience>"
     composition_notes: "Framing guidance for the illustrator"

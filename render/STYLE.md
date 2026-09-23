@@ -10,19 +10,22 @@ The rules every SVG component follows, so that characters, places and props writ
 | Recurring location | `src/series/<series>/locations/<id>.tsx` | `location: Location` |
 | Shared prop | `src/series/<series>/props/<id>.tsx` | `prop: Prop` |
 | Episode-only location / prop | `src/episodes/<episode-id>/{locations,props}/<id>.tsx` | same as above |
+| Shared close-up, insert or card | `src/common/{locations,props}/<id>.tsx` | same as above, plus `about` |
 
-The file name is the id from the manifest. An episode component wins over a series one with the same id. Interfaces live in `src/kit/types.ts`.
+The file name is the id from the manifest. The most specific component wins: episode, then series, then shared. Interfaces live in `src/kit/types.ts`. A shared component names no story or character, imports only from `kit/`, times itself from `words` (see `DIRECTING.md`), and declares its one-line description as `export const about = "...";`, which the ChatGPT briefs list as a ready-made shot.
 
 ## Rigs
 
-- Drawn **facing right**, origin at the **feet on the ground line**, standing height roughly: Pip 260 px, Ben 380 px, Wren 150 px. The renderer mirrors for `facing: left` and scales background characters to 0.6.
+- Drawn **facing right**, origin at the **feet on the ground line**, standing height roughly: Pip 260 px, Ben 380 px, Wren 150 px, humans about 470 px.
+- People: build them with `makeHuman(spec)` from `kit/human.tsx` (proportions, IK arms and legs, planted-foot walk, a posture and gesture for every stance × mood); a spec only sets colors, hair and clothes.
+- Animals that walk: use `walkCycle` from `kit/walk.ts` so feet stay planted and stride follows speed. The renderer mirrors for `facing: left` and scales background characters to 0.6.
 - Declare support as **one-line literal arrays**, which `story render` reads:
   ```ts
   stances: ['stand', 'walk', 'sit'],
   moods: ['neutral', 'happy', 'sad'],
   ```
 - `anchors.hand` is where a held prop is drawn (the `hold` stance); `anchors.head` is the top of the head.
-- Mouths: use `kit/face.tsx` (`Mouth`, `moodFace`) so the eight visemes and the ten moods read the same on every character. Eyes blink through the `eye` prop (1 open → 0 closed).
+- Mouths: use `kit/face.tsx` (`Mouth`, `moodFace`) so the eight visemes and the eleven moods read the same on every character. Eyes blink through the `eye` prop (1 open → 0 closed).
 - Keep idle life subtle: breathing about 1%, a small head tilt, a little extra movement while `speaking`.
 
 ## Locations

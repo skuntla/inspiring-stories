@@ -31,6 +31,7 @@ series: "willow-meadow"
 title: "..."
 logline: "..."            # one sentence
 moral: "..."              # optional
+music: "hopeful"          # optional: none | hopeful (light background music)
 language: "en"
 content_rating: "all-ages"
 source:
@@ -62,6 +63,8 @@ shots:
     camera:
       move: "..."
       intensity: "..."
+      framing: "..."      # optional: wide (default), medium, close
+      subject: "..."      # optional: the visible character a medium/close shot frames
     atmosphere: []
     ambience: "..."
     composition_notes: "..."
@@ -93,13 +96,15 @@ Rules:
 - time_of_day: dawn, morning, midday, afternoon, dusk, night
 - characters[].position: left, center_left, center, center_right, right, background
 - characters[].stance: stand, walk, sit, kneel, lie, reach, hold, hug, fly, perch
-- characters[].mood: neutral, happy, sad, surprised, worried, scared, angry, thoughtful, proud, tired
+- characters[].mood: neutral, happy, sad, surprised, worried, scared, angry, thoughtful, proud, tired, calm
 - characters[].facing: left, right, camera, away
 - camera.move: static, push_in, pull_out, pan_left, pan_right, tilt_up, tilt_down
 - camera.intensity: low, medium, high
+- camera.framing: wide, medium, close
 - atmosphere[]: rain, snow, fog, mist, dust_motes, fireflies, embers, firelight_flicker, falling_leaves, sun_rays, sparkles, wind
 - ambience: none, forest_day, forest_night, meadow, village, river, rain, ocean_shore, fireplace_indoor, night_crickets, cave, wind
 - lines[].delivery: neutral, warm, gentle, cheerful, excited, curious, surprised, sad, worried, scared, angry, whisper, proud, thoughtful
+- music: none, hopeful
 
 ## Cast
 - narrator: The Storyteller (narrator, never drawn)
@@ -113,3 +118,11 @@ Use these ids directly as a shot's location; never redeclare them.
 - willow-meadow-path: A narrow pale-earth path winding through tall muted-green grass, with rolling hills, scattered purple flowers and an old wooden fence.
 - ben-burrow-exterior: A round wooden doorway beneath the roots of a great oak tree, surrounded by moss and wild mint.
 - ben-burrow-interior: A warm round burrow with a stone fireplace, a low wooden table, curved bookshelves and a circular window.
+
+## Ready-made shots
+Already drawn, any episode: declare under locations with this id, then use it. No characters appear; lines over them are off-screen or narration.
+- closing-card: Closing card: the shot's narration shown as a quote over soft hills (captions are hidden).
+- compass-closeup: Close-up of a brass compass; the needle swings and settles on north on the shot's last spoken word.
+- notebook-page: Close-up of an open notebook; the character's spoken line writes itself on the page as it is read out.
+- seedling-closeup: Close-up of one seedling in damp soil; its stem rises and two leaves unfurl.
+- watering-closeup: Close-up of dry, cracked soil darkening as water pours onto it from a can; a sprout tip shows at the end.

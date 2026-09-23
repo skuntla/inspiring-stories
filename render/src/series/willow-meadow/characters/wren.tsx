@@ -71,7 +71,7 @@ const Wren: React.FC<RigProps> = ({t, stance, mood, mouth, eye, speaking}) => {
 export const rig: Rig = {
 	id: 'wren',
 	stances: ['stand', 'perch', 'fly'],
-	moods: ['neutral', 'happy', 'sad', 'surprised', 'worried', 'scared', 'angry', 'thoughtful', 'proud', 'tired'],
+	moods: ['neutral', 'happy', 'sad', 'surprised', 'worried', 'scared', 'angry', 'thoughtful', 'proud', 'tired', 'calm'],
 	height: 150,
 	anchors: {hand: [0, -70], head: [30, -124]},
 	Component: Wren,

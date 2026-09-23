@@ -21,6 +21,27 @@ The manifest SHALL contain an ordered list of between 1 and 30 shots whose ids a
 - **WHEN** a visible character has no `stance`
 - **THEN** validation reports a missing-field error at that character's path
 
+#### Scenario: Calm mood
+- **WHEN** a visible character declares `mood: "calm"`
+- **THEN** validation reports no error
+
 #### Scenario: Unknown mood
 - **WHEN** a visible character declares `mood: "ecstatic"`
 - **THEN** validation reports an error listing the allowed moods
+
+## ADDED Requirements
+
+### Requirement: Shot framing
+A shot's camera MAY declare `framing` (`wide`, `medium` or `close`; default `wide`) and `subject`, the id of a character visible in that shot. A `medium` or `close` shot without a subject SHALL frame its first on-screen speaker, or else its first visible character; such a shot with no visible character SHALL be an error.
+
+#### Scenario: Close-up on a visible character
+- **WHEN** a shot declares `camera: {move: "push_in", intensity: "low", framing: "close", subject: "gardener"}` and the gardener is visible
+- **THEN** validation reports no error
+
+#### Scenario: Subject not in the shot
+- **WHEN** a shot declares `subject: "gardener"` and the gardener is not visible in it
+- **THEN** validation reports an error at that shot's camera path
+
+#### Scenario: Close-up of nobody
+- **WHEN** a shot declares `framing: "close"` and shows no characters
+- **THEN** validation reports an error

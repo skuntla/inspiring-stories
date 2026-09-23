@@ -39,6 +39,9 @@
     "moral": {
       "$ref": "#/$defs/text"
     },
+    "music": {
+      "$ref": "vocabulary.v1.json#/$defs/music"
+    },
     "language": {
       "const": "en"
     },
@@ -302,6 +305,12 @@
             },
             "intensity": {
               "$ref": "vocabulary.v1.json#/$defs/cameraIntensity"
+            },
+            "framing": {
+              "$ref": "vocabulary.v1.json#/$defs/framing"
+            },
+            "subject": {
+              "$ref": "#/$defs/kebabId"
             }
           }
         },

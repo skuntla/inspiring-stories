@@ -16,6 +16,7 @@ export const MOODS: Record<string, MoodFace> = {
 	thoughtful: {lid: 0.8, eyeScale: 1, browTilt: 8, browLift: -2, rest: 'M-10,1 Q2,3 12,-3'},
 	proud: {lid: 0.8, eyeScale: 1, browTilt: -6, browLift: -2, rest: 'M-13,-2 Q0,8 13,-2'},
 	tired: {lid: 0.55, eyeScale: 0.95, browTilt: 8, browLift: 3, rest: 'M-10,1 Q0,3 10,1'},
+	calm: {lid: 0.82, eyeScale: 1, browTilt: -2, browLift: 0, rest: 'M-11,-1 Q0,6 11,-1'},
 };
 
 export const moodFace = (mood: string): MoodFace => MOODS[mood] ?? MOODS.neutral;

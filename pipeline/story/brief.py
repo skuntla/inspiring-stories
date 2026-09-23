@@ -32,9 +32,11 @@ _FIELD_FOR_VOCAB = {
     "facing": "shots[].characters[].facing",
     "cameraMove": "shots[].camera.move",
     "cameraIntensity": "shots[].camera.intensity",
+    "framing": "shots[].camera.framing",
     "atmosphere": "shots[].atmosphere[]",
     "ambience": "shots[].ambience",
     "delivery": "shots[].lines[].delivery",
+    "music": "music",
 }
 
 
@@ -68,6 +70,12 @@ def _locations(bible: dict) -> list[tuple[str, str]]:
     return [(loc["id"], " ".join(loc["description"].split())) for loc in locs]
 
 
+def _shared(root: Path) -> list[tuple[str, str]]:
+    """Reusable close-ups and cards from the shared component library (render/src/common/locations)."""
+    from .render import common_library
+    return sorted(common_library(root)["locations"].items())
+
+
 def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
     """The full reference contract."""
     ctx = _common(bible)
@@ -96,13 +104,20 @@ def render_brief(bible: dict, series_dir: Path, root: Path) -> str:
         ctx,
         vocabulary_rows=vocab_rows,
         cast_rows=cast_rows,
-        locations_section=(
+        locations_section=((
             "\n## Recurring locations\n\n"
             "These places recur across the series. When a shot takes place in one, use its id as the shot's\n"
             "`location` and do **not** declare it under `locations`.\n\n"
             "| id | description |\n|---|---|\n"
             + "\n".join(f"| `{lid}` | {_cell(desc)} |" for lid, desc in _locations(bible)) + "\n"
-        ) if _locations(bible) else "",
+        ) if _locations(bible) else "") + ((
+            "\n## Ready-made shots\n\n"
+            "These close-ups and cards are already drawn and work in any episode. To use one, declare it under\n"
+            "`locations` with exactly this id (and a short description), then use it as a shot's `location`.\n"
+            "They show no characters: a line spoken over one is off-screen (`on_screen: false`) or narration.\n\n"
+            "| id | what it shows |\n|---|---|\n"
+            + "\n".join(f"| `{lid}` | {_cell(desc)} |" for lid, desc in _shared(root)) + "\n"
+        ) if _shared(root) else ""),
         example=(series_dir / EXAMPLE_FILE).read_text(encoding="utf-8").rstrip("\n"),
         made_for_kids_blocking=mfk_blocking,
         made_for_kids_default_note=mfk_note,
@@ -136,10 +151,14 @@ def render_project_instructions(bible: dict, root: Path) -> str:
         ctx,
         vocabulary_lines=vocab_lines,
         cast_lines=cast_lines,
-        locations_section=(
+        locations_section=((
             "\n## Recurring locations\nUse these ids directly as a shot's location; never redeclare them.\n"
             + "\n".join(f"- {lid}: {desc}" for lid, desc in _locations(bible)) + "\n"
-        ) if _locations(bible) else "",
+        ) if _locations(bible) else "") + ((
+            "\n## Ready-made shots\nAlready drawn, any episode: declare under locations with this id, then use it. "
+            "No characters appear; lines over them are off-screen or narration.\n"
+            + "\n".join(f"- {lid}: {desc}" for lid, desc in _shared(root)) + "\n"
+        ) if _shared(root) else ""),
         made_for_kids_blocking=mfk_blocking,
         made_for_kids_default_note=mfk_note,
         made_for_kids_value=mfk_value,

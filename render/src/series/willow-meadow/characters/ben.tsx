@@ -1,6 +1,7 @@
 import React from 'react';
 import {Mouth, moodFace} from '../../../kit/face';
 import {ink} from '../../../kit/style';
+import {walkCycle} from '../../../kit/walk';
 import type {Rig, RigProps} from '../../../kit/types';
 
 // Old Ben: an elderly, broad-shouldered badger in a faded waistcoat and round spectacles,
@@ -29,12 +30,12 @@ const POSES: Record<string, Pose> = {
 		arms: [[SHOULDER, [250, -200]], [[80, -180], [230, -150]]]},
 };
 
-const Ben: React.FC<RigProps> = ({t, stance, mood, mouth, eye, speaking}) => {
+const Ben: React.FC<RigProps> = ({t, stance, mood, mouth, eye, speaking, walkSpeed}) => {
 	const pose = POSES[stance] ?? POSES.stand;
 	const face = moodFace(mood);
 	const walking = stance === 'walk';
-	const step = walking ? Math.sin(t * 5) : 0;
-	const bob = walking ? -Math.abs(Math.sin(t * 5)) * 6 : 0;
+	const walk = walking ? walkCycle(t, walkSpeed ?? 0, 30, 14, 6) : null;
+	const bob = walk ? walk.bob : 0;
 	const breathe = 1 + Math.sin(t * 1.8) * 0.01;
 	const headTilt = Math.sin(t * 1.1) * 1 + (speaking ? Math.sin(t * 6.5) * 1.8 : 0);
 	const open = Math.max(0, Math.min(1, eye * face.lid));
@@ -44,7 +45,7 @@ const Ben: React.FC<RigProps> = ({t, stance, mood, mouth, eye, speaking}) => {
 		<g filter="url(#softEdge)">
 			<ellipse cx={20} cy={4} rx={170} ry={18} fill="#3d4a2c" opacity={0.25} />
 			{pose.feet.map(([x, y], i) => (
-				<ellipse key={i} cx={x + (i === 0 ? step : -step) * 14} cy={y} rx={38} ry={16} fill={BLACK} {...O} />
+				<ellipse key={i} cx={x + (walk ? walk.feet[i][0] : 0)} cy={y + (walk ? walk.feet[i][1] : 0)} rx={38} ry={16} fill={BLACK} {...O} />
 			))}
 			<g transform={`translate(0 ${pose.lift + bob}) rotate(${pose.lean} 20 -20)`}>
 				<g transform={`translate(0 ${(-(breathe - 1) * 180).toFixed(2)}) scale(1 ${breathe.toFixed(4)})`}>
@@ -116,7 +117,7 @@ const Ben: React.FC<RigProps> = ({t, stance, mood, mouth, eye, speaking}) => {
 export const rig: Rig = {
 	id: 'ben',
 	stances: ['stand', 'walk', 'sit', 'kneel', 'reach', 'hold', 'hug'],
-	moods: ['neutral', 'happy', 'sad', 'surprised', 'worried', 'scared', 'angry', 'thoughtful', 'proud', 'tired'],
+	moods: ['neutral', 'happy', 'sad', 'surprised', 'worried', 'scared', 'angry', 'thoughtful', 'proud', 'tired', 'calm'],
 	height: 380,
 	anchors: {hand: HAND, head: [100, -372]},
 	Component: Ben,

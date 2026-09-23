@@ -99,6 +99,28 @@ def test_episode_component_overrides_series(ready):
     assert p.components["props"]["lantern-seed"] == src / "episodes" / EPISODE_ID / "props" / "lantern-seed.tsx"
 
 
+def test_shared_library_is_used_when_nothing_more_specific_exists(ready):
+    src = ready.root / "render" / "src"
+    common = src / "common" / "locations" / "compass-closeup.tsx"
+    common.parent.mkdir(parents=True, exist_ok=True)
+    common.write_text('export const about = "A compass.";\nexport const location = {};\n')
+    tl = _timeline(ready)
+    tl["shots"][0]["location"] = "compass-closeup"
+    assert plan(ready.root, tl, set()).components["locations"]["compass-closeup"] == common
+    mine = src / "series" / SERIES_ID / "locations" / "compass-closeup.tsx"
+    mine.parent.mkdir(parents=True, exist_ok=True)
+    mine.write_text("export const location = {};\n")
+    assert plan(ready.root, tl, set()).components["locations"]["compass-closeup"] == mine
+
+
+def test_shared_library_lists_ids_and_descriptions(tmp_path):
+    loc = tmp_path / "render" / "src" / "common" / "locations"
+    loc.mkdir(parents=True)
+    (loc / "notebook-page.tsx").write_text('import React from "react";\nexport const about = "A notebook.";\n')
+    (loc / "plain.tsx").write_text("export const location = {};\n")
+    assert render.common_library(tmp_path) == {"locations": {"notebook-page": "A notebook.", "plain": ""}, "props": {}}
+
+
 def test_registry_is_deterministic(ready):
     p = plan(ready.root, _timeline(ready), set())
     first = write_registry(ready.root, p).read_text()

@@ -12,6 +12,8 @@ from .timeline import FPS, TIMELINE_FILE
 
 RENDER_DIR = Path("render")
 REGISTRY_FILE = RENDER_DIR / "src" / "generated" / "registry.ts"
+COMMON_DIR = "common"  # render/src/common/{locations,props}: reusable by every series and episode
+_ABOUT = re.compile(r'^export const about = "([^"]+)";$', re.M)
 PREVIEW_FILE = Path("build") / "preview.mp4"
 FINAL_FILE = Path("build") / "final.mp4"
 PROPS_FILE = Path("build") / "render-props.json"
@@ -35,10 +37,21 @@ class Plan:
         return sorted(p for kind in self.components.values() for p in kind.values())
 
 
+def common_library(root: Path) -> dict[str, dict[str, str]]:
+    """The shared components any episode can use by id: {"locations": {id: about}, "props": {...}}."""
+    out: dict[str, dict[str, str]] = {"locations": {}, "props": {}}
+    for kind in out:
+        for path in sorted((root / RENDER_DIR / "src" / COMMON_DIR / kind).glob("*.tsx")):
+            about = _ABOUT.search(path.read_text(encoding="utf-8"))
+            out[kind][path.stem] = about.group(1) if about else ""
+    return out
+
+
 def plan(root: Path, timeline: dict, series_locations: set[str]) -> Plan:
     """Map every character, location and prop the timeline uses to its component file."""
     series_dir = root / RENDER_DIR / "src" / "series" / timeline["series"]
     episode_dir = root / RENDER_DIR / "src" / "episodes" / timeline["episode"]
+    common_dir = root / RENDER_DIR / "src" / COMMON_DIR
     out = Plan()
     used: dict[str, dict[str, set[str]]] = {}
     for shot in timeline["shots"]:
@@ -46,7 +59,9 @@ def plan(root: Path, timeline: dict, series_locations: set[str]) -> Plan:
             for cid in ids:
                 if cid in out.components[kind]:
                     continue
-                candidates = [episode_dir / kind / f"{cid}.tsx", series_dir / kind / f"{cid}.tsx"]
+                # the most specific wins: this episode, then its series, then the shared library
+                candidates = [episode_dir / kind / f"{cid}.tsx", series_dir / kind / f"{cid}.tsx",
+                              common_dir / kind / f"{cid}.tsx"]
                 found = next((c for c in candidates if c.is_file()), None)
                 if found:
                     out.components[kind][cid] = found
@@ -119,15 +134,16 @@ def run_remotion(root: Path, episode_dir: Path, timeline: dict, preview: bool, l
 
 
 def duration_seconds(path: Path) -> float:
-    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1",
-                          str(path)], capture_output=True, text=True, check=True).stdout
+    # the video stream, not the container: AAC pads the audio out to whole 1024-sample frames
+    out = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=duration",
+                          "-of", "default=nw=1:nk=1", str(path)], capture_output=True, text=True, check=True).stdout
     return float(out.strip())
 
 
 def check_duration(path: Path, timeline: dict) -> str | None:
     expected = timeline["durationInFrames"] / FPS
     actual = duration_seconds(path)
-    if abs(actual - expected) > 1.5 / FPS:  # one frame, plus AAC's tiny padding
+    if abs(actual - expected) > 1.5 / FPS:  # within a frame
         return f"{path.name} lasts {actual:.3f} s but the timeline is {expected:.3f} s"
     return None
 

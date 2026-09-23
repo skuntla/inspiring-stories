@@ -135,7 +135,23 @@
         "angry",
         "thoughtful",
         "proud",
-        "tired"
+        "tired",
+        "calm"
+      ]
+    },
+    "framing": {
+      "description": "Shot size: how much of the scene the camera shows around its subject.",
+      "enum": [
+        "wide",
+        "medium",
+        "close"
+      ]
+    },
+    "music": {
+      "description": "Background music under the episode: none, or a style composed in code.",
+      "enum": [
+        "none",
+        "hopeful"
       ]
     }
   }

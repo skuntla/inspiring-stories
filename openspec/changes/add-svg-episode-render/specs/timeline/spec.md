@@ -18,25 +18,56 @@ Resolves a locked episode plus its measured speech into one frame-exact descript
 - **THEN** the shot lasts 2.5 s
 
 ### Requirement: Mixed narration
-The timeline SHALL write `build/narration.wav`, the lines placed at their frames, normalized to −14 LUFS integrated (±1 LU) with true peak at or below −1 dBTP.
+The timeline SHALL write `build/narration.wav`, the lines placed at their frames with the episode's background music (if any) beneath them, normalized to −14 LUFS integrated (±1 LU) with true peak at or below −1 dBTP.
 
 #### Scenario: Loudness
 - **WHEN** `build/narration.wav` is measured
 - **THEN** its integrated loudness is between −15 and −13 LUFS
 
+### Requirement: Background music
+An episode MAY declare `music` (`none` or `hopeful`; default `none`). For `hopeful`, the timeline SHALL compose a light music bed in code, deterministically for the episode: sparser and quieter in shots whose characters are low (sad, tired, worried, scared, angry), fuller in happy or proud shots, with inserts keeping the previous shot's energy, and resolving on the home chord in the final shot. The bed SHALL sit well under the voices and dip further while anyone speaks.
+
+#### Scenario: No music by default
+- **WHEN** an episode declares no `music`
+- **THEN** the soundtrack contains only the voices
+
+#### Scenario: Ducking under speech
+- **WHEN** a line is spoken over the `hopeful` bed
+- **THEN** the music is quieter during the line than between lines
+
+#### Scenario: Same episode, same music
+- **WHEN** the timeline is built twice for the same episode
+- **THEN** the music is sample-identical
+
 ### Requirement: Resolved staging and camera
-For every shot, the timeline SHALL record the location id, time of day, atmosphere, props, and each visible character's x position (from `position`), facing, stance and mood. It SHALL also record a camera path: start and end center and zoom, eased, derived from `camera.move` and `camera.intensity` and clamped so the frame never leaves the scene.
+For every shot, the timeline SHALL record the location id, time of day, atmosphere, props, and each visible character's x position (from `position`), facing, stance and mood. A character walking left or right SHALL also get a travel range and a walking speed of at most 110 px/s, limited so the travel stays within 900 px and inside the scene. It SHALL also record a camera path: start and end center and zoom, eased, derived from `camera.move` and `camera.intensity` and clamped so the frame never leaves the scene.
+
+#### Scenario: Walking character travels
+- **WHEN** a visible character has stance `walk` and faces `left` or `right`
+- **THEN** the timeline gives it a start and end x in its facing direction, centered on its position, kept inside the scene, and a walking speed, so it crosses the frame at that constant speed during the shot
+
+#### Scenario: Walking toward or away from the camera
+- **WHEN** a walking character faces `camera` or `away`
+- **THEN** it stays at its position and does not travel
+
+#### Scenario: Walk energy follows mood
+- **WHEN** one walking character is `happy` and another is `calm`
+- **THEN** the happy walker's speed is higher than the calm walker's
+
+#### Scenario: Close-up framing
+- **WHEN** a shot has `framing: close` with subject `arjun`
+- **THEN** the timeline records the framing and the subject's position and depth, and the camera move is expressed relative to that framed view
 
 #### Scenario: Push-in
 - **WHEN** a shot has `camera: {move: push_in, intensity: medium}`
 - **THEN** its camera zoom increases over the shot and the view stays inside the 1920×1080 scene
 
 ### Requirement: Mouths, blinks and captions
-The timeline SHALL give each on-screen speaker a mouth track in frames from their line's visemes; every other character rests. Blinks SHALL follow a schedule seeded by character and shot. Captions SHALL list each line's words in frames, grouped into pages of at most seven words, with a speaker label for dialogue and none for narration.
+The timeline SHALL give each on-screen speaker a mouth track in frames from their line's visemes; every other character rests. Blinks SHALL follow a schedule seeded by character and shot. Captions SHALL list each line's words in frames, grouped into pages of at most 42 characters so a page fits in two short lines on a phone, and SHALL record the speaker (the character id for dialogue, none for narration) for styling; the renderer does not print speaker names.
 
 #### Scenario: Off-screen voice
 - **WHEN** a character speaks with `on_screen: false`
-- **THEN** no mouth track is produced for that line, and the caption still shows the speaker label
+- **THEN** no mouth track is produced for that line, and its caption pages record that character as the speaker
 
 #### Scenario: Same input, same timeline
 - **WHEN** `story timeline` runs twice on unchanged inputs

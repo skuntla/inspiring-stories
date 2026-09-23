@@ -1,6 +1,7 @@
 import React from 'react';
 import {Mouth, moodFace} from '../../../kit/face';
 import {ink} from '../../../kit/style';
+import {walkCycle} from '../../../kit/walk';
 import type {Rig, RigProps} from '../../../kit/types';
 
 // Pip: a small young hedgehog, three-quarter view facing right. Origin: between the feet.
@@ -37,15 +38,15 @@ const spines = (cx: number, cy: number, rx: number, ry: number, spike: number, f
 };
 const BACK = spines(-10, -118, 138, 108, 26, 205, 62, 17);
 
-const Pip: React.FC<RigProps> = ({t, stance, mood, mouth, eye, speaking}) => {
+const Pip: React.FC<RigProps> = ({t, stance, mood, mouth, eye, speaking, walkSpeed}) => {
 	const pose = POSES[stance] ?? POSES.stand;
 	const face = moodFace(mood);
 	const walking = stance === 'walk';
-	const step = walking ? Math.sin(t * 7) : 0;
-	const bob = walking ? -Math.abs(Math.sin(t * 7)) * 7 : 0;
+	const walk = walking ? walkCycle(t, walkSpeed ?? 0, 26, 12, 5) : null;
+	const bob = walk ? walk.bob : 0;
 	const breathe = 1 + Math.sin(t * 2.2) * 0.012;
 	const headTilt = Math.sin(t * 1.3) * 1.2 + (speaking ? Math.sin(t * 7.5) * 1.6 : 0) + (face.browTilt > 12 ? 3 : 0);
-	const scarfSway = Math.sin(t * 1.7) * 6 + (walking ? step * 8 : 0);
+	const scarfSway = Math.sin(t * 1.7) * 6 + (walk ? walk.swing * 8 : 0);
 	const tuftSway = Math.sin(t * 2.4 + 1) * 5;
 	const open = Math.max(0, Math.min(1, eye * face.lid));
 	const O = ink(3.5);
@@ -54,7 +55,7 @@ const Pip: React.FC<RigProps> = ({t, stance, mood, mouth, eye, speaking}) => {
 		<g filter="url(#softEdge)">
 			<ellipse cx={20} cy={4} rx={150} ry={16} fill="#3d4a2c" opacity={0.25} />
 			{pose.feet.map(([x, y], i) => (
-				<ellipse key={i} cx={x + (i === 0 ? step : -step) * 12} cy={y} rx={30} ry={13} fill={FUR_DARK} {...O} />
+				<ellipse key={i} cx={x + (walk ? walk.feet[i][0] : 0)} cy={y + (walk ? walk.feet[i][1] : 0)} rx={30} ry={13} fill={FUR_DARK} {...O} />
 			))}
 			<g transform={`translate(0 ${pose.lift + bob}) rotate(${pose.lean} 40 -20)`}>
 				<g transform={`translate(0 ${(-(breathe - 1) * 120).toFixed(2)}) scale(1 ${breathe.toFixed(4)})`}>
@@ -125,7 +126,7 @@ const Pip: React.FC<RigProps> = ({t, stance, mood, mouth, eye, speaking}) => {
 export const rig: Rig = {
 	id: 'pip',
 	stances: ['stand', 'walk', 'sit', 'kneel', 'reach', 'hold', 'hug'],
-	moods: ['neutral', 'happy', 'sad', 'surprised', 'worried', 'scared', 'angry', 'thoughtful', 'proud', 'tired'],
+	moods: ['neutral', 'happy', 'sad', 'surprised', 'worried', 'scared', 'angry', 'thoughtful', 'proud', 'tired', 'calm'],
 	height: 260,
 	anchors: {hand: HAND, head: [70, -246]},
 	Component: Pip,
