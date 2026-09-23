@@ -1,41 +1,40 @@
 # Proposal
 
-> **Status: draft.** This proposal records scope agreed on 2026-09-22 so it isn't lost. Specs,
-> design and tasks will be written when the change is picked up (`/opsx:propose` → continue).
-
 ## Why
 
-A locked `episode.yaml` exists but nothing turns it into images yet. Gemini is used manually, so the producer needs ready-to-paste prompts, and the pipeline needs to check what comes back before any audio or rendering work builds on it. Character and location consistency across episodes depends on frozen reference images being attached to every generation, so the series bible must grow to hold them.
+A locked episode now exists ("Pip and the Foggy Path", 16 shots), but nothing turns it into illustrations. Gemini is used by hand, so the producer needs ready-to-paste prompts that say exactly which reference images to attach and what file to save. The pipeline also needs to check what comes back before any audio or rendering work builds on it. Character and place consistency across episodes depends on frozen reference images attached to every generation, so the series bible must hold references for recurring places and character expressions, not only turnarounds.
 
 ## What Changes
 
-- **Gemini prompt pack, generated rather than written:** `story prompts <episode>` derives one prompt per shot from the series bible plus the locked manifest. It includes the verbatim style block, the character references to attach, the location and prop references, time of day, action, emotion, composition, and animation-preparation constraints; for example, the mouth is kept unobstructed when a line in the shot is `on_screen: true`. Also:
-  - the "avoid" list
-  - the 16:9 size
-  - the exact output filename for each image
-  - a thumbnail prompt
-  
-  The pack is fully rebuildable after a relock. The ChatGPT example prompt from the planning conversation is the starting template.
-- **Series bible v2: recurring location references.** A `locations` section in the series bible for places that recur across episodes, each with a visual description and reference image(s). Episodes may reference a series location instead of redefining it.
-- **Series bible v2: character expression sheets.** An optional expression-sheet reference per character (neutral, happy, sad, surprised, worried, and so on), in addition to the front, three-quarter and side views. It is attached to prompts when a shot calls for a strong expression.
-- **Reference-image prompts:** `story prompts --series <id>` generates the one-time Gemini prompts for the style reference, character turnarounds, expression sheets and recurring locations.
-- **Image intake:** `story images <episode>` checks the files dropped into `episodes/<id>/images/`: every expected file present, PNG, exact 16:9, at least 1920×1080 (2560×1440 preferred), no unexpected files. It records metadata (hash, dimensions, prompt used, references attached) in `build/images.json`.
-- **Contact sheet and checkpoint 2:** a single contact-sheet image of all shots, with shot ids, for approval. The approval is recorded as a hash-bound entry in `approvals.yaml`, and replacing any image makes it stale.
+- **Recurring series locations.** The series bible gains an optional `locations` list: id, visual description and one to three reference images, for places that recur across episodes (Pip's cottage, Ben's burrow, the meadow path). Episodes may use a series location id directly instead of redeclaring it. Redeclaring a series location id inside an episode is an error, because the series description must win for consistency.
+- **Character expression sheets.** An optional `references.expressions` image per character, attached when that character speaks on screen.
+- **Structured thumbnail characters.** `publishing.thumbnail.characters` becomes a required list of cast ids visible in the thumbnail (possibly empty, never the narrator). The pipeline uses it, rather than guessing names from the free-text concept, to pick identity blocks and references.
+- **ChatGPT documents list series locations and the thumbnail-characters rule,** so stories reuse locations and fill the new field. The compact Project instructions stay within 8,000 characters.
+- **Prompt packs, generated rather than written:**
+  - `story prompts <series-dir>` writes the one-time Gemini prompts for style references, character turnarounds, expression sheets and location references.
+  - `story prompts <episode-dir>` writes, in this order: a **location anchor** prompt for each episode-only location used by two or more shots (for example `foggy-meadow`, used by 7 shots); one prompt per shot; and a thumbnail prompt. All are derived from the bible and the locked manifest. Each lists the reference images to attach, in order, and the exact filename to save as. Anchors are attached to every shot at their location.
+  - The prompt text fixes identity and style, carries the shot's intent, and adds animation-preparation constraints: speakers' mouths unobstructed, eyes visible, room for camera movement, and no particle effects that are animated later.
+  - The same inputs always produce byte-identical packs.
+- **Image intake:** `story images <dir>` checks the dropped-in files: every expected file present (shots, location anchors, and the **required** thumbnail) and none unexpected, PNG or JPEG, readable, close to 16:9, and above a minimum size, with a warning below 1920×1080. It records hashes and dimensions in `build/images.json` and builds a labelled contact sheet.
+- **Approvals:** `story approve <dir> images|references` records a hash-bound approval in `approvals.yaml`. Any later change to the images, the manifest or the bible makes that approval stale, and `story images` reports the status. This implements checkpoint 2 (the image contact sheet), plus a one-time approval of each series' reference set.
+- **Willow Meadow:** four recurring locations move into the series bible. "Pip and the Foggy Path" drops its now-duplicate location declarations and gains `thumbnail.characters: ["pip"]`; its story content is unchanged. Both example episodes gain the thumbnail field too.
+
+Out of scope: clean plates, eye and mouth edits, cutouts and depth (the animation change); narration, timeline and render (`add-narration-and-render`); calling the Gemini API.
 
 ## Capabilities
 
 ### New Capabilities
-- `prompt-packs`: deterministic generation of Gemini prompts for series references and per-episode shots.
-- `image-intake`: validation, metadata capture and contact sheets for the images the producer drops in.
-- `approvals`: hash-bound approval records and staleness (first used here for the contact-sheet checkpoint).
+- `prompt-packs`: deterministic Gemini prompt generation for series reference images and per-episode shots and thumbnails.
+- `image-intake`: checking the images the producer drops in, recording their metadata, and building contact sheets.
+- `approvals`: hash-bound approval records, their staleness rules, and the approve command.
 
 ### Modified Capabilities
-- `series-bible`: adds recurring locations and character expression sheets (`story-series/v2`, with v1 still accepted or migrated; decided in design).
-- `episode-manifest`: allows referencing a series location by id.
+- `series-bible`: adds recurring locations and character expression sheets; reference-presence checks cover them.
+- `episode-manifest`: shots may use series location ids; an episode may not redeclare one; `publishing.thumbnail.characters` is required and validated against the cast; the ChatGPT documents list series locations and the thumbnail-characters rule.
 
 ## Impact
 
-- New CLI commands `story prompts` and `story images`, and a new `approvals.yaml` per episode.
-- A new dependency for image inspection and the contact sheet (likely Pillow).
-- Schema version bump for the series bible. The example series is migrated.
-- No audio, timeline or Remotion work: those are in the next change (`add-narration-and-render`).
+- New CLI commands: `story prompts`, `story images`, `story approve`. New files per episode: `images/` (shots, the thumbnail, `locations/` anchors), `approvals.yaml`, and `build/prompts/`, `build/images.json` and `build/contact-sheet.png` (the last three regenerable and ignored by git).
+- New dependency: Pillow (image reading and the contact sheet).
+- `story-series/v1` gains optional fields only. `story-episode/v1` gains one required field (`thumbnail.characters`) and one new error (redeclaring a series location). The three manifests in the repository are migrated in the same commit; nothing outside the repository consumes the contract.
+- Git: all approved images are committed, both series references and episode images. Gemini generations are stochastic source assets: a hash proves what was approved but cannot restore it. Only `build/` is ignored. Git LFS or external storage can come later, when repository size becomes a real issue.
