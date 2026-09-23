@@ -1,0 +1,583 @@
+{
+  "fps": 30,
+  "durationInFrames": 426,
+  "lines": [
+    {
+      "speaker": "narrator",
+      "text": "Pip had walked the path many times. But this morning, a thick silver fog rolled across Willow Meadow.",
+      "start": 0.6,
+      "end": 7.625,
+      "words": [
+        {
+          "text": "Pip",
+          "start": 0.875,
+          "end": 1.062
+        },
+        {
+          "text": "had",
+          "start": 1.062,
+          "end": 1.2
+        },
+        {
+          "text": "walked",
+          "start": 1.2,
+          "end": 1.462
+        },
+        {
+          "text": "the",
+          "start": 1.462,
+          "end": 1.55
+        },
+        {
+          "text": "path",
+          "start": 1.55,
+          "end": 1.925
+        },
+        {
+          "text": "many",
+          "start": 1.925,
+          "end": 2.15
+        },
+        {
+          "text": "times.",
+          "start": 2.15,
+          "end": 3.05
+        },
+        {
+          "text": "But",
+          "start": 3.175,
+          "end": 3.325
+        },
+        {
+          "text": "this",
+          "start": 3.325,
+          "end": 3.55
+        },
+        {
+          "text": "morning,",
+          "start": 3.55,
+          "end": 4.175
+        },
+        {
+          "text": "a",
+          "start": 4.287,
+          "end": 4.438
+        },
+        {
+          "text": "thick",
+          "start": 4.438,
+          "end": 4.75
+        },
+        {
+          "text": "silver",
+          "start": 4.75,
+          "end": 5.212
+        },
+        {
+          "text": "fog",
+          "start": 5.212,
+          "end": 5.662
+        },
+        {
+          "text": "rolled",
+          "start": 5.662,
+          "end": 5.987
+        },
+        {
+          "text": "across",
+          "start": 5.987,
+          "end": 6.362
+        },
+        {
+          "text": "Willow",
+          "start": 6.362,
+          "end": 6.7
+        },
+        {
+          "text": "Meadow.",
+          "start": 6.7,
+          "end": 7.35
+        }
+      ],
+      "visemes": [
+        {
+          "t": 0.875,
+          "shape": "closed"
+        },
+        {
+          "t": 0.927,
+          "shape": "ee"
+        },
+        {
+          "t": 1.01,
+          "shape": "closed"
+        },
+        {
+          "t": 1.062,
+          "shape": "consonant"
+        },
+        {
+          "t": 1.101,
+          "shape": "mid"
+        },
+        {
+          "t": 1.162,
+          "shape": "consonant"
+        },
+        {
+          "t": 1.2,
+          "shape": "round"
+        },
+        {
+          "t": 1.362,
+          "shape": "consonant"
+        },
+        {
+          "t": 1.496,
+          "shape": "mid"
+        },
+        {
+          "t": 1.55,
+          "shape": "closed"
+        },
+        {
+          "t": 1.654,
+          "shape": "mid"
+        },
+        {
+          "t": 1.821,
+          "shape": "consonant"
+        },
+        {
+          "t": 1.925,
+          "shape": "closed"
+        },
+        {
+          "t": 1.968,
+          "shape": "mid"
+        },
+        {
+          "t": 2.038,
+          "shape": "consonant"
+        },
+        {
+          "t": 2.081,
+          "shape": "ee"
+        },
+        {
+          "t": 2.15,
+          "shape": "consonant"
+        },
+        {
+          "t": 2.346,
+          "shape": "open"
+        },
+        {
+          "t": 2.659,
+          "shape": "closed"
+        },
+        {
+          "t": 2.854,
+          "shape": "consonant"
+        },
+        {
+          "t": 3.05,
+          "shape": "rest"
+        },
+        {
+          "t": 3.175,
+          "shape": "closed"
+        },
+        {
+          "t": 3.217,
+          "shape": "open"
+        },
+        {
+          "t": 3.283,
+          "shape": "consonant"
+        },
+        {
+          "t": 3.388,
+          "shape": "ee"
+        },
+        {
+          "t": 3.488,
+          "shape": "consonant"
+        },
+        {
+          "t": 3.55,
+          "shape": "closed"
+        },
+        {
+          "t": 3.637,
+          "shape": "round"
+        },
+        {
+          "t": 3.776,
+          "shape": "consonant"
+        },
+        {
+          "t": 3.949,
+          "shape": "ee"
+        },
+        {
+          "t": 4.088,
+          "shape": "consonant"
+        },
+        {
+          "t": 4.175,
+          "shape": "rest"
+        },
+        {
+          "t": 4.438,
+          "shape": "consonant"
+        },
+        {
+          "t": 4.524,
+          "shape": "ee"
+        },
+        {
+          "t": 4.663,
+          "shape": "consonant"
+        },
+        {
+          "t": 4.814,
+          "shape": "ee"
+        },
+        {
+          "t": 4.917,
+          "shape": "consonant"
+        },
+        {
+          "t": 4.981,
+          "shape": "fv"
+        },
+        {
+          "t": 5.045,
+          "shape": "mid"
+        },
+        {
+          "t": 5.148,
+          "shape": "consonant"
+        },
+        {
+          "t": 5.212,
+          "shape": "fv"
+        },
+        {
+          "t": 5.386,
+          "shape": "round"
+        },
+        {
+          "t": 5.662,
+          "shape": "consonant"
+        },
+        {
+          "t": 5.733,
+          "shape": "round"
+        },
+        {
+          "t": 5.846,
+          "shape": "consonant"
+        },
+        {
+          "t": 5.987,
+          "shape": "mid"
+        },
+        {
+          "t": 6.084,
+          "shape": "consonant"
+        },
+        {
+          "t": 6.205,
+          "shape": "round"
+        },
+        {
+          "t": 6.302,
+          "shape": "consonant"
+        },
+        {
+          "t": 6.362,
+          "shape": "round"
+        },
+        {
+          "t": 6.456,
+          "shape": "ee"
+        },
+        {
+          "t": 6.549,
+          "shape": "consonant"
+        },
+        {
+          "t": 6.607,
+          "shape": "round"
+        },
+        {
+          "t": 6.7,
+          "shape": "closed"
+        },
+        {
+          "t": 6.825,
+          "shape": "mid"
+        },
+        {
+          "t": 7.025,
+          "shape": "consonant"
+        },
+        {
+          "t": 7.15,
+          "shape": "round"
+        },
+        {
+          "t": 7.35,
+          "shape": "rest"
+        }
+      ]
+    },
+    {
+      "speaker": "pip",
+      "text": "The fog is thick. But the ground beneath me is firm. I know this place.",
+      "start": 8.075,
+      "end": 13.0,
+      "words": [
+        {
+          "text": "The",
+          "start": 8.4,
+          "end": 8.512
+        },
+        {
+          "text": "fog",
+          "start": 8.512,
+          "end": 8.837
+        },
+        {
+          "text": "is",
+          "start": 8.837,
+          "end": 9.012
+        },
+        {
+          "text": "thick.",
+          "start": 9.012,
+          "end": 9.625
+        },
+        {
+          "text": "But",
+          "start": 9.725,
+          "end": 9.862
+        },
+        {
+          "text": "the",
+          "start": 9.862,
+          "end": 9.95
+        },
+        {
+          "text": "ground",
+          "start": 9.95,
+          "end": 10.325
+        },
+        {
+          "text": "beneath",
+          "start": 10.325,
+          "end": 10.662
+        },
+        {
+          "text": "me",
+          "start": 10.662,
+          "end": 10.825
+        },
+        {
+          "text": "is",
+          "start": 10.825,
+          "end": 10.975
+        },
+        {
+          "text": "firm.",
+          "start": 10.975,
+          "end": 11.425
+        },
+        {
+          "text": "I",
+          "start": 11.525,
+          "end": 11.675
+        },
+        {
+          "text": "know",
+          "start": 11.675,
+          "end": 11.837
+        },
+        {
+          "text": "this",
+          "start": 11.837,
+          "end": 12.025
+        },
+        {
+          "text": "place.",
+          "start": 12.025,
+          "end": 12.725
+        }
+      ],
+      "visemes": [
+        {
+          "t": 8.4,
+          "shape": "consonant"
+        },
+        {
+          "t": 8.443,
+          "shape": "mid"
+        },
+        {
+          "t": 8.512,
+          "shape": "fv"
+        },
+        {
+          "t": 8.637,
+          "shape": "round"
+        },
+        {
+          "t": 8.837,
+          "shape": "ee"
+        },
+        {
+          "t": 8.945,
+          "shape": "consonant"
+        },
+        {
+          "t": 9.183,
+          "shape": "ee"
+        },
+        {
+          "t": 9.455,
+          "shape": "consonant"
+        },
+        {
+          "t": 9.625,
+          "shape": "rest"
+        },
+        {
+          "t": 9.725,
+          "shape": "closed"
+        },
+        {
+          "t": 9.763,
+          "shape": "open"
+        },
+        {
+          "t": 9.824,
+          "shape": "consonant"
+        },
+        {
+          "t": 9.896,
+          "shape": "mid"
+        },
+        {
+          "t": 9.95,
+          "shape": "consonant"
+        },
+        {
+          "t": 10.032,
+          "shape": "round"
+        },
+        {
+          "t": 10.162,
+          "shape": "consonant"
+        },
+        {
+          "t": 10.325,
+          "shape": "closed"
+        },
+        {
+          "t": 10.379,
+          "shape": "mid"
+        },
+        {
+          "t": 10.467,
+          "shape": "consonant"
+        },
+        {
+          "t": 10.521,
+          "shape": "ee"
+        },
+        {
+          "t": 10.608,
+          "shape": "consonant"
+        },
+        {
+          "t": 10.662,
+          "shape": "closed"
+        },
+        {
+          "t": 10.725,
+          "shape": "ee"
+        },
+        {
+          "t": 10.917,
+          "shape": "consonant"
+        },
+        {
+          "t": 10.975,
+          "shape": "fv"
+        },
+        {
+          "t": 11.073,
+          "shape": "mid"
+        },
+        {
+          "t": 11.229,
+          "shape": "consonant"
+        },
+        {
+          "t": 11.327,
+          "shape": "closed"
+        },
+        {
+          "t": 11.425,
+          "shape": "rest"
+        },
+        {
+          "t": 11.525,
+          "shape": "open"
+        },
+        {
+          "t": 11.675,
+          "shape": "consonant"
+        },
+        {
+          "t": 11.737,
+          "shape": "round"
+        },
+        {
+          "t": 11.837,
+          "shape": "consonant"
+        },
+        {
+          "t": 11.89,
+          "shape": "ee"
+        },
+        {
+          "t": 11.973,
+          "shape": "consonant"
+        },
+        {
+          "t": 12.025,
+          "shape": "closed"
+        },
+        {
+          "t": 12.177,
+          "shape": "consonant"
+        },
+        {
+          "t": 12.329,
+          "shape": "open"
+        },
+        {
+          "t": 12.573,
+          "shape": "consonant"
+        },
+        {
+          "t": 12.725,
+          "shape": "rest"
+        }
+      ]
+    }
+  ]
+}

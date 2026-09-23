@@ -1,0 +1,21 @@
+{
+  "name": "svg-rig-poc",
+  "private": true,
+  "description": "Proof of concept: an all-SVG Willow Meadow shot with Pip as an animated SVG rig, lip-synced to Kokoro audio.",
+  "scripts": {
+    "audio": "../../../voicemodels/.venv/bin/python scripts/make_audio.py",
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts PipPoc out/pip-poc.mp4 --codec=h264 --audio-codec=aac --crf=18 --overwrite",
+    "stills": "remotion still src/index.ts PipPoc out/still-narration.png --frame=45 --overwrite && remotion still src/index.ts PipPoc out/still-speaking.png --frame=150 --overwrite"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.517",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.517"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "typescript": "7.0.2"
+  }
+}
