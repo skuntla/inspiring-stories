@@ -95,6 +95,12 @@
           "type": "number",
           "minimum": 0.5,
           "maximum": 2.0
+        },
+        "pitch": {
+          "description": "Semitones to raise (or lower) the voice, pitch and formants together; +3 to +4 makes a child's voice.",
+          "type": "number",
+          "minimum": -6,
+          "maximum": 6
         }
       }
     },

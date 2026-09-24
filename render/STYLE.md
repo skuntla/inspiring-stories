@@ -11,13 +11,15 @@ The rules every SVG component follows, so that characters, places and props writ
 | Shared prop | `src/series/<series>/props/<id>.tsx` | `prop: Prop` |
 | Episode-only location / prop | `src/episodes/<episode-id>/{locations,props}/<id>.tsx` | same as above |
 | Shared close-up, insert or card | `src/common/{locations,props}/<id>.tsx` | same as above, plus `about` |
+| Vendored open-source art | `src/vendor/<library>/` | components, with the library's LICENSE and a README |
 
 The file name is the id from the manifest. The most specific component wins: episode, then series, then shared. Interfaces live in `src/kit/types.ts`. A shared component names no story or character, imports only from `kit/`, times itself from `words` (see `DIRECTING.md`), and declares its one-line description as `export const about = "...";`, which the ChatGPT briefs list as a ready-made shot.
 
 ## Rigs
 
 - Drawn **facing right**, origin at the **feet on the ground line**, standing height roughly: Pip 260 px, Ben 380 px, Wren 150 px, humans about 470 px.
-- People: build them with `makeHuman(spec)` from `kit/human.tsx` (proportions, IK arms and legs, planted-foot walk, a posture and gesture for every stance × mood); a spec only sets colors, hair and clothes.
+- People: build them with `makeHuman(spec)` from `kit/human.tsx` (proportions, IK arms and legs, planted-foot walk, a posture and gesture for every stance × mood). A spec is a mix-and-match wardrobe: hair style (`short`, `bun`, `braids` with a ribbon, `long`, a receding `fringe`), `mustache` (optionally curled), `beard`, `stubble`, `turban` (optionally jewelled), `hat`, `bindi`, `wrinkles`; top colour and `sleeves` (`rolled`, `long`, `none`); a lower garment via `skirt` (`hem` sets the length: dhoti about -95, long coat -120, sari or robe to the ankle) and a `robe.sash` over one shoulder (towel, pallu, sash); `buttons`, `apron`; build via `stout`, `stoop`, and children via `size` (~0.72) plus `headScale` (~1.2). Special stances draw their own tool: `aim` (a bow), `dig` (a shovel on a strike rhythm).
+- Check every new character on a model sheet before it goes into an episode (`src/dev/CastSheet.tsx`: `CastSheet`, `PoseSheet`, `PropSheet`).
 - Animals that walk: use `walkCycle` from `kit/walk.ts` so feet stay planted and stride follows speed. The renderer mirrors for `facing: left` and scales background characters to 0.6.
 - Declare support as **one-line literal arrays**, which `story render` reads:
   ```ts
@@ -42,3 +44,12 @@ The file name is the id from the manifest. The most specific component wins: epi
 - **Palette**: muted greens and golden ochres, warm browns, soft creams; saturated colors only for small accents (Pip's scarf, Wren's berry, the lantern glow).
 - **Depth**: far layers lighter, bluer and softly blurred (`farBlur`); near layers darker and crisper.
 - Randomness only through `rand(i, salt)`: every frame must render identically on every run.
+
+## Open-source assets
+
+Characters are always our own rigs (no library offers rigged, lip-synced SVG people). Props and small
+background objects may come from permissively licensed libraries, vendored under `src/vendor/<library>/`
+with the licence file and a README naming the source: currently Microsoft Fluent Emoji Flat (MIT), with
+our ink outline added and colours overridable (`recolor`). Prefer CC0 or MIT; CC BY needs a credit in the
+video description. Draw the story's key objects ourselves; use vendored art for small or distant things.
+

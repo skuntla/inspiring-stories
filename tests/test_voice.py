@@ -159,3 +159,21 @@ def test_invalid_episode_produces_nothing(project, capsys, fake):
     project.write_episode(doc)
     code, _, err = project.run("voice", str(project.episode_dir), capsys=capsys)
     assert code == 1 and "nothing was produced" in err and fake.calls == []
+
+
+def test_pitch_shift_keeps_length_and_raises_pitch():
+    import numpy as np
+    from story.voice import SAMPLE_RATE, shift_pitch
+    t = np.arange(SAMPLE_RATE) / SAMPLE_RATE
+    tone = (0.3 * np.sin(2 * np.pi * 220 * t)).astype(np.float32)
+    up = shift_pitch(tone, 3.5)
+    assert len(up) == len(tone)
+    peak = lambda x: np.argmax(np.abs(np.fft.rfft(x[2000:-2000]))) * SAMPLE_RATE / len(x[2000:-2000])
+    assert abs(peak(up) - 220 * 2 ** (3.5 / 12)) < 6
+
+
+def test_pitch_only_changes_the_digest_when_set():
+    from story.voice import LineSpec
+    base = LineSpec("s01-l01", "meena", "Hi.", "Hi.", [("Hi.", "Hi.")], "af_sky", 1.0)
+    assert base.digest("0.9.4") == LineSpec(*base.__dict__.values()).digest("0.9.4")
+    assert base.digest("0.9.4") != LineSpec(**{**base.__dict__, "pitch": 3.5}).digest("0.9.4")

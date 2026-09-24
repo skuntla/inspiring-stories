@@ -162,10 +162,14 @@ class LineSpec:
     pieces: list[tuple[str, str]]
     voice: str
     speed: float
+    pitch: float = 0.0  # semitones; a child's voice is a Kokoro voice raised a few semitones
 
     def digest(self, version: str) -> str:
-        payload = json.dumps({"spoken": self.spoken, "voice": self.voice, "speed": self.speed, "kokoro": version,
-                              "lead_trim": LEAD_TRIM, "tail_keep": TAIL_KEEP}, sort_keys=True)
+        fields = {"spoken": self.spoken, "voice": self.voice, "speed": self.speed, "kokoro": version,
+                  "lead_trim": LEAD_TRIM, "tail_keep": TAIL_KEEP}
+        if self.pitch:
+            fields["pitch"] = self.pitch  # only when set, so unpitched lines keep their cache
+        payload = json.dumps(fields, sort_keys=True)
         return "sha256:" + hashlib.sha256(payload.encode()).hexdigest()
 
 
@@ -178,7 +182,8 @@ def line_specs(doc: dict, bible: dict) -> list[LineSpec]:
             pieces = spoken_pieces(line["text"], pron)
             v = voices[line["speaker"]]
             specs.append(LineSpec(line_id(shot["id"], n), line["speaker"], line["text"],
-                                  " ".join(s for _, s in pieces), pieces, v["kokoro"], float(v["speed"])))
+                                  " ".join(s for _, s in pieces), pieces, v["kokoro"], float(v["speed"]),
+                                  float(v.get("pitch", 0))))
     return specs
 
 
@@ -206,10 +211,12 @@ def generate(episode_dir: Path, doc: dict, bible: dict, force: bool = False, log
         clip = audio[int(start * SAMPLE_RATE):int(round(end * SAMPLE_RATE))]
         for w in words:
             w["start"], w["end"] = round(w["start"] - start, 3), round(w["end"] - start, 3)
+        if spec.pitch:
+            clip = shift_pitch(clip, spec.pitch)
         _write_wav(wav, clip)
         lines[spec.id] = {
             "speaker": spec.speaker, "text": spec.text, "spoken": spec.spoken, "voice": spec.voice,
-            "speed": spec.speed, "digest": digest, "file": f"audio/{spec.id}.wav",
+            "speed": spec.speed, **({"pitch": spec.pitch} if spec.pitch else {}), "digest": digest, "file": f"audio/{spec.id}.wav",
             "duration": round(len(clip) / SAMPLE_RATE, 3),
             "words": [{"text": w["text"], "start": w["start"], "end": w["end"]} for w in words],
             "visemes": [[t, s] for t, s in line_visemes(words)],
@@ -223,6 +230,23 @@ def generate(episode_dir: Path, doc: dict, bible: dict, force: bool = False, log
             stale.unlink()
     log(f"{made} line(s) synthesized, {len(lines) - made} reused; wrote {SPEECH_FILE}")
     return doc_out
+
+
+def shift_pitch(samples, semitones: float):
+    """Raise (or lower) pitch and formants together by `semitones`, keeping the exact length, so word
+    timings and mouth shapes stay put. A few semitones up makes an adult voice sound like a child's."""
+    import subprocess
+
+    import numpy as np
+    ratio = 2 ** (semitones / 12)
+    cmd = ["ffmpeg", "-v", "error", "-f", "f32le", "-ar", str(SAMPLE_RATE), "-ac", "1", "-i", "pipe:0",
+           "-af", f"asetrate={SAMPLE_RATE * ratio:.3f},aresample={SAMPLE_RATE},atempo={1 / ratio:.6f}",
+           "-f", "f32le", "-ar", str(SAMPLE_RATE), "-ac", "1", "pipe:1"]
+    out = subprocess.run(cmd, input=np.asarray(samples, dtype=np.float32).tobytes(), capture_output=True, check=True).stdout
+    shifted = np.frombuffer(out, dtype=np.float32)
+    fitted = np.zeros(len(samples), dtype=np.float32)
+    fitted[:min(len(samples), len(shifted))] = shifted[:len(samples)]
+    return fitted
 
 
 def _write_wav(path: Path, samples) -> None:

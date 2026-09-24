@@ -17,6 +17,17 @@ Turns every spoken line of a locked episode into audio with Kokoro, locally, and
 - **WHEN** the manifest maps `Zephyrine` to `ZEF-ih-reen` and a line says "Zephyrine smiled."
 - **THEN** Kokoro receives "ZEF-ih-reen smiled." and the recorded words show "Zephyrine"
 
+### Requirement: Voice pitch
+A character's voice MAY set `pitch` in semitones (−6 to +6). The synthesized line SHALL then have its pitch and formants shifted together while keeping its exact length, so word timings and visemes are unchanged; the pitch SHALL be part of the line's cache key only when it is set.
+
+#### Scenario: A child's voice
+- **WHEN** a character's voice is `{kokoro: "af_sky", speed: 1.05, pitch: 3.5}`
+- **THEN** that character's lines are raised 3.5 semitones and last exactly as long as the unshifted lines
+
+#### Scenario: Other voices keep their cache
+- **WHEN** one character gains a `pitch`
+- **THEN** only that character's lines are synthesized again
+
 ### Requirement: Word timings and visemes
 For each line, narration SHALL record, relative to the start of the line's audio, every display word with its start and end time, and a viseme track: time-ordered keys whose shape is one of `rest`, `closed`, `fv`, `consonant`, `ee`, `mid`, `open`, `round`. It SHALL derive these by spreading each word's phonemes across the word's duration. Adjacent words SHALL NOT be separated by a `rest` key when the next word starts within 60 ms. Results are written to `build/speech.json`.
 

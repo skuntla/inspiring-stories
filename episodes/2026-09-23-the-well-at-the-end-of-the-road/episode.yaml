@@ -1,0 +1,1638 @@
+schema: story-episode/v1
+id: 2026-09-23-the-well-at-the-end-of-the-road
+series: quiet-lessons
+title: The Well at the End of the Road
+logline: A poor man at the end of a dusty road digs for ten years to find water, then refuses to sell it unfairly, and the world comes to his door.
+moral: Discipline digs the well; integrity keeps the water clean; do both and the world will find you.
+music: hopeful
+language: en
+content_rating: all-ages
+source:
+  kind: original
+  notes: 'Producer''s concept, improvised and directed for SVG: hook, Meena''s callback, two integrity tests.'
+cast:
+- narrator
+- velu
+- velu-old
+- meena
+- meena-grown
+- merchant
+- villager
+- traveller
+locations:
+- id: shovel-strike
+  description: Close on hard rock at the bottom of a pit, struck by an iron shovel; later it cracks and water bursts up.
+- id: title-card
+  description: The episode title over soft hills.
+- id: dry-village
+  description: 'A dry village where the road runs out: cracked fields, mud houses, a dead well, women walking with pots.'
+- id: velu-plot
+  description: 'Velu''s stony plot: a brick-lined pit, a green neem tree, his small hut and a clay lamp.'
+- id: pit-bottom
+  description: Inside the deep brick-lined pit, looking up at a circle of sky.
+- id: the-well
+  description: The finished stone well with a pulley and bucket, Velu's wooden counter, the neem tree and a queue of women.
+- id: coins-in-palm
+  description: Close on a work-worn palm holding two copper coins.
+- id: market-road
+  description: 'Years later: a busy market around the well with stalls, bunting and camel caravans.'
+- id: closing-card
+  description: The closing words over soft hills.
+props:
+- id: clay-pot
+  description: A round terracotta water pot with a short neck and a white band.
+- id: water-cup
+  description: A brass tumbler brimming with water.
+- id: money-bag
+  description: A heavy maroon velvet pouch tied with gold cord, gold coins spilling out.
+- id: brick-stack
+  description: A stack of hand-baked red-brown bricks.
+- id: dirt-mound
+  description: A heap of dug earth and broken rock.
+- id: spring-pool
+  description: Clear spring water pooling and rippling at the bottom of the pit.
+shots:
+- id: s01
+  location: shovel-strike
+  time_of_day: dawn
+  characters: []
+  action: A shovel strikes hard rock again and again.
+  emotion: doubt
+  camera:
+    move: push_in
+    intensity: low
+  atmosphere: []
+  ambience: none
+  composition_notes: 'Hook: sparks fly with every strike; the rock never breaks.'
+  lines:
+  - speaker: narrator
+    text: Have you ever felt you were born in the wrong place? Too far from the cities, the money, the people who matter…
+    delivery: thoughtful
+    pause_after: 0.3
+  - speaker: narrator
+    text: as if success only happens somewhere else?
+    delivery: thoughtful
+    pause_after: 0.4
+- id: s02
+  location: title-card
+  time_of_day: dawn
+  characters: []
+  action: The title appears.
+  emotion: anticipation
+  camera:
+    move: static
+    intensity: low
+  atmosphere: []
+  ambience: none
+  composition_notes: The title appears.
+  lines:
+  - speaker: narrator
+    text: The Well at the End of the Road.
+    delivery: warm
+    pause_after: 0.9
+- id: s03
+  location: dry-village
+  time_of_day: morning
+  characters: []
+  action: The dry village where the road runs out.
+  emotion: desolation
+  camera:
+    move: pull_out
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: The dry village where the road runs out.
+  lines:
+  - speaker: narrator
+    text: This is the story of a man who lived at the very end of the road.
+    delivery: warm
+    pause_after: 0.4
+  - speaker: narrator
+    text: In a dry corner of the land, where the road ran out and the dust began, there was a village the maps forgot.
+    delivery: gentle
+    pause_after: 0.4
+- id: s04
+  location: dry-village
+  time_of_day: midday
+  characters: []
+  action: Women walk far with clay pots on their heads.
+  emotion: hardship
+  camera:
+    move: pan_right
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: Women walk far with clay pots on their heads.
+  lines:
+  - speaker: narrator
+    text: The fields were cracked like old pottery. The wells had died long ago.
+    delivery: gentle
+    pause_after: 0.3
+  - speaker: narrator
+    text: Every morning, the women walked three hours to the river… and three hours back, just to fill a single pot.
+    delivery: gentle
+    pause_after: 0.4
+- id: s05
+  location: dry-village
+  time_of_day: midday
+  characters:
+  - id: villager
+    position: center_right
+    stance: stand
+    mood: tired
+    pose: arms hanging
+    expression: resigned
+    facing: left
+  action: A villager shrugs at the empty fields.
+  emotion: resignation
+  camera:
+    move: push_in
+    intensity: low
+    framing: medium
+    subject: villager
+  atmosphere: []
+  ambience: wind
+  composition_notes: A villager shrugs at the empty fields.
+  lines:
+  - speaker: narrator
+    text: 'Most families had already left. Those who stayed said the same thing:'
+    delivery: gentle
+    pause_after: 0.2
+  - speaker: villager
+    text: Nothing good can happen here.
+    delivery: sad
+    on_screen: true
+    pause_after: 0.6
+- id: s06
+  location: velu-plot
+  time_of_day: morning
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: thoughtful
+    pose: looking over his plot
+    expression: quiet
+    facing: right
+  action: Velu stands on his stony plot.
+  emotion: humility
+  camera:
+    move: push_in
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu stands on his stony plot.
+  lines:
+  - speaker: narrator
+    text: Velu had nothing. No money. No land worth mentioning.
+    delivery: gentle
+    pause_after: 0.3
+  - speaker: narrator
+    text: Only a small, stony plot his father had left him… and an old iron shovel.
+    delivery: gentle
+    pause_after: 0.4
+- id: s07
+  location: velu-plot
+  time_of_day: morning
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: thoughtful
+    pose: looking at the neem tree
+    expression: curious
+    facing: right
+  action: Velu notices the green neem tree.
+  emotion: insight
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: velu
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu notices the green neem tree.
+  lines:
+  - speaker: narrator
+    text: But Velu had noticed something. At the far edge of his plot, a single neem tree stayed green, even in the worst summers.
+    delivery: gentle
+    pause_after: 0.3
+  - speaker: velu
+    text: Its roots are drinking from somewhere.
+    delivery: thoughtful
+    on_screen: true
+    pause_after: 0.6
+- id: s08
+  location: velu-plot
+  time_of_day: dawn
+  characters:
+  - id: velu
+    position: center_left
+    stance: dig
+    mood: calm
+    pose: working
+    expression: steady
+    facing: right
+  action: Velu begins to dig.
+  emotion: resolve
+  camera:
+    move: push_in
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu begins to dig.
+  lines:
+  - speaker: narrator
+    text: So Velu began to dig.
+    delivery: warm
+    pause_after: 0.8
+- id: s09
+  location: velu-plot
+  time_of_day: night
+  characters:
+  - id: velu
+    position: center_left
+    stance: dig
+    mood: calm
+    pose: digging by lamplight
+    expression: focused
+    facing: right
+  action: Velu digs by lamplight.
+  emotion: discipline
+  camera:
+    move: push_in
+    intensity: low
+    framing: medium
+    subject: velu
+  atmosphere: []
+  ambience: night_crickets
+  composition_notes: Velu digs by lamplight.
+  lines:
+  - speaker: narrator
+    text: He dug before sunrise, while the village slept. He dug after sunset, by the light of a small lamp.
+    delivery: gentle
+    pause_after: 0.4
+- id: s10
+  location: velu-plot
+  time_of_day: afternoon
+  characters:
+  - id: velu
+    position: center_left
+    stance: dig
+    mood: calm
+    pose: working
+    expression: steady
+    facing: right
+  props:
+  - dirt-mound
+  - brick-stack
+  action: The pit deepens; bricks and earth pile up.
+  emotion: persistence
+  camera:
+    move: pull_out
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: The pit deepens; bricks and earth pile up.
+  lines:
+  - speaker: narrator
+    text: When the soil turned to rock, he broke the rock. When the pit grew deep, he lined it with bricks he baked himself… one by one.
+    delivery: gentle
+    pause_after: 0.4
+- id: s11
+  location: velu-plot
+  time_of_day: afternoon
+  characters:
+  - id: velu
+    position: center_left
+    stance: dig
+    mood: calm
+    pose: ignoring them
+    expression: unbothered
+    facing: right
+  - id: villager
+    position: center_right
+    stance: stand
+    mood: happy
+    pose: pointing and laughing
+    expression: mocking
+    facing: left
+  props:
+  - dirt-mound
+  - brick-stack
+  action: The villager mocks Velu.
+  emotion: ridicule
+  camera:
+    move: static
+    intensity: low
+    framing: medium
+    subject: villager
+  atmosphere: []
+  ambience: wind
+  composition_notes: The villager mocks Velu.
+  lines:
+  - speaker: narrator
+    text: The villagers laughed.
+    delivery: neutral
+    pause_after: 0.2
+  - speaker: villager
+    text: Velu is digging for gold in a desert!
+    delivery: cheerful
+    on_screen: true
+    pause_after: 0.3
+  - speaker: villager
+    text: He'll find the bottom of the earth before he finds water.
+    delivery: cheerful
+    on_screen: true
+    pause_after: 0.5
+- id: s12
+  location: velu-plot
+  time_of_day: morning
+  characters:
+  - id: velu
+    position: center_left
+    stance: dig
+    mood: calm
+    pose: working
+    expression: steady
+    facing: right
+  - id: meena
+    position: center_right
+    stance: hold
+    mood: happy
+    pose: carrying her pot
+    expression: curious
+    facing: left
+  props:
+  - clay-pot
+  - dirt-mound
+  - brick-stack
+  action: Meena passes with her pot every morning.
+  emotion: hope
+  camera:
+    move: push_in
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: Meena passes with her pot every morning.
+  lines:
+  - speaker: narrator
+    text: Only one person didn't laugh. A little girl named Meena, who carried her family's pot past his plot every morning.
+    delivery: warm
+    pause_after: 0.3
+- id: s13
+  location: velu-plot
+  time_of_day: morning
+  characters:
+  - id: velu
+    position: center_left
+    stance: dig
+    mood: calm
+    pose: working
+    expression: steady
+    facing: right
+  - id: meena
+    position: center_right
+    stance: hold
+    mood: happy
+    pose: leaning over the pit
+    expression: eager
+    facing: left
+  props:
+  - clay-pot
+  - dirt-mound
+  - brick-stack
+  action: Meena calls down into the pit.
+  emotion: warmth
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: meena
+  atmosphere: []
+  ambience: wind
+  composition_notes: Meena calls down into the pit.
+  lines:
+  - speaker: narrator
+    text: She would stop at the edge of the pit and call down,
+    delivery: warm
+    pause_after: 0.2
+  - speaker: meena
+    text: Anything today, Velu?
+    delivery: cheerful
+    on_screen: true
+    pause_after: 0.4
+- id: s14
+  location: velu-plot
+  time_of_day: morning
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: looking up from the pit
+    expression: patient
+    facing: right
+  - id: meena
+    position: center_right
+    stance: hold
+    mood: happy
+    pose: at the rim
+    expression: bright
+    facing: left
+  props:
+  - clay-pot
+  - dirt-mound
+  - brick-stack
+  action: Velu answers.
+  emotion: patience
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: velu
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu answers.
+  lines:
+  - speaker: velu
+    text: Not yet.
+    delivery: warm
+    on_screen: true
+    pause_after: 0.4
+- id: s15
+  location: velu-plot
+  time_of_day: morning
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: working
+    expression: steady
+    facing: right
+  - id: meena
+    position: center_right
+    stance: hold
+    mood: happy
+    pose: turning to go
+    expression: sure
+    facing: left
+  props:
+  - clay-pot
+  - dirt-mound
+  - brick-stack
+  action: Meena answers and walks on.
+  emotion: faith
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: meena
+  atmosphere: []
+  ambience: wind
+  composition_notes: Meena answers and walks on.
+  lines:
+  - speaker: meena
+    text: Then tomorrow.
+    delivery: cheerful
+    on_screen: true
+    pause_after: 0.3
+  - speaker: narrator
+    text: And she would walk on.
+    delivery: warm
+    pause_after: 0.5
+- id: s16
+  location: velu-plot
+  time_of_day: dusk
+  characters:
+  - id: velu
+    position: center_left
+    stance: dig
+    mood: tired
+    pose: slower strokes
+    expression: weary
+    facing: right
+  props:
+  - dirt-mound
+  - brick-stack
+  action: Years pass; Velu keeps digging.
+  emotion: endurance
+  camera:
+    move: pull_out
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: Years pass; Velu keeps digging.
+  lines:
+  - speaker: narrator
+    text: One year passed. Then three. Then seven.
+    delivery: gentle
+    pause_after: 0.8
+- id: s17
+  location: shovel-strike
+  time_of_day: night
+  characters: []
+  action: The shovel rings on rock that will not break.
+  emotion: exhaustion
+  camera:
+    move: push_in
+    intensity: low
+  atmosphere: []
+  ambience: none
+  composition_notes: The shovel rings on rock that will not break.
+  lines:
+  - speaker: narrator
+    text: In the seventh year, the shovel struck rock so hard it rang like a bell.
+    delivery: neutral
+    pause_after: 0.4
+- id: s18
+  location: pit-bottom
+  time_of_day: night
+  characters:
+  - id: velu
+    position: center
+    stance: sit
+    mood: sad
+    pose: slumped on the ledge
+    expression: exhausted
+    facing: right
+  action: Velu sits at the bottom of the pit.
+  emotion: despair
+  camera:
+    move: push_in
+    intensity: low
+    framing: medium
+    subject: velu
+  atmosphere: []
+  ambience: none
+  composition_notes: Velu sits at the bottom of the pit.
+  lines:
+  - speaker: narrator
+    text: Velu's hands were bleeding. His back was bent.
+    delivery: gentle
+    pause_after: 0.3
+  - speaker: narrator
+    text: He sat at the bottom of the pit, in the dark… and for the first time, he thought about stopping.
+    delivery: gentle
+    pause_after: 0.8
+- id: s19
+  location: pit-bottom
+  time_of_day: night
+  characters:
+  - id: velu
+    position: center
+    stance: sit
+    mood: sad
+    pose: head bowed
+    expression: exhausted
+    facing: right
+  - id: meena
+    position: background
+    stance: stand
+    mood: happy
+    pose: looking down from the rim
+    expression: bright
+    facing: left
+  action: Meena looks down from the rim.
+  emotion: hope
+  camera:
+    move: static
+    intensity: low
+  atmosphere: []
+  ambience: none
+  composition_notes: Meena looks down from the rim.
+  lines:
+  - speaker: narrator
+    text: He looked up. A small face was looking down at him.
+    delivery: gentle
+    pause_after: 0.3
+  - speaker: meena
+    text: Anything today, Velu?
+    delivery: gentle
+    on_screen: true
+    pause_after: 0.8
+- id: s20
+  location: pit-bottom
+  time_of_day: night
+  characters:
+  - id: velu
+    position: center
+    stance: sit
+    mood: tired
+    pose: looking up
+    expression: hollow
+    facing: right
+  action: Velu is quiet for a long time.
+  emotion: struggle
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: velu
+  atmosphere: []
+  ambience: none
+  composition_notes: Velu is quiet for a long time.
+  lines:
+  - speaker: narrator
+    text: He was quiet for a long time.
+    delivery: gentle
+    pause_after: 0.8
+  - speaker: velu
+    text: Not yet.
+    delivery: whisper
+    on_screen: true
+    pause_after: 1.0
+- id: s21
+  location: pit-bottom
+  time_of_day: night
+  characters:
+  - id: velu
+    position: center_left
+    stance: sit
+    mood: tired
+    pose: center
+    expression: steady
+    facing: right
+  - id: meena
+    position: background
+    stance: stand
+    mood: happy
+    pose: smiling down
+    expression: sure
+    facing: left
+  action: Meena smiles.
+  emotion: faith
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: meena
+  atmosphere: []
+  ambience: none
+  composition_notes: Meena smiles.
+  lines:
+  - speaker: meena
+    text: Then tomorrow.
+    delivery: warm
+    on_screen: true
+    pause_after: 1.0
+- id: s22
+  location: pit-bottom
+  time_of_day: night
+  characters:
+  - id: velu
+    position: center
+    stance: dig
+    mood: calm
+    pose: back to work
+    expression: determined
+    facing: right
+  action: Velu picks up the shovel again.
+  emotion: resolve
+  camera:
+    move: push_in
+    intensity: low
+    framing: medium
+    subject: velu
+  atmosphere: []
+  ambience: none
+  composition_notes: Velu picks up the shovel again.
+  lines:
+  - speaker: narrator
+    text: Velu picked up the shovel.
+    delivery: warm
+    pause_after: 1.0
+- id: s23
+  location: velu-plot
+  time_of_day: dawn
+  characters:
+  - id: velu
+    position: center_left
+    stance: dig
+    mood: calm
+    pose: working
+    expression: steady
+    facing: right
+  props:
+  - dirt-mound
+  - brick-stack
+  action: An ordinary morning in the tenth year.
+  emotion: anticipation
+  camera:
+    move: push_in
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: An ordinary morning in the tenth year.
+  lines:
+  - speaker: narrator
+    text: In the tenth year, on an ordinary morning…
+    delivery: gentle
+    pause_after: 0.3
+- id: s24
+  location: shovel-strike
+  time_of_day: dawn
+  characters: []
+  action: The rock cracks and water rushes up.
+  emotion: breakthrough
+  camera:
+    move: push_in
+    intensity: medium
+  atmosphere: []
+  ambience: none
+  composition_notes: The rock cracks and water rushes up.
+  lines:
+  - speaker: narrator
+    text: the shovel struck the rock once more… and the rock cracked… and cold, clear water rushed up around his feet.
+    delivery: warm
+    pause_after: 0.8
+- id: s25
+  location: pit-bottom
+  time_of_day: morning
+  characters:
+  - id: velu
+    position: center
+    stance: stand
+    mood: happy
+    pose: laughing, water at his feet
+    expression: overjoyed
+    facing: right
+  props:
+  - spring-pool
+  action: Velu laughs and drinks.
+  emotion: joy
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: velu
+  atmosphere: []
+  ambience: none
+  composition_notes: Velu laughs and drinks.
+  lines:
+  - speaker: narrator
+    text: Velu laughed like a boy. He cupped the water in his hands and drank.
+    delivery: warm
+    pause_after: 0.3
+  - speaker: narrator
+    text: It was the sweetest water he had ever tasted.
+    delivery: warm
+    pause_after: 0.8
+- id: s26
+  location: the-well
+  time_of_day: midday
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: by the new well
+    expression: at peace
+    facing: right
+  - id: villager
+    position: center_right
+    stance: stand
+    mood: surprised
+    pose: staring at the water
+    expression: ashamed
+    facing: left
+  - id: meena
+    position: right
+    stance: stand
+    mood: happy
+    pose: holding her pot
+    expression: delighted
+    facing: left
+  action: The whole village gathers, silent.
+  emotion: awe
+  camera:
+    move: pull_out
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: The whole village gathers, silent.
+  lines:
+  - speaker: narrator
+    text: By noon, the whole village stood around the well, silent. The same people who had laughed.
+    delivery: gentle
+    pause_after: 0.6
+- id: s27
+  location: the-well
+  time_of_day: midday
+  characters:
+  - id: velu
+    position: center_left
+    stance: hold
+    mood: happy
+    pose: offering a cup
+    expression: kind
+    facing: right
+  - id: villager
+    position: center_right
+    stance: stand
+    mood: sad
+    pose: head lowered
+    expression: ashamed
+    facing: left
+  props:
+  - water-cup
+  action: Velu hands the first cup to the loudest mocker.
+  emotion: grace
+  camera:
+    move: push_in
+    intensity: low
+    framing: medium
+    subject: villager
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu hands the first cup to the loudest mocker.
+  lines:
+  - speaker: narrator
+    text: Velu lowered the bucket, filled a cup… and handed it to the man who had laughed the loudest.
+    delivery: warm
+    pause_after: 0.8
+- id: s28
+  location: the-well
+  time_of_day: afternoon
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: at his counter
+    expression: watchful
+    facing: right
+  - id: merchant
+    position: right
+    stance: walk
+    mood: proud
+    pose: striding in
+    expression: smug
+    facing: left
+  action: A rich merchant arrives from the capital.
+  emotion: temptation
+  camera:
+    move: static
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: A rich merchant arrives from the capital.
+  lines:
+  - speaker: narrator
+    text: News of the well travelled fast. Within a month, a fine carriage rolled down the dusty road.
+    delivery: neutral
+    pause_after: 0.3
+  - speaker: narrator
+    text: A rich merchant from the capital stepped out, brushing the dust from his silk sleeves.
+    delivery: neutral
+    pause_after: 0.3
+- id: s29
+  location: the-well
+  time_of_day: afternoon
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: listening
+    expression: still
+    facing: right
+  - id: merchant
+    position: center_right
+    stance: stand
+    mood: proud
+    pose: leaning on the counter
+    expression: greedy
+    facing: left
+  props:
+  - money-bag
+  action: The merchant puts a bag of gold on the counter.
+  emotion: greed
+  camera:
+    move: push_in
+    intensity: low
+    framing: medium
+    subject: merchant
+  atmosphere: []
+  ambience: wind
+  composition_notes: The merchant puts a bag of gold on the counter.
+  lines:
+  - speaker: merchant
+    text: Sell me the well. We will put a gate around it.
+    delivery: proud
+    on_screen: true
+    pause_after: 0.3
+  - speaker: merchant
+    text: Every village for fifty miles is thirsty. They will pay whatever we ask.
+    delivery: proud
+    on_screen: true
+    pause_after: 0.5
+- id: s30
+  location: the-well
+  time_of_day: afternoon
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: thoughtful
+    pose: looking past the merchant
+    expression: weighing it
+    facing: right
+  - id: merchant
+    position: center_right
+    stance: stand
+    mood: proud
+    pose: waiting
+    expression: smug
+    facing: left
+  props:
+  - money-bag
+  action: Velu looks at the gold, then at the waiting women.
+  emotion: conscience
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: velu
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu looks at the gold, then at the waiting women.
+  lines:
+  - speaker: narrator
+    text: Velu looked at the gold. Then he looked past the merchant, at the line of women waiting with their clay pots.
+    delivery: gentle
+    pause_after: 0.6
+- id: s31
+  location: the-well
+  time_of_day: afternoon
+  characters:
+  - id: velu
+    position: center_left
+    stance: reach
+    mood: calm
+    pose: pushing the bag back
+    expression: firm
+    facing: right
+  - id: merchant
+    position: center_right
+    stance: stand
+    mood: surprised
+    pose: taken aback
+    expression: stunned
+    facing: left
+  props:
+  - money-bag
+  action: Velu pushes the gold back.
+  emotion: integrity
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: velu
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu pushes the gold back.
+  lines:
+  - speaker: narrator
+    text: He pushed the bag back across the table.
+    delivery: neutral
+    pause_after: 0.3
+  - speaker: velu
+    text: Water is life. And life is not for sale.
+    delivery: warm
+    on_screen: true
+    pause_after: 1.0
+- id: s32
+  location: the-well
+  time_of_day: afternoon
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: working
+    expression: steady
+    facing: right
+  - id: merchant
+    position: center_right
+    stance: stand
+    mood: angry
+    pose: sneering
+    expression: scornful
+    facing: left
+  props:
+  - money-bag
+  action: The merchant sneers.
+  emotion: contempt
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: merchant
+  atmosphere: []
+  ambience: wind
+  composition_notes: The merchant sneers.
+  lines:
+  - speaker: merchant
+    text: Then you will die poor, at the end of a dusty road.
+    delivery: angry
+    on_screen: true
+    pause_after: 0.8
+- id: s33
+  location: the-well
+  time_of_day: morning
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: at his counter
+    expression: fair
+    facing: right
+  - id: meena
+    position: center_right
+    stance: hold
+    mood: happy
+    pose: waiting with her pot
+    expression: patient
+    facing: left
+  props:
+  - clay-pot
+  action: Velu sets one fair price.
+  emotion: fairness
+  camera:
+    move: push_in
+    intensity: low
+    framing: medium
+    subject: velu
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu sets one fair price.
+  lines:
+  - speaker: narrator
+    text: Velu set one rule. One copper coin, for as much water as your pots could carry.
+    delivery: warm
+    pause_after: 0.3
+  - speaker: narrator
+    text: Rich or poor, friend or stranger… the same coin.
+    delivery: warm
+    pause_after: 0.5
+- id: s34
+  location: the-well
+  time_of_day: dusk
+  characters:
+  - id: velu
+    position: center
+    stance: reach
+    mood: calm
+    pose: wiping the well stones
+    expression: content
+    facing: right
+  action: Velu keeps his records and cleans the well each evening.
+  emotion: care
+  camera:
+    move: pull_out
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu keeps his records and cleans the well each evening.
+  lines:
+  - speaker: narrator
+    text: He wrote every coin in a little notebook. He cleaned the well with his own hands every evening.
+    delivery: gentle
+    pause_after: 0.4
+- id: s35
+  location: the-well
+  time_of_day: afternoon
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: counting
+    expression: attentive
+    facing: right
+  - id: meena
+    position: center_right
+    stance: walk
+    mood: happy
+    pose: hurrying off with her pot
+    expression: cheerful
+    facing: right
+  action: A girl pays two coins and hurries away.
+  emotion: innocence
+  camera:
+    move: static
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: A girl pays two coins and hurries away.
+  lines:
+  - speaker: narrator
+    text: One hot afternoon, a little girl handed him two copper coins instead of one… and hurried away with her pot.
+    delivery: warm
+    pause_after: 0.3
+- id: s36
+  location: coins-in-palm
+  time_of_day: afternoon
+  characters: []
+  action: Two copper coins in Velu's palm.
+  emotion: honesty
+  camera:
+    move: push_in
+    intensity: low
+  atmosphere: []
+  ambience: none
+  composition_notes: Two copper coins in Velu's palm.
+  lines:
+  - speaker: narrator
+    text: Velu counted the coins.
+    delivery: neutral
+    pause_after: 0.8
+- id: s37
+  location: dry-village
+  time_of_day: afternoon
+  characters:
+  - id: velu
+    position: center_left
+    stance: walk
+    mood: happy
+    pose: walking after her
+    expression: purposeful
+    facing: right
+  - id: meena
+    position: right
+    stance: stand
+    mood: surprised
+    pose: turning back
+    expression: surprised
+    facing: left
+  - id: traveller
+    position: left
+    stance: stand
+    mood: thoughtful
+    pose: resting by the road
+    expression: watching
+    facing: right
+  action: Velu walks after Meena to return the coin.
+  emotion: integrity
+  camera:
+    move: pan_right
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu walks after Meena to return the coin.
+  lines:
+  - speaker: narrator
+    text: Then he left the well, walked all the way down the road after her… and pressed the extra coin back into her hand.
+    delivery: warm
+    pause_after: 0.5
+- id: s38
+  location: dry-village
+  time_of_day: afternoon
+  characters:
+  - id: traveller
+    position: center_right
+    stance: stand
+    mood: thoughtful
+    pose: watching quietly
+    expression: moved
+    facing: left
+  action: A traveller has seen it all.
+  emotion: witness
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: traveller
+  atmosphere: []
+  ambience: wind
+  composition_notes: A traveller has seen it all.
+  lines:
+  - speaker: narrator
+    text: A traveller resting by the road watched the whole thing. He said nothing.
+    delivery: gentle
+    pause_after: 0.5
+- id: s39
+  location: dry-village
+  time_of_day: dusk
+  characters:
+  - id: traveller
+    position: center_left
+    stance: walk
+    mood: calm
+    pose: walking on
+    expression: purposeful
+    facing: right
+  action: The traveller carries the story onward.
+  emotion: spreading word
+  camera:
+    move: pan_right
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: The traveller carries the story onward.
+  lines:
+  - speaker: narrator
+    text: But when he reached the next town, he told the story. And the town after that. And the town after that.
+    delivery: warm
+    pause_after: 0.3
+- id: s40
+  location: dry-village
+  time_of_day: night
+  characters:
+  - id: traveller
+    position: center_right
+    stance: stand
+    mood: happy
+    pose: telling the story
+    expression: animated
+    facing: left
+  action: The traveller tells the story.
+  emotion: reputation
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: traveller
+  atmosphere: []
+  ambience: night_crickets
+  composition_notes: The traveller tells the story.
+  lines:
+  - speaker: traveller
+    text: There is a man at the end of the road… who walked a mile to return one copper coin.
+    delivery: warm
+    on_screen: true
+    pause_after: 0.8
+- id: s41
+  location: dry-village
+  time_of_day: midday
+  characters: []
+  action: 'The great drought: dust, dead wells.'
+  emotion: crisis
+  camera:
+    move: push_in
+    intensity: low
+  atmosphere:
+  - wind
+  ambience: wind
+  composition_notes: 'The great drought: dust, dead wells.'
+  lines:
+  - speaker: narrator
+    text: Then came the great drought. The river dried up.
+    delivery: neutral
+    pause_after: 0.3
+  - speaker: narrator
+    text: Every well in the region died… every well but one.
+    delivery: neutral
+    pause_after: 0.6
+- id: s42
+  location: the-well
+  time_of_day: midday
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: at the well
+    expression: steady
+    facing: right
+  - id: merchant
+    position: center_right
+    stance: stand
+    mood: tired
+    pose: dusty and humbled
+    expression: desperate
+    facing: left
+  action: The merchant returns, thirsty.
+  emotion: humility
+  camera:
+    move: push_in
+    intensity: low
+    framing: medium
+    subject: merchant
+  atmosphere: []
+  ambience: wind
+  composition_notes: The merchant returns, thirsty.
+  lines:
+  - speaker: narrator
+    text: The merchant from the capital came back, dusty, tired and thirsty. His own wells were empty.
+    delivery: gentle
+    pause_after: 0.3
+  - speaker: merchant
+    text: Now you can ask anything. Ten coins. A hundred. They will pay.
+    delivery: sad
+    on_screen: true
+    pause_after: 0.6
+- id: s43
+  location: the-well
+  time_of_day: midday
+  characters:
+  - id: velu
+    position: center_left
+    stance: hold
+    mood: calm
+    pose: filling a vessel
+    expression: unmoved
+    facing: right
+  - id: merchant
+    position: center_right
+    stance: stand
+    mood: tired
+    pose: waiting
+    expression: weary
+    facing: left
+  props:
+  - water-cup
+  action: Velu fills the merchant's water skin.
+  emotion: integrity
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: velu
+  atmosphere: []
+  ambience: wind
+  composition_notes: Velu fills the merchant's water skin.
+  lines:
+  - speaker: narrator
+    text: Velu filled the merchant's water skin to the brim.
+    delivery: warm
+    pause_after: 0.3
+  - speaker: velu
+    text: One copper coin.
+    delivery: warm
+    on_screen: true
+    pause_after: 1.0
+- id: s44
+  location: the-well
+  time_of_day: midday
+  characters:
+  - id: velu
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: working
+    expression: steady
+    facing: right
+  - id: merchant
+    position: center_right
+    stance: stand
+    mood: thoughtful
+    pose: staring at Velu
+    expression: humbled
+    facing: left
+  action: The merchant pays one coin and leaves in silence.
+  emotion: respect
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: merchant
+  atmosphere: []
+  ambience: wind
+  composition_notes: The merchant pays one coin and leaves in silence.
+  lines:
+  - speaker: narrator
+    text: The merchant stared at him for a long time. Then he placed one coin on the table, and walked away without a word.
+    delivery: gentle
+    pause_after: 0.8
+- id: s45
+  location: market-road
+  time_of_day: morning
+  characters: []
+  action: Caravans come down the road.
+  emotion: growth
+  camera:
+    move: pull_out
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: Caravans come down the road.
+  lines:
+  - speaker: narrator
+    text: After the drought, the caravans came. First for the water. Then, because they trusted Velu, for everything else.
+    delivery: warm
+    pause_after: 0.3
+  - speaker: narrator
+    text: Merchants from distant lands would only trade where Velu kept the records, because his word was worth more than a locked vault.
+    delivery: warm
+    pause_after: 0.4
+- id: s46
+  location: market-road
+  time_of_day: afternoon
+  characters: []
+  action: The market at the end of the road bustles.
+  emotion: prosperity
+  camera:
+    move: pan_right
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: The market at the end of the road bustles.
+  lines:
+  - speaker: narrator
+    text: The dusty road became a busy road. The busy road became a market.
+    delivery: warm
+    pause_after: 0.3
+  - speaker: narrator
+    text: And the market at the end of the road became the most trusted place to trade in the whole land.
+    delivery: warm
+    pause_after: 0.6
+- id: s47
+  location: market-road
+  time_of_day: dusk
+  characters:
+  - id: velu-old
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: by his counter
+    expression: serene
+    facing: right
+  - id: traveller
+    position: center_right
+    stance: stand
+    mood: thoughtful
+    pose: asking
+    expression: wondering
+    facing: left
+  action: Years later, a traveller asks old Velu his secret.
+  emotion: wonder
+  camera:
+    move: push_in
+    intensity: low
+    framing: medium
+    subject: traveller
+  atmosphere: []
+  ambience: wind
+  composition_notes: Years later, a traveller asks old Velu his secret.
+  lines:
+  - speaker: narrator
+    text: Years later, when Velu's hair had turned white, a traveller asked him,
+    delivery: gentle
+    pause_after: 0.2
+  - speaker: traveller
+    text: How did you become so rich, out here, at the edge of the map?
+    delivery: curious
+    on_screen: true
+    pause_after: 0.6
+- id: s48
+  location: market-road
+  time_of_day: dusk
+  characters:
+  - id: velu-old
+    position: center_left
+    stance: reach
+    mood: happy
+    pose: pointing to the shovel
+    expression: warm smile
+    facing: left
+  - id: traveller
+    position: center_right
+    stance: stand
+    mood: thoughtful
+    pose: listening
+    expression: curious
+    facing: left
+  action: Old Velu points to the old shovel.
+  emotion: humility
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: velu-old
+  atmosphere: []
+  ambience: wind
+  composition_notes: Old Velu points to the old shovel.
+  lines:
+  - speaker: narrator
+    text: Velu smiled. He wiped his hands on a cloth, and pointed to the old iron shovel leaning against the wall.
+    delivery: warm
+    pause_after: 0.5
+- id: s49
+  location: market-road
+  time_of_day: dusk
+  characters:
+  - id: velu-old
+    position: center_left
+    stance: stand
+    mood: calm
+    pose: facing the traveller
+    expression: wise
+    facing: right
+  action: Old Velu gives his answer.
+  emotion: wisdom
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: velu-old
+  atmosphere: []
+  ambience: wind
+  composition_notes: Old Velu gives his answer.
+  lines:
+  - speaker: velu-old
+    text: The earth doesn't care where you plant yourself.
+    delivery: warm
+    on_screen: true
+    pause_after: 0.5
+  - speaker: velu-old
+    text: Discipline digs the well. Integrity keeps the water clean.
+    delivery: warm
+    on_screen: true
+    pause_after: 0.8
+- id: s50
+  location: market-road
+  time_of_day: dusk
+  characters: []
+  action: The caravans stretch down the road.
+  emotion: legacy
+  camera:
+    move: pull_out
+    intensity: low
+  atmosphere: []
+  ambience: wind
+  composition_notes: The caravans stretch down the road.
+  lines:
+  - speaker: velu-old
+    text: Do those two things… and the world will find you. Even at the end of the road.
+    delivery: warm
+    on_screen: false
+    pause_after: 1.0
+- id: s51
+  location: market-road
+  time_of_day: dusk
+  characters:
+  - id: velu-old
+    position: center_left
+    stance: stand
+    mood: happy
+    pose: by the counter
+    expression: content
+    facing: right
+  - id: meena-grown
+    position: center_right
+    stance: stand
+    mood: happy
+    pose: writing in the notebook
+    expression: knowing smile
+    facing: left
+  action: Grown Meena keeps the records.
+  emotion: full circle
+  camera:
+    move: push_in
+    intensity: low
+    framing: close
+    subject: meena-grown
+  atmosphere: []
+  ambience: wind
+  composition_notes: Grown Meena keeps the records.
+  lines:
+  - speaker: narrator
+    text: Behind him, a grown woman was writing the day's coins into a little notebook. It was Meena.
+    delivery: warm
+    pause_after: 0.4
+  - speaker: meena-grown
+    text: Anything today?
+    delivery: cheerful
+    on_screen: true
+    pause_after: 1.2
+- id: s52
+  location: closing-card
+  time_of_day: dusk
+  characters: []
+  action: The closing words.
+  emotion: peace
+  camera:
+    move: static
+    intensity: low
+  atmosphere:
+  - dust_motes
+  ambience: none
+  composition_notes: The closing words.
+  lines:
+  - speaker: narrator
+    text: Discipline digs the well. Integrity keeps the water clean.
+    delivery: warm
+    pause_after: 1.6
+publishing:
+  title: The Well at the End of the Road | A Story About Discipline and Integrity
+  description: Velu has nothing but a stony plot at the end of a dusty road and an old iron shovel. For ten years he digs while the village laughs. When he finally strikes water, a rich merchant offers
+    him gold to lock it away. What Velu does next turns a forgotten village into the most trusted market in the land.
+  tags:
+  - inspiring story
+  - discipline
+  - integrity
+  - motivational story
+  - animated story
+  - moral story
+  - success story
+  - The Well at the End of the Road
+  made_for_kids: false
+  thumbnail:
+    hook: DIG YOUR WELL
+    concept: Velu with his shovel in the pit, a spring of clear water bursting up at his feet.
+    characters:
+    - velu

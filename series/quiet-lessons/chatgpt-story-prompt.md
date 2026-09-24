@@ -38,3 +38,10 @@ Invent characters the story needs. These already exist in the series and can be 
 - Master Ren: An old monk with deep brown skin, a shaven head, a short white beard and white eyebrows; calm and unhurried.
 - Master Kai: Kai years later, now a teacher: light brown skin, a clean-shaven head, a calm face with faint lines.
 - The Novice: A young novice monk of about fifteen with warm tan skin, a clean-shaven head and eager, earnest eyes.
+- Velu: A lean, sun-darkened villager of about thirty with deep brown skin, short black hair and a black mustache.
+- Velu (old): Velu forty years on: white hair around a bald crown, a white mustache, a lined, kind face and a slight stoop.
+- Meena: A bright village girl of about eight with brown skin and a long black braid tied with a red ribbon.
+- Meena (grown): Meena at about thirty: brown skin, hair in a bun and a red bindi; calm and capable.
+- The Merchant: A stout, rich merchant from the capital with a curled mustache and a proud manner.
+- The Villager: A thin village man with a thin mustache who laughs loudest at Velu.
+- The Traveller: A wandering traveller with a grey beard who carries stories from town to town.

@@ -95,6 +95,91 @@ characters:
     voice:
       kokoro: "am_puck"
       speed: 1.0
+  - id: "velu"
+    kind: "character"
+    name: "Velu"
+    description: "A lean, sun-darkened villager of about thirty with deep brown skin, short black hair and a black mustache."
+    outfit: "A white sleeveless vest, a white dhoti to mid-shin and a mustard towel over one shoulder."
+    features:
+      - "a black mustache"
+      - "a mustard towel over one shoulder"
+      - "an old iron shovel"
+    voice:
+      kokoro: "am_onyx"
+      speed: 0.92
+  - id: "velu-old"
+    kind: "character"
+    name: "Velu (old)"
+    description: "Velu forty years on: white hair around a bald crown, a white mustache, a lined, kind face and a slight stoop."
+    outfit: "A cream long-sleeved kurta over a white dhoti, and the same mustard towel over one shoulder."
+    features:
+      - "a white fringe of hair around a bald crown"
+      - "a white mustache"
+      - "the same mustard towel"
+    voice:
+      kokoro: "am_onyx"
+      speed: 0.85
+  - id: "meena"
+    kind: "character"
+    name: "Meena"
+    description: "A bright village girl of about eight with brown skin and a long black braid tied with a red ribbon."
+    outfit: "A green blouse and a long mustard pavadai skirt; usually carrying a clay water pot."
+    features:
+      - "a long braid with a red ribbon"
+      - "a green blouse and mustard skirt"
+      - "a clay water pot"
+    voice:
+      kokoro: "af_sky"
+      speed: 1.05
+      pitch: 3.5
+  - id: "meena-grown"
+    kind: "character"
+    name: "Meena (grown)"
+    description: "Meena at about thirty: brown skin, hair in a bun and a red bindi; calm and capable."
+    outfit: "A mustard sari over a red blouse, its pallu over one shoulder."
+    features:
+      - "hair in a bun"
+      - "a red bindi"
+      - "a mustard sari"
+    voice:
+      kokoro: "af_kore"
+      speed: 0.95
+  - id: "merchant"
+    kind: "character"
+    name: "The Merchant"
+    description: "A stout, rich merchant from the capital with a curled mustache and a proud manner."
+    outfit: "A red silk turban with a blue jewel and a white plume, a royal-blue knee-length coat with gold buttons, white churidar and gold slippers."
+    features:
+      - "a red jewelled turban with a plume"
+      - "a curled mustache"
+      - "a royal-blue coat with gold buttons"
+    voice:
+      kokoro: "am_fenrir"
+      speed: 0.95
+  - id: "villager"
+    kind: "character"
+    name: "The Villager"
+    description: "A thin village man with a thin mustache who laughs loudest at Velu."
+    outfit: "A white head-cloth turban, a rust shirt with rolled sleeves and a white dhoti."
+    features:
+      - "a white head-cloth"
+      - "a rust shirt"
+      - "a mocking grin"
+    voice:
+      kokoro: "am_adam"
+      speed: 1.0
+  - id: "traveller"
+    kind: "character"
+    name: "The Traveller"
+    description: "A wandering traveller with a grey beard who carries stories from town to town."
+    outfit: "A brown head wrap, a sand-coloured long kurta and a brown shawl over one shoulder."
+    features:
+      - "a grey beard"
+      - "a brown head wrap"
+      - "a brown shawl"
+    voice:
+      kokoro: "bm_fable"
+      speed: 0.95
 # Recurring places. Descriptions carry no time of day or weather: shots add those.
 locations:
   - id: "arjun-room"

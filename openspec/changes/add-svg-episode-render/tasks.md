@@ -78,3 +78,9 @@
 - [x] 12.1 `src/thumbnail/Thumbnail.tsx` (background, large characters, central image, two-colour headline) and a `Thumbnail` composition; the generated registry exports the episode's `thumbnail.tsx` spec; `story thumbnail` renders every headline variant as a 1280×720 JPEG; directing guide section; verify with tests
 - [x] 12.2 "The Arrow and the Wind": thumbnail with three headline variants; approve the preview and render the final
 
+## 13. Wardrobe, model sheets, vendored assets, and The Well at the End of the Road
+
+- [x] 13.1 Human kit wardrobe (hair styles, mustache, turban, bindi, wrinkles, sleeveless tops, dhoti/sari/coat lengths, buttons, stout build, child proportions with head-scaled gestures) and a `dig` stance with a shovel on a strike rhythm; model sheets `CastSheet`, `PoseSheet`, `PropSheet`
+- [x] 13.2 Vendor Microsoft Fluent Emoji Flat (MIT) props under `render/src/vendor/fluent-emoji` with licence and README; STYLE.md policy for open-source assets
+- [x] 13.3 "The Well at the End of the Road": seven rigs, five episode locations, a shared `shovel-strike` insert timed to "cracked"/"water", props; 52 shots, about 7:15; voice, timeline, preview
+

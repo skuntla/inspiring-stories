@@ -121,7 +121,8 @@
         "hug",
         "fly",
         "perch",
-        "aim"
+        "aim",
+        "dig"
       ]
     },
     "mood": {
