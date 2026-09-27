@@ -150,3 +150,7 @@ __pycache__/
 .pytest_cache/
 **/build/
 .DS_Store
+
+# Story card artwork for reels and books stays local (the repo is public)
+reels/*/images/
+books/*/images/

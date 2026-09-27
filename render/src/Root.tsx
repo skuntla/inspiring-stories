@@ -6,6 +6,7 @@ import {KitSheet} from './dev/KitSheet';
 import {RigSheet} from './dev/RigSheet';
 import {Episode} from './Episode';
 import {Thumbnail} from './thumbnail/Thumbnail';
+import {Reel, type ReelTimeline} from './reel/Reel';
 import type {Timeline} from './kit/types';
 
 // The timeline arrives through `--props` ({"timeline": ...}); this default only keeps the Studio usable.
@@ -21,6 +22,17 @@ export const Root: React.FC = () => (
 	<Composition id="KitSheet" component={KitSheet} durationInFrames={1} fps={30} width={1920} height={1080} />
 	<Composition id="RigSheet" component={RigSheet} durationInFrames={1} fps={30} width={1920} height={1080} />
 	<Composition id="Thumbnail" component={Thumbnail} defaultProps={{variant: 0}} durationInFrames={1} fps={30} width={1280} height={720} />
+	<Composition
+		id="Reel"
+		component={Reel}
+		defaultProps={{reel: {fps: 30, width: 1080, height: 1920, durationInFrames: 1, audio: {src: ''}, shots: []} as ReelTimeline}}
+		calculateMetadata={({props}) => ({
+			durationInFrames: Math.max(1, props.reel.durationInFrames),
+			fps: props.reel.fps,
+			width: props.reel.width,
+			height: props.reel.height,
+		})}
+	/>
 	<Composition
 		id="Episode"
 		component={Episode}

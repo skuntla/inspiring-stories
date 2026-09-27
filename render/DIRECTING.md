@@ -155,3 +155,21 @@ shared location under *Ready-made shots*: regenerate them after adding one
 - Do text shots show no captions, and does the text finish before the voice does?
 - Is there motion in every shot, and does the final shot hold long enough to breathe?
 - Is the episode inside 70–90 s?
+
+## Reels from story cards
+
+For a daily card series (for example the "Time for Tiny Tales" Instagram posts): put the cards in
+`reels/<date>-<slug>/images/` (numbered in order, the cover first) and write `reel.yaml` from the day's
+story: one slide per card with the lines told over it, a warm narrator plus a voice per character,
+`pronunciations` for names, and `music: hopeful`. `story reel reels/<id>` voices, times, mixes and
+renders `build/reel.mp4` (1080×1920) and `build/reel-instagram.mp4` (lighter, for uploading).
+
+- Tell each card's moment, not its notes: the notes stay readable on the card as the camera pulls back.
+- About 1½–2 minutes; keep the dialogue, the funny line and the cliffhanger; end on the lesson.
+
+- Shorts (`format: short`) show the spoken words above the card, a short page at a time, each word
+  turning gold as it is said (`captions: words`, the default; `labels` shows the old one-line
+  summaries). Tell it as a story (about 1½–2½ minutes), with pauses and a voice per character.
+- English is the default. `dubs:` plus `story reel <folder> --lang hi|te` builds a Hindi or Telugu
+  version at its own pace (Indic Parler-TTS); a shared multi-language timeline slows every language
+  to the slowest, so build each language on its own.

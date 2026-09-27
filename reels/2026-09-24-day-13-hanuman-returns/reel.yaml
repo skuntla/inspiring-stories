@@ -1,0 +1,66 @@
+# A vertical reel from story cards: each slide is one card image and the lines spoken over it.
+# `story reel reels/<id>` voices it, times it, mixes music and renders build/reel.mp4 (1080x1920).
+schema: story-reel/v1
+id: 2026-09-24-day-13-hanuman-returns
+title: "Day 13: Hanuman Returns Across the Ocean"
+music: hopeful
+voices:
+  narrator: {kokoro: af_heart, speed: 0.95}
+  hanuman: {kokoro: am_michael, speed: 1.0}
+  jambavan: {kokoro: bm_george, speed: 0.85}
+  angada: {kokoro: am_adam, speed: 1.05}
+  vanara: {kokoro: am_puck, speed: 1.05}
+  rama: {kokoro: am_onyx, speed: 0.9}
+pronunciations:
+  Sita: Seetha
+  Sita's: Seetha's
+  Rama: Raama
+  Shri: Shree
+  chudamani: choodaamani
+  Jambavan: Jaambavaan
+  vanaras: vaanaras
+  Hanuman: Hanumaan
+slides:
+  - image: images/00-cover.png
+    motion: cover
+    lines:
+      - {speaker: narrator, text: "Day thirteen. Hanuman returns across the ocean.", pause_after: 0.6}
+  - image: images/01-moonlit-ocean.png
+    lines:
+      - {speaker: narrator, text: "Hanuman soared high above the moonlit ocean. Behind him was Lanka.", pause_after: 0.3}
+      - {speaker: narrator, text: "The first time he crossed this sea, he carried a question: will I find Sita?", pause_after: 0.3}
+      - {speaker: narrator, text: "Now, he carried the answer.", pause_after: 0.4}
+      - {speaker: narrator, text: "He repeated her words, so he would not forget a single one.", pause_after: 0.2}
+      - {speaker: hanuman, text: "Tell Rama I am waiting.", pause_after: 0.4}
+      - {speaker: narrator, text: "And he checked, once more, that her chudamani was safe.", pause_after: 0.5}
+  - image: images/02-coming-back.png
+    lines:
+      - {speaker: narrator, text: "On the far shore, the vanaras watched the horizon.", pause_after: 0.2}
+      - {speaker: vanara, text: "What if he could not find her?", pause_after: 0.3}
+      - {speaker: narrator, text: "But Jambavan stayed calm.", pause_after: 0.1}
+      - {speaker: jambavan, text: "Have faith. If anyone can do this, it is Hanuman.", pause_after: 0.4}
+      - {speaker: narrator, text: "Then, BOOM! A great sound rolled across the ocean. A red scarf. A long tail.", pause_after: 0.2}
+      - {speaker: angada, text: "Look! It's Hanuman!", pause_after: 0.5}
+  - image: images/03-i-found-sita.png
+    lines:
+      - {speaker: hanuman, text: "Jai Shri Ram!", pause_after: 0.3}
+      - {speaker: narrator, text: "He landed in a cloud of dust, and everyone rushed to him.", pause_after: 0.2}
+      - {speaker: vanara, text: "Did you find her? Is she safe?", pause_after: 0.3}
+      - {speaker: narrator, text: "Hanuman smiled a huge smile.", pause_after: 0.2}
+      - {speaker: hanuman, text: "I found Sita.", pause_after: 0.4}
+      - {speaker: narrator, text: "The shore exploded with cheers!", pause_after: 0.5}
+  - image: images/04-shares-the-news.png
+    lines:
+      - {speaker: jambavan, text: "You did it, Hanuman.", pause_after: 0.3}
+      - {speaker: narrator, text: "But Hanuman shook his head.", pause_after: 0.1}
+      - {speaker: hanuman, text: "We did it. Everyone searched. Everyone believed. I was only the one who crossed the ocean.", pause_after: 0.4}
+      - {speaker: narrator, text: "Then he told them everything, and showed them Sita's chudamani.", pause_after: 0.2}
+      - {speaker: vanara, text: "You burned Lanka?", pause_after: 0.2}
+      - {speaker: hanuman, text: "Well… parts of it.", pause_after: 0.5}
+  - image: images/05-reaches-rama.png
+    lines:
+      - {speaker: narrator, text: "Soon, they hurried back to Rama. Hanuman folded his hands, and bowed.", pause_after: 0.3}
+      - {speaker: rama, text: "Sita?", pause_after: 0.6}
+      - {speaker: narrator, text: "Hanuman looked up, his eyes full of joy, and began to speak…", pause_after: 0.3}
+      - {speaker: narrator, text: "But what he told Rama… is tomorrow's Tiny Tale.", pause_after: 0.5}
+      - {speaker: narrator, text: "Tonight's lesson: great success becomes even greater when we stay humble, and share the credit.", pause_after: 1.2}

@@ -1,0 +1,104 @@
+# A storybook PDF from daily story cards: `story book books/<id>` writes build/<id>.pdf.
+# Each day is a chapter: its cover card, then each card with the part of the story told over it,
+# then the day's lesson, bedtime question, new words, a quiz and a word search.
+schema: story-book/v1
+id: tiny-tales-hanuman-book-1
+title: Hanuman Tiny Tales
+subtitle: Book 1 · Bedtime stories with lessons and activities
+brand: Time for Tiny Tales
+cover: images/d01-00-cover.png
+page: A4
+for_parents: >-
+  Read one day each night. Each chapter is a short story told across five picture cards, followed by
+  the day's lesson and a bedtime question to talk about together. The activity page (a quiz and a
+  word search) makes a gentle morning follow-up. Answers are at the back.
+days:
+  - day: 1
+    title: Hanuman and the Giant Mango
+    cover: images/d01-00-cover.png
+    teaser: A hungry little monkey, a golden sunrise, and a very big mistake.
+    beats:
+      - image: images/d01-01-sees-the-mango.png
+        text: >-
+          Long ago, in a forest full of singing birds, lived a little monkey boy named Hanuman. One
+          morning he woke up very, very hungry. He looked up at the sky and saw something round, golden
+          and glowing. "A giant ripe mango!" he laughed. It was really the rising sun, but little
+          Hanuman had never seen anything so delicious. He crouched on a rock, wiggled his tail, and
+          decided: "I will jump up and catch it!"
+      - image: images/d01-02-flies-to-the-sun.png
+        text: >-
+          With one mighty leap, Hanuman shot into the sky. Whoosh! He flew past surprised birds and
+          fluffy clouds. The rivers below looked like silver ribbons. The sun grew bigger and brighter,
+          but Hanuman only grew happier. "Almost there, mango!" he called, rushing closer and closer.
+      - image: images/d01-03-indra-stops-him.png
+        text: >-
+          High above, the gods saw a tiny monkey racing toward the sun, and they were worried. Rahu
+          complained loudly, and Indra, king of the gods, came riding on his white elephant, Airavata.
+          To stop Hanuman before he flew too close, Indra raised his thunderbolt, the Vajra. It struck
+          little Hanuman on the chin, and down, down he fell.
+      - image: images/d01-04-vayu-protects.png
+        text: >-
+          Vayu, the Wind God, was Hanuman's father. He caught his son gently in his arms and carried
+          him into a quiet cave. Vayu was so sad that his son was hurt that he stopped blowing. All
+          across the world the winds became still, and everyone began to struggle for air. So the gods
+          gathered at the cave to help.
+      - image: images/d01-05-blessings.png
+        text: >-
+          The gods were sorry. One by one they blessed Hanuman with great strength, amazing speed and
+          protection from harm. Slowly, Hanuman opened his eyes and smiled. He looked around at all the
+          shining gods and asked, "Can I have a real mango now?" Everyone laughed, and the winds began
+          to blow again.
+    lesson: Curiosity can lead to amazing adventures, and true strength should be used to help others.
+    question: If you could have one special power like Hanuman, what would it be, and how would you use it to help someone?
+    words:
+      - {word: Vayu, meaning: the god of the wind, and Hanuman's father}
+      - {word: Indra, meaning: the king of the gods}
+      - {word: Airavata, meaning: Indra's white elephant}
+      - {word: Vajra, meaning: Indra's thunderbolt}
+    quiz:
+      - {q: "What did Hanuman think the sun was?", options: [a ball, a giant mango, a lamp], answer: 1}
+      - {q: "Who rode the white elephant Airavata?", options: [Indra, Vayu, Rahu], answer: 0}
+      - {q: "What happened when Vayu stopped blowing?", options: [it rained, the winds became still, the sun went out], answer: 1}
+    search: [HANUMAN, MANGO, SUN, VAYU, INDRA, WIND, CLOUD, BLESS]
+  - day: 2
+    title: Hanuman Forgets His Powers
+    cover: images/d02-00-cover.png
+    teaser: Too much mischief, a gentle blessing, and a mother's wise words.
+    beats:
+      - image: images/d02-01-mischief.png
+        text: >-
+          Little Hanuman now had amazing powers, and he loved to play! In the forest lived quiet sages
+          who sat for hours in meditation. Hanuman swung from branch to branch, tugged at their beards
+          and tipped baskets of fruit over their heads. Plop! A mango landed right on one sage's head.
+          The deer giggled and the squirrels chattered, but the sages could not think at all.
+      - image: images/d02-02-sages-decide.png
+        text: >-
+          The sages gathered beneath a big tree. "Hanuman is kind," said the eldest sage. "He never
+          means any harm." "But his powers are so great," said another. "He needs guidance." Peeping
+          from behind the tree, Hanuman listened. The sages smiled. They would not punish him. Instead,
+          they chose a gentle blessing.
+      - image: images/d02-03-gentle-blessing.png
+        text: >-
+          The eldest sage placed his hand on Hanuman's head. "Little one," he said softly, "you will
+          forget your powers for now. They will stay hidden inside you, safe and sound. And one day,
+          when the time is right, someone will remind you of who you are." A soft golden glow wrapped
+          around Hanuman, and he felt calm and happy.
+      - image: images/d02-04-anjana.png
+        text: >-
+          That evening, Hanuman sat with his mother, Anjana. "Amma, am I still strong?" he asked.
+          Anjana stroked his hair and smiled. "Real strength is kindness," she said. "Be brave. Be
+          helpful. Be good. That is what makes someone truly strong." Hanuman rested his chin in his
+          hands and listened, and feeling peaceful, he fell asleep.
+    lesson: The greatest strength is the kind that helps others, and our gifts awaken at the right time.
+    question: What is one kind thing you did today that made someone smile?
+    words:
+      - {word: sage, meaning: a wise and holy person who thinks and prays quietly}
+      - {word: meditation, meaning: sitting very still to calm and focus the mind}
+      - {word: Anjana, meaning: Hanuman's mother}
+      - {word: blessing, meaning: a kind wish that brings good things}
+    quiz:
+      - {q: "Why could the sages not think?", options: [it was too hot, Hanuman was playing mischief, they were hungry], answer: 1}
+      - {q: "What did the sages' blessing do to Hanuman's powers?", options: [took them away forever, made them bigger, kept them hidden until the right time], answer: 2}
+      - {q: "What did Anjana say real strength is?", options: [kindness, big muscles, flying fast], answer: 0}
+    search: [SAGES, FOREST, ANJANA, KIND, FRUIT, DEER, GENTLE, CALM]
+coming_next: Who will remind Hanuman of his hidden powers? Find out in the next Tiny Tales.

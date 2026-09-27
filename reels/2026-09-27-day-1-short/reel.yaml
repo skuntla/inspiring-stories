@@ -1,0 +1,211 @@
+# Day 1 as a narrated story Short (about 2 minutes), in English with Hindi and Telugu dubs.
+# English: Kokoro, a voice per character. Hindi and Telugu: one storyteller (Indic Parler-TTS) who acts
+# every character; `mood` on a line directs that line. Every card stays up as long as the longest
+# language needs, so all three audio tracks fit one video (YouTube multi-language audio).
+schema: story-reel/v1
+id: 2026-09-27-day-1-short
+title: "Why Did Baby Hanuman Try to Eat the Sun?"
+format: short
+pacing: {lead_in: 0.35, tail: 0.8}
+music: hopeful
+voices:
+  narrator: {kokoro: af_heart, speed: 0.92}
+  hanuman: {kokoro: am_puck, speed: 1.0, pitch: 4}   # a little boy: a young voice raised four semitones
+  rahu: {kokoro: am_fenrir, speed: 1.0}
+  indra: {kokoro: am_onyx, speed: 0.92}
+  vayu: {kokoro: bm_george, speed: 0.82}
+  brahma: {kokoro: bm_lewis, speed: 0.85}
+  god: {kokoro: am_michael, speed: 0.95}
+dubs:
+  hi:
+    speaker: Divya
+    roles: &roles
+      narrator: {style: "warm, gentle and captivating storytelling", pace: slightly slow, tone: moderate}
+      hanuman: {style: "excited, playful and childlike", pace: moderate, tone: high, pitch: 2.5}
+      rahu: {style: "alarmed and urgent", pace: fast, tone: moderate}
+      indra: {style: "firm and commanding", pace: moderate, tone: low, pitch: -2}
+      vayu: {style: "tender, sad and emotional", pace: slow, tone: low, pitch: -2}
+      brahma: {style: "solemn, kind and majestic", pace: slow, tone: low, pitch: -1.5}
+      god: {style: "kind and joyful", pace: moderate, tone: moderate}
+  te:
+    speaker: Lalitha
+    roles: *roles
+pronunciations:
+  Hanuman: Hanumaan
+  Hanuman's: Hanumaan's
+  Vayu: Vaayu
+  Vajra: Vajra
+slides:
+  - image: images/00-cover.png
+    motion: cover
+    caption: "Baby Hanuman vs. the SUN"
+    lines:
+      - speaker: narrator
+        mood: "curious, intriguing storytelling"
+        text: "Did you know… that when Hanuman was just a tiny baby, he once tried to eat the sun?"
+        hi: "क्या आप जानते हैं… जब हनुमान बहुत छोटे थे, तब उन्होंने एक बार सूरज को खाने की कोशिश की थी?"
+        te: "హనుమంతుడు చిన్నప్పుడు సూర్యుడిని తినడానికి ప్రయత్నించాడని మీకు తెలుసా?"
+        pause_after: 0.9
+  - image: images/01-sees-the-mango.png
+    caption:
+      - {line: 0, text: "Little Hanuman was hungry…"}
+      - {line: 3, text: "He thought the sun was a MANGO!"}
+    lines:
+      - speaker: narrator
+        text: "It was early morning in the forest. Little Hanuman opened his eyes… and his tummy rumbled."
+        hi: "जंगल में सुबह हो रही थी। नन्हे हनुमान ने आँखें खोलीं… और उनके पेट में गुड़-गुड़ होने लगी।"
+        te: "అడవిలో తెల్లవారుతోంది. చిన్నారి హనుమంతుడు కళ్ళు తెరిచాడు. అతని కడుపు గుడగుడలాడింది."
+        pause_after: 0.4
+      - speaker: hanuman
+        text: "I'm so hungry!"
+        hi: "मुझे बहुत भूख लगी है!"
+        te: "నాకు చాలా ఆకలిగా ఉంది!"
+        pause_after: 0.5
+      - speaker: narrator
+        mood: "wonder-filled, slow and magical"
+        text: "He looked up. And there, rising over the hills, was something round… and golden… and glowing."
+        hi: "उन्होंने ऊपर देखा। पहाड़ों के पीछे से कुछ गोल-गोल… सुनहरा… और चमकता हुआ निकल रहा था।"
+        te: "అతను పైకి చూశాడు. కొండల వెనుక నుండి ఏదో గుండ్రంగా పైకి వస్తోంది. అది బంగారు రంగులో మెరుస్తోంది."
+        pause_after: 0.5
+      - speaker: hanuman
+        text: "A mango! A giant, juicy mango!"
+        hi: "आम! एक बड़ा सा, रसीला आम!"
+        te: "మామిడిపండు! పెద్ద, రసవంతమైన మామిడిపండు!"
+        pause_after: 0.5
+      - speaker: narrator
+        mood: "playful and building excitement"
+        text: "He wiggled his tail. He crouched down low. And he… jumped!"
+        hi: "उन्होंने अपनी पूँछ हिलाई। नीचे झुके। और… छलाँग लगा दी!"
+        te: "అతను తోక ఊపాడు. కిందికి వంగాడు. ఆపై ఒక్క ఉదుటున ఎగిరాడు!"
+        pause_after: 0.6
+  - image: images/02-flies-to-the-sun.png
+    caption: "Up, up, up he flew!"
+    lines:
+      - speaker: narrator
+        mood: "joyful and soaring"
+        text: "Whoosh! Up, up he flew, past the singing birds, and through the soft white clouds."
+        hi: "सर्र! वे ऊपर, और ऊपर उड़ते गए। गाती चिड़ियों के पास से, नरम सफ़ेद बादलों के बीच से।"
+        te: "జూమ్! అతను పైకి పైకి ఎగిరాడు. పాడే పక్షుల పక్కనుండి, తెల్లని మేఘాల మధ్య నుండి వెళ్ళాడు."
+        pause_after: 0.4
+      - speaker: hanuman
+        text: "Wait for me, mango! I'm coming!"
+        hi: "रुको आम, मैं आ रहा हूँ!"
+        te: "ఆగు మామిడిపండూ, నేను వస్తున్నాను!"
+        pause_after: 0.5
+      - speaker: narrator
+        text: "The sun grew bigger. And brighter. And hotter. But little Hanuman only grew happier."
+        hi: "सूरज बड़ा होता गया। और चमकीला। और गरम। पर नन्हे हनुमान और भी खुश होते गए।"
+        te: "సూర్యుడు పెద్దదయ్యాడు. ఇంకా ప్రకాశవంతంగా, ఇంకా వేడిగా మారాడు. కానీ చిన్నారి హనుమంతుడు ఇంకా సంతోషపడ్డాడు."
+        pause_after: 0.7
+  - image: images/03-indra-stops-him.png
+    caption:
+      - {line: 0, text: "The gods were alarmed!"}
+      - {line: 2, text: "Indra stops him!"}
+    lines:
+      - speaker: narrator
+        mood: "tense and dramatic"
+        text: "High in the heavens, the gods gasped."
+        hi: "ऊपर स्वर्ग में, देवता घबरा गए।"
+        te: "స్వర్గంలో దేవతలు ఆశ్చర్యపోయారు."
+        pause_after: 0.3
+      - speaker: rahu
+        text: "Look! A child is racing toward the sun!"
+        hi: "देखो! एक बच्चा सूरज की ओर दौड़ा आ रहा है!"
+        te: "చూడండి! ఒక పిల్లవాడు సూర్యుని వైపు దూసుకొస్తున్నాడు!"
+        pause_after: 0.5
+      - speaker: narrator
+        mood: "tense and dramatic"
+        text: "Indra, the king of the gods, rode out on his great white elephant, Airavata."
+        hi: "देवताओं के राजा इंद्र, अपने विशाल सफ़ेद हाथी ऐरावत पर सवार होकर आए।"
+        te: "దేవతల రాజు ఇంద్రుడు, తన తెల్లని ఏనుగు ఐరావతం మీద వచ్చాడు."
+        pause_after: 0.3
+      - speaker: indra
+        text: "Stop, little one!"
+        hi: "रुक जाओ, बालक!"
+        te: "ఆగు, చిన్నారీ!"
+        pause_after: 0.5
+      - speaker: narrator
+        mood: "hushed, dramatic and slow"
+        text: "He raised his thunderbolt, the Vajra… and it struck Hanuman. Down… down… down he fell."
+        hi: "उन्होंने अपना वज्र उठाया… और वह हनुमान को जा लगा। नीचे… नीचे… नीचे वे गिरते गए।"
+        te: "ఇంద్రుడు తన వజ్రాయుధాన్ని ఎత్తాడు. అది హనుమంతుడికి తగిలింది. అతను కిందికి కిందికి పడిపోయాడు."
+        pause_after: 1.0
+  - image: images/04-vayu-protects.png
+    caption:
+      - {line: 0, text: "His father caught him…"}
+      - {line: 3, text: "The winds stood still…"}
+    lines:
+      - speaker: narrator
+        mood: "soft and relieved"
+        text: "But someone caught him. It was Vayu, the Wind God… Hanuman's father."
+        hi: "लेकिन किसी ने उन्हें थाम लिया। वे थे वायु देव… हनुमान के पिता।"
+        te: "కానీ ఎవరో అతన్ని పట్టుకున్నారు. అది వాయుదేవుడు. హనుమంతుడి తండ్రి."
+        pause_after: 0.4
+      - speaker: vayu
+        text: "My son… my little son."
+        hi: "मेरा बेटा… मेरा नन्हा सा बेटा।"
+        te: "నా బిడ్డా… నా చిన్నారి బిడ్డా."
+        pause_after: 0.6
+      - speaker: narrator
+        mood: "sad and gentle"
+        text: "Vayu was so sad, that he carried Hanuman into a quiet cave… and stopped blowing."
+        hi: "वायु देव इतने दुखी हुए कि वे हनुमान को एक शांत गुफा में ले गए… और बहना बंद कर दिया।"
+        te: "వాయుదేవుడు చాలా బాధపడ్డాడు. హనుమంతుడిని ఒక గుహలోకి తీసుకెళ్ళాడు. వీచడం ఆపేశాడు."
+        pause_after: 0.4
+      - speaker: narrator
+        mood: "hushed and serious"
+        text: "All across the world, the winds stood still. The trees stopped swaying. The birds could not fly. And everyone found it hard to breathe."
+        hi: "पूरी दुनिया में हवा थम गई। पेड़ों का हिलना रुक गया। चिड़ियाँ उड़ न सकीं। और सबको साँस लेना मुश्किल हो गया।"
+        te: "ప్రపంచమంతా గాలి ఆగిపోయింది. చెట్లు ఊగడం మానేశాయి. పక్షులు ఎగరలేకపోయాయి. అందరికీ ఊపిరి ఆడలేదు."
+        pause_after: 0.8
+  - image: images/05-blessings.png
+    caption:
+      - {line: 0, text: "Blessed by the gods!"}
+      - {line: 5, text: "He asked for a REAL mango!"}
+      - {line: 7, text: "Follow for Day 2!"}
+    lines:
+      - speaker: narrator
+        mood: "warm and hopeful"
+        text: "So all the gods came to the cave. They were sorry. And one by one, they blessed little Hanuman."
+        hi: "तब सारे देवता गुफा में आए। उन्हें पछतावा हुआ। और एक-एक करके, उन्होंने नन्हे हनुमान को आशीर्वाद दिया।"
+        te: "అప్పుడు దేవతలందరూ గుహకు వచ్చారు. వాళ్ళు బాధపడ్డారు. ఒక్కొక్కరుగా చిన్నారి హనుమంతుడిని ఆశీర్వదించారు."
+        pause_after: 0.4
+      - speaker: brahma
+        text: "May you be stronger than the mightiest mountain."
+        hi: "तुम सबसे ऊँचे पर्वत से भी अधिक बलवान बनो।"
+        te: "నువ్వు అతి పెద్ద పర్వతం కంటే బలవంతుడివి అవ్వు."
+        pause_after: 0.3
+      - speaker: god
+        text: "May you be faster than the wind itself."
+        hi: "तुम हवा से भी तेज़ बनो।"
+        te: "నువ్వు గాలి కంటే వేగంగా ఉండు."
+        pause_after: 0.5
+      - speaker: narrator
+        mood: "soft and slow"
+        text: "Slowly… Hanuman opened his eyes."
+        hi: "धीरे-धीरे… हनुमान ने आँखें खोलीं।"
+        te: "మెల్లగా హనుమంతుడు కళ్ళు తెరిచాడు."
+        pause_after: 0.3
+      - speaker: narrator
+        mood: "warm and smiling"
+        text: "He looked at all the shining gods, smiled the biggest smile, and said,"
+        hi: "उन्होंने सभी चमकते देवताओं को देखा, बड़ी सी मुस्कान दी, और बोले,"
+        te: "మెరిసే దేవతలందరినీ చూసి, పెద్దగా నవ్వి, ఇలా అడిగాడు."
+        pause_after: 0.3
+      - speaker: hanuman
+        text: "Can I have a real mango now?"
+        hi: "क्या अब मुझे असली आम मिलेगा?"
+        te: "ఇప్పుడు నాకు నిజమైన మామిడిపండు ఇస్తారా?"
+        pause_after: 0.6
+      - speaker: narrator
+        mood: "joyful, laughing"
+        text: "Everyone laughed. And the winds began to blow again."
+        hi: "सब हँस पड़े। और हवा फिर से बहने लगी।"
+        te: "అందరూ నవ్వారు. గాలి మళ్ళీ వీచడం మొదలుపెట్టింది."
+        pause_after: 0.8
+      - speaker: narrator
+        mood: "cheerful and inviting"
+        text: "Tomorrow, a naughty little Hanuman meets the wise sages of the forest. Follow for Day 2!"
+        hi: "कल, नटखट नन्हे हनुमान मिलेंगे जंगल के ज्ञानी ऋषियों से। अगली कहानी के लिए फ़ॉलो करें!"
+        te: "రేపు, అల్లరి చిన్నారి హనుమంతుడు అడవిలోని మునులను కలుస్తాడు. రెండో రోజు కథ కోసం ఫాలో అవ్వండి!"
+        pause_after: 1.0

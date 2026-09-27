@@ -52,11 +52,11 @@ def frames(seconds: float) -> int:
 
 # --- timing --------------------------------------------------------------------------------
 
-def schedule(doc: dict, speech: dict) -> list[dict]:
+def schedule(doc: dict, speech: dict, lead_in: float = LEAD_IN, tail: float = TAIL, min_shot: float = MIN_SHOT) -> list[dict]:
     """Shots with absolute frame ranges and frame-aligned line starts."""
     shots, cursor_frame = [], 0
     for shot in doc["shots"]:
-        t = LEAD_IN
+        t = lead_in
         lines = []
         for n, line in enumerate(shot["lines"]):
             lid = f"{shot['id']}-l{n + 1:02d}"
@@ -65,7 +65,7 @@ def schedule(doc: dict, speech: dict) -> list[dict]:
             lines.append({"id": lid, "line": line, "rec": rec, "from": cursor_frame + start_frame})
             pause = line.get("pause_after", DEFAULT_PAUSE)
             t = start_frame / FPS + rec["duration"] + pause
-        length = max(frames(t + TAIL), frames(MIN_SHOT))
+        length = max(frames(t + tail), frames(min_shot))
         shots.append({"shot": shot, "from": cursor_frame, "frames": length, "lines": lines})
         cursor_frame += length
     return shots

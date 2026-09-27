@@ -19,6 +19,9 @@ voice = [
     "soundfile==0.14.0",
 ]
 
+# Storybook PDFs (`story book`): compresses the card images.
+book = ["pillow>=10,<12"]
+
 [project.scripts]
 story = "story.cli:main"
 

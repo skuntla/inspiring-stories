@@ -178,6 +178,37 @@ def cmd_thumbnail(args) -> int:
     return EXIT_OK
 
 
+def cmd_book(args) -> int:
+    from . import storybook
+    try:
+        pdf = storybook.build(_root(args), Path(args.path), log=lambda m: print(m, file=sys.stderr))
+    except storybook.BookError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return EXIT_ERRORS
+    print(f"wrote {pdf}")
+    return EXIT_OK
+
+
+def cmd_reel(args) -> int:
+    from . import reel
+    root = _root(args)
+    folder = Path(args.path)
+    try:
+        tl = reel.build(folder, log=lambda m: print(m, file=sys.stderr), only=args.lang)
+    except reel.ReelError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return EXIT_ERRORS
+    if args.no_render:
+        return EXIT_OK
+    out = reel.render(root, folder, tl, log=lambda m: print(m, file=sys.stderr))
+    problem = render.check_duration(out, tl)
+    if problem:
+        print(f"error: {problem}", file=sys.stderr)
+        return EXIT_ERRORS
+    print(f"wrote {rel(out, root)} ({tl['durationInFrames'] / timeline.FPS:.1f} s)")
+    return EXIT_OK
+
+
 def cmd_approve(args) -> int:
     if args.checkpoint not in approvals.CHECKPOINTS:
         raise UsageError(f"unknown checkpoint '{args.checkpoint}'; supported: {', '.join(approvals.CHECKPOINTS)}")
@@ -345,6 +376,14 @@ def build_parser() -> argparse.ArgumentParser:
                       help="render the full reference contract instead of the compact Project instructions")
     b.add_argument("--out", help="write to this file instead of stdout")
     b.set_defaults(func=cmd_brief)
+    bk = sub.add_parser("book", help="make a printable storybook PDF from story cards (books/<id>/book.yaml)")
+    bk.add_argument("path")
+    bk.set_defaults(func=cmd_book)
+    rl = sub.add_parser("reel", help="make a vertical narrated reel from story card images (reels/<id>/reel.yaml)")
+    rl.add_argument("path")
+    rl.add_argument("--no-render", action="store_true", help="voice, time and mix only")
+    rl.add_argument("--lang", help="build one language on its own at its natural pace (en, hi, te)")
+    rl.set_defaults(func=cmd_reel)
     th = sub.add_parser("thumbnail", help="render the episode's YouTube thumbnail variants (1280x720 JPEG)")
     th.add_argument("path")
     th.set_defaults(func=cmd_thumbnail)
